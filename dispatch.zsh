@@ -13,24 +13,25 @@ function _alvar-dispatch () {
 	# ¤note: >2 consider 2 as a file, need & to precise this is a stream
 	return 1
     fi
+
+    local dir=$1 ; local cdir=$(pwd)
     # si pas d'argument error
     # > check directory
     case $2 in
-	"") cd $1 ;;
-	l|ls) ls $1;;
-	t|tree) tree $1;;
+	"") cd $dir ;;
+	l|ls) ls $dir;;
+	t|tree) tree $dir;;
 	c|cd) cd "$1/$3" ;;
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
 	e|"exec")
 	    if [[ -z "$3" ]] ; then ; echo "Nothing to exec!" >&2 ; return 1; fi
-	    local dir=$1 ; local cdir=$(pwd)
 
 	    # get ride of initial args
 	    shift; shift
 
 	    # §todo: see doc.
 	    #¤note: shift take no argument
-	    eval "(cd $dir && $@ )"
+	    eval "(cd \"$dir\" && $@ )"
 	    # §see: change directory, but not change back if failure?
 	    # ¤note: might not be necessary to injection protect..... var about evaluation
 	    ;;
@@ -45,6 +46,19 @@ function _alvar-dispatch () {
 	# - make?
 	# - du, ncdu..;
 	# ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
+
+	i|interactive)
+	    # §maybe: add other names
+	    echo "Entering interactive mode in $dir folder"
+	    echo -n ">> "
+	    (cd "$dir" && while read c; do
+		    eval "$c"; echo -n ">> "
+		done)
+	    # §todo: color prompt + command
+	    # completion so over kill...
+	    echo "Stop playing"
+	    # for a bunch of consecutive commands
+	    ;;
 
 	help) echo "Help to do" ;;
 	*) echo "Invalid argument! <$2>"; return 1 ;;
