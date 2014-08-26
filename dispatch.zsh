@@ -5,6 +5,9 @@
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
+
+# §note: ¤doc: add how shoul be invocated.
+
 function _alvar-dispatch () {
     # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
@@ -49,14 +52,19 @@ function _alvar-dispatch () {
 
 	i|interactive)
 	    # §maybe: add other names
-	    echo "Entering interactive mode in $dir folder"
-	    echo -n ">> "
+	    echo "Entering interactive mode in $dir folder:"
+	    echo -n "$_ALVAR_DISPATCH_INTERACTIVE_PROMPT" # §todo: make it bold
 	    (cd "$dir" && while read c; do
-		    eval "$c"; echo -n ">> "
+		    echo -n "$reset_color"
+		    eval "$c" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2
+		    # §maybe: laterswitch on some commands: : exit quit, to move out of dir.
+		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
+		    # §see how * glob subtitution work.
+		    echo -n $_ALVAR_DISPATCH_INTERACTIVE_PROMPT
 		done)
 	    # §todo: color prompt + command
 	    # completion so over kill...
-	    echo "Stop playing"
+	    echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
 	    # for a bunch of consecutive commands
 	    ;;
 
@@ -64,3 +72,6 @@ function _alvar-dispatch () {
 	*) echo "Invalid argument! <$2>"; return 1 ;;
     esac
 }
+
+_ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
+# oh yes, yell like zsh!!
