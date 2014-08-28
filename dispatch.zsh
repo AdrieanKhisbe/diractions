@@ -26,6 +26,15 @@ function _alvar-dispatch () {
 	t|tree) tree $dir;;
 	c|cd) cd "$1/$3" ;;
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
+
+	# §maybe : o, open?
+	b|browser) $BROWSER $dir
+	    # §TOFIx: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
+	    # platform specific. §DIg (and fix personnal config)
+
+	    # §todo: task and write [in todo, or other file]
+	    ;;
+
 	e|"exec")
 	    if [[ -z "$3" ]] ; then ; echo "Nothing to exec!" >&2 ; return 1; fi
 
