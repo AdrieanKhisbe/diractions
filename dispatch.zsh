@@ -1,27 +1,29 @@
 # -*- mode: sh -*-
 
-# §TODO: HEADER §next
+# §TODO: HEADER §next (+licence)
 # §maybe: rename to dirspatch?
+# §NOPE: even better: *DirActions* (plural or singular )
+# §bonux: mini stupid logo.
+
+# §rawidea: (for a v15)  function suite?
+# for create diractions new dir val?
+#  alaso: delete, disable, other
+
 # §later: some way to read config from file. (clear separation of data and function)
 
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
 
-
-
 # ¤> Alvar functions
 # ¤>> Notes:
-# §MAYBE: en faire un vrai plugin zsh!!! [rajouter fonctionnalité au fur et mesure]
 # declaration depuis fichier, chaine texte [cf antigen bundle]
-
 # §maybe: also store in hash? (for cleanup for instance)
 
-# ¤>> function
-## ¤> Alias&Variable Combo function:
+# ¤>> Function
+##'  Alias&Variable Combo function:
 ##' ALVAR: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
-
-#  ¤note: si variable déjà définie ne sera pas surchargée
+##'  ¤note: si variable déjà définie ne sera pas surchargée
 # §bonux: option pour forcer.....
 
 function alvar(){
@@ -54,7 +56,7 @@ _ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
 # ¤note: maybe add wrapping command to write the directoring going into it.
 # §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
 
-# §now §todo: use local function, they exist!!
+# §now §todo: use local function, they exist!! (not that sure, false positive.)> check zsh doc
 function a() {
     function b () {
 	echo $1
@@ -65,18 +67,18 @@ function a() {
 # ¤> extract file chck, file edit, and else and EVAL DIR!!!
 
 function _alvar-dispatch () {
-    # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
-    if [[ -z "$1" ]] || [[ ! -d "$1" ]] ; then
-	echo "Invalid usage of dispatch function: $1 is not a dir!" >&2
+
+    local dir=$1   cdir=$(pwd)  cmd=$2  # capture first arguments
+    shift; shift # get ride of initial args
+
+    if [[ -z "$dir" ]] || [[ ! -d "$dir" ]] ; then
+	# ¤later: something if same?
+	echo "Invalid usage of dispatch function: $dir is not a dir!" >&2
 	# ¤note: >2 consider 2 as a file, need & to precise this is a stream
 	return 1
     fi
 
-    local dir=$1
-    local cdir=$(pwd)
-    local cmd=$2
-    shift; shift # get ride of initial args
 
     # si pas d'argument error
     # > check directory
