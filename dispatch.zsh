@@ -53,6 +53,17 @@ _ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
 # ¤> Dispatch function
 # ¤note: maybe add wrapping command to write the directoring going into it.
 # §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
+
+# §now §todo: use local function, they exist!!
+function a() {
+    function b () {
+	echo $1
+    }
+    b 2
+    b 4
+}
+# ¤> extract file chck, file edit, and else and EVAL DIR!!!
+
 function _alvar-dispatch () {
     # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
