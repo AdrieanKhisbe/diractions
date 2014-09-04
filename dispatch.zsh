@@ -1,63 +1,48 @@
 # -*- mode: sh -*-
-# §TODO: HEADER
-# §TODO: Creating function!! [extract from personnal config!]
+
+# §TODO: HEADER §next
+# §maybe: rename to dirspatch?
 # §later: some way to read config from file. (clear separation of data and function)
-
-
-# §todo: function to scratch register it to a draft for intergrate then in alias_dir.
 
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
 
-# §note: ¤doc: add how shoul be invocated.
-
-# ¤note: maybe add wrapping command to write the directoring going into it.
 
 
 # ¤> Alvar functions
 # ¤>> Notes:
-# §todo: create a $1 function instead of alias.
-#        see what do do with arg. maybe use option switch, or rather keyword commandes
-#         in a rake style. deva exec mi
-# §tweak: check if file exist!
 # §MAYBE: en faire un vrai plugin zsh!!! [rajouter fonctionnalité au fur et mesure]
 # declaration depuis fichier, chaine texte [cf antigen bundle]
-# -> bonux, a la cask ou autre. serait fonction [ou script?]
-# argument, exec, ls..?? make, etc.
-
 
 # §maybe: also store in hash? (for cleanup for instance)
 
 # ¤>> function
 ## ¤> Alias&Variable Combo function:
-##' ALVAR: crée un alias, et une variable préfixée par _
-#    @$1: le nom,
-#    @$2: le dossier
+##' ALVAR: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
+
 #  ¤note: si variable déjà définie ne sera pas surchargée
 # §bonux: option pour forcer.....
 
-	function alvar(){
-	    local var="_$1"
+function alvar(){
+    local var="_$1" # name of the variable
 
-	    # cree variable si pas déjà définie
-	    # §TODO: check si dossier existe, sinon logger message.
-	    # stocke dans variable, et une fonction pour afficher
-	    if [ -z "${(P)var}" ] ; then
-	    eval "export $var"="$2"
-	    fi
-	    alias "$1"="cd ${(P)var}"
+    # §TODO: check if dir existe, sinon logger message.
+    # §maybe log externaly?
 
-	    # ¤note; proto!! [when working remove the leading ¤
-	    alias "¤$1"="_alvar-dispatch ${(P)var}"
-	    # §see: keep var or not? if yes use $var prefixed by \$
-	}
+    # create variable if not already bound
+    if [ -z "${(P)var}" ] ; then
+	eval "export $var=$2" # §see: keep export?
+    fi
 
-
-
-
+    # create an alias: call to the _alvar-dispach function with directory as argument
+    alias "$1"="_alvar-dispatch ${(P)var}"
+    # §see: keep var or not? if yes use $var prefixed by \$
+}
 
 # ¤> Dispatch function
+# ¤note: maybe add wrapping command to write the directoring going into it.
+# §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted]
 function _alvar-dispatch () {
     # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
@@ -130,7 +115,7 @@ function _alvar-dispatch () {
 		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
 		    # §see how * glob subtitution work.
 		    echo -n $_ALVAR_DISPATCH_INTERACTIVE_PROMPT
-		done)
+		    done)
 	    # §todo: color prompt + command
 	    # completion so over kill...
 	    echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
@@ -145,5 +130,10 @@ function _alvar-dispatch () {
     esac
 }
 
+# ¤> Config
 _ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
 # oh yes, yell like zsh!!
+
+
+# ¤> Completion
+## §later: do basic completion function for _alvar-dispatch
