@@ -8,6 +8,8 @@
 
 # §note: ¤doc: add how shoul be invocated.
 
+# ¤note: maybe add wrapping command to write the directoring going into it.
+
 function _alvar-dispatch () {
     # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
@@ -53,9 +55,16 @@ function _alvar-dispatch () {
 	# how to decide name??
 
 	# §todo: other
+
+	## ¤>> Builders: just trasnfer command
+	make|rake|sbt|gradle|git|cask|bundler)  # ¤note: others to add
+	    local cmd=$2; shift;shift
+	    ## §maybe: shift shit before. §next!
+	   eval "(cd \"$dir\" && $cmd $@)"   ;;
+	# §check case protection?
+
+
 	# - todo? add to local todo.
-	# - git?
-	# - make?
 	# - du, ncdu..;
 	# ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
 
