@@ -3,6 +3,7 @@
 # §TODO: Creating function!! [extract from personnal config!]
 # §later: some way to read config from file. (clear separation of data and function)
 
+
 # §todo: function to scratch register it to a draft for intergrate then in alias_dir.
 
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
@@ -13,6 +14,50 @@
 
 # ¤note: maybe add wrapping command to write the directoring going into it.
 
+
+# ¤> Alvar functions
+# ¤>> Notes:
+# §todo: create a $1 function instead of alias.
+#        see what do do with arg. maybe use option switch, or rather keyword commandes
+#         in a rake style. deva exec mi
+# §tweak: check if file exist!
+# §MAYBE: en faire un vrai plugin zsh!!! [rajouter fonctionnalité au fur et mesure]
+# declaration depuis fichier, chaine texte [cf antigen bundle]
+# -> bonux, a la cask ou autre. serait fonction [ou script?]
+# argument, exec, ls..?? make, etc.
+
+
+# §maybe: also store in hash? (for cleanup for instance)
+
+# ¤>> function
+## ¤> Alias&Variable Combo function:
+##' ALVAR: crée un alias, et une variable préfixée par _
+#    @$1: le nom,
+#    @$2: le dossier
+#  ¤note: si variable déjà définie ne sera pas surchargée
+# §bonux: option pour forcer.....
+
+	function alvar(){
+	    local var="_$1"
+
+	    # cree variable si pas déjà définie
+	    # §TODO: check si dossier existe, sinon logger message.
+	    # stocke dans variable, et une fonction pour afficher
+	    if [ -z "${(P)var}" ] ; then
+	    eval "export $var"="$2"
+	    fi
+	    alias "$1"="cd ${(P)var}"
+
+	    # ¤note; proto!! [when working remove the leading ¤
+	    alias "¤$1"="_alvar-dispatch ${(P)var}"
+	    # §see: keep var or not? if yes use $var prefixed by \$
+	}
+
+
+
+
+
+# ¤> Dispatch function
 function _alvar-dispatch () {
     # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
