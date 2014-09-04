@@ -69,9 +69,10 @@ function a() {
 function _alvar-dispatch () {
     # §see: send var name or directory?
 
-    local dir=$1   cdir=$(pwd)  cmd=$2  # capture first arguments
-    shift; shift # get ride of initial args
+    local dir=$1   cdir=$PWD   # capture first arguments
+    shift # get ride of initial args
 
+    # §todo: perf -> dir checking at creation time!!
     if [[ -z "$dir" ]] || [[ ! -d "$dir" ]] ; then
 	# ¤later: something if same?
 	echo "Invalid usage of dispatch function: $dir is not a dir!" >&2
@@ -79,11 +80,16 @@ function _alvar-dispatch () {
 	return 1
     fi
 
+    if [[ -n "$1" ]]; then
+	# capture command and shift
+	local cmd="$1"
+	shift
+    else
+	# just jump to the dir
+	cd $dir ; return $?
+    fi
 
-    # si pas d'argument error
-    # > check directory
     case $cmd in
-	"") cd $dir ;;
 	l) ls $dir;;
 	t|tree) tree $dir;;
 	c|cd) cd "$1/$3" ;;
@@ -156,8 +162,9 @@ function _alvar-dispatch () {
 	# §TODO: USAGE to write.
 
 	*) echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
-	# §check: color don't induce space
     esac
+    # §later: for perfomance reason put most used first!
+
 }
 
 
