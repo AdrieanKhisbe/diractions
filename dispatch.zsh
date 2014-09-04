@@ -1,4 +1,7 @@
 # -*- mode: sh -*-
+# §TODO: HEADER
+# §TODO: Creating function!! [extract from personnal config!]
+# §later: some way to read config from file. (clear separation of data and function)
 
 # §todo: function to scratch register it to a draft for intergrate then in alias_dir.
 
@@ -28,7 +31,7 @@ function _alvar-dispatch () {
     # > check directory
     case $cmd in
 	"") cd $dir ;;
-	l|ls) ls $dir;;
+	l) ls $dir;;
 	t|tree) tree $dir;;
 	c|cd) cd "$1/$3" ;;
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
@@ -42,7 +45,7 @@ function _alvar-dispatch () {
 	    ;;
 
 	e|"exec")
-	    if [[ -z "$1" ]] ; then ; echo "Nothing to exec!" >&2 ; return 1; fi
+	    if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
 
 	    # §todo: see doc.
 	    #¤note: shift take no argument
@@ -55,17 +58,21 @@ function _alvar-dispatch () {
 	# just take a string command.
 	# how to decide name??
 
+	## ¤>> transfer commands
+	# build tools + files utils
+	make|rake|sbt|gradle|git|cask|bundler| \
+	    ncdu|du|nemo|nautilus|open|xdg-open|ls)
+	    # ¤note: others to add
+	    # ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
+	    # ¤later: check functione xist: otherwise :(eval):1: command not found: nautilus
+	    eval "(cd \"$dir\" && $cmd $@)" ;;
+	# §check; quote: protection?
+	# maybe extract function for the eval.. (local function?)
+
 	# §todo: other
-
-	## ¤>> Builders: just trasnfer command
-	make|rake|sbt|gradle|git|cask|bundler)  # ¤note: others to add
-	   eval "(cd \"$dir\" && $cmd $@)"   ;;
-	# §check case protection?
-
-
 	# - todo? add to local todo.
 	# - du, ncdu..;
-	# ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
+
 
 	i|interactive)
 	    # §maybe: add other names
@@ -85,7 +92,9 @@ function _alvar-dispatch () {
 	    # for a bunch of consecutive commands
 	    ;;
 
-	help) echo "Help to do" ;;
+	help) echo "$fg[red]Help to do" ;;
+	# §TODO: USAGE to write.
+
 	*) echo "fg[red]Invalid argument! <$cmd>"; return 1 ;;
 	# §check: color don't induce space
     esac
