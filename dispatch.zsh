@@ -40,9 +40,19 @@ function alvar(){
     # §see: keep var or not? if yes use $var prefixed by \$
 }
 
+# ¤> Config
+# §see: what prefix? _DIRSPATCH
+# ¤>> commands variables
+# ¤node: add command variable to enable user
+# _DIRSPATCH_EDIT §or just let them and put default in implet
+# ¤>> Vars
+_ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
+# oh yes, yell like zsh!!
+# §later: colors
+
 # ¤> Dispatch function
 # ¤note: maybe add wrapping command to write the directoring going into it.
-# §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted]
+# §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
 function _alvar-dispatch () {
     # §maybe: personal alias if want to use it directly?
     # §see: send var name or directory?
@@ -74,6 +84,13 @@ function _alvar-dispatch () {
 	    # §todo: task and write [in todo, or other file]
 	    ;;
 
+	ed|edit)
+	    # §later: check files exists.
+	    eval "(cd \"$dir\"  && ${_DIRSPATCH_EDITOR:-emacs -Q -nw} $@ )"
+	    # §later: once complete and working, duplicate it to v| visual
+	    # §later: also for quick emacs and vim anyway : em vi
+	    # §so: extract a generate pattern. _alvar_edit (local functions)
+	    ;;
 	e|"exec")
 	    if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
 
@@ -125,14 +142,10 @@ function _alvar-dispatch () {
 	help) echo "$fg[red]Help to do" ;;
 	# §TODO: USAGE to write.
 
-	*) echo "fg[red]Invalid argument! <$cmd>"; return 1 ;;
+	*) echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
 	# §check: color don't induce space
     esac
 }
-
-# ¤> Config
-_ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
-# oh yes, yell like zsh!!
 
 
 # ¤> Completion
