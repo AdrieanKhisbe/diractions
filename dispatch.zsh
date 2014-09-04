@@ -19,10 +19,14 @@ function _alvar-dispatch () {
 	return 1
     fi
 
-    local dir=$1 ; local cdir=$(pwd)
+    local dir=$1
+    local cdir=$(pwd)
+    local cmd=$2
+    shift; shift # get ride of initial args
+
     # si pas d'argument error
     # > check directory
-    case $2 in
+    case $cmd in
 	"") cd $dir ;;
 	l|ls) ls $dir;;
 	t|tree) tree $dir;;
@@ -38,10 +42,7 @@ function _alvar-dispatch () {
 	    ;;
 
 	e|"exec")
-	    if [[ -z "$3" ]] ; then ; echo "Nothing to exec!" >&2 ; return 1; fi
-
-	    # get ride of initial args
-	    shift; shift
+	    if [[ -z "$1" ]] ; then ; echo "Nothing to exec!" >&2 ; return 1; fi
 
 	    # §todo: see doc.
 	    #¤note: shift take no argument
@@ -58,8 +59,6 @@ function _alvar-dispatch () {
 
 	## ¤>> Builders: just trasnfer command
 	make|rake|sbt|gradle|git|cask|bundler)  # ¤note: others to add
-	    local cmd=$2; shift;shift
-	    ## §maybe: shift shit before. §next!
 	   eval "(cd \"$dir\" && $cmd $@)"   ;;
 	# §check case protection?
 
@@ -87,7 +86,8 @@ function _alvar-dispatch () {
 	    ;;
 
 	help) echo "Help to do" ;;
-	*) echo "Invalid argument! <$2>"; return 1 ;;
+	*) echo "fg[red]Invalid argument! <$cmd>"; return 1 ;;
+	# §check: color don't induce space
     esac
 }
 
