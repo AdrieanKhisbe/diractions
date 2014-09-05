@@ -1,4 +1,7 @@
-# -*- mode: sh -*-
+############################################################################
+# DIR          #  Make some stupid pitch/quote around there               ##
+#    ACTIONS   #        Doing Anything, Anywhere                          ##
+############################################################################
 
 # §TODO: HEADER §next (+licence)
 # §maybe: rename to dirspatch?
