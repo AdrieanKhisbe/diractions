@@ -4,9 +4,8 @@
 ############################################################################
 
 # §TODO: HEADER §next (+licence)
-# §maybe: rename to dirspatch?
-# §NOPE: even better: *DirActions* (plural or singular )
-# §bonux: mini stupid logo.
+# §bonux: mini stupid logo. :) (paaaneaux)
+
 
 # §rawidea: (for a v15)  function suite?
 # for create diractions new dir val?
@@ -18,18 +17,19 @@
 # ¤note: function return code by specify value.
 
 
-# ¤> Alvar functions
+# ¤> "Alvar" diractions functions
 # ¤>> Notes:
 # declaration depuis fichier, chaine texte [cf antigen bundle]
 # §maybe: also store in hash? (for cleanup for instance)
 
+
 # ¤>> Function
-##'  Alias&Variable Combo function:
-##' ALVAR: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
+##' Alias&Variable Combo function:
+##' Diraction: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
 ##'  ¤note: si variable déjà définie ne sera pas surchargée
 # §bonux: option pour forcer.....
 
-function alvar(){
+function diraction(){
     local var="_$1" # name of the variable
 
     # §TODO: check if dir existe, sinon logger message.
@@ -38,10 +38,11 @@ function alvar(){
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
 	eval "export $var=$2" # §see: keep export?
+	# §readonly probably better?
     fi
 
-    # create an alias: call to the _alvar-dispach function with directory as argument
-    alias "$1"="_alvar-dispatch ${(P)var}"
+    # create an alias: call to the _diraction-dispach function with directory as argument
+    alias "$1"="_diraction-dispatch ${(P)var}"
     # §see: keep var or not? if yes use $var prefixed by \$
 }
 
@@ -49,17 +50,20 @@ function alvar(){
 # §see: what prefix? _DIRSPATCH
 # ¤>> commands variables
 # ¤node: add command variable to enable user
-# _DIRSPATCH_EDIT §or just let them and put default in implet
+# _DIRACTION_EDIT §or just let them and put default in implet
+
+
 # ¤>> Vars
-_ALVAR_DISPATCH_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
+_DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
 # oh yes, yell like zsh!!
-# §later: colors
+
 
 # ¤> Dispatch function
 # ¤note: maybe add wrapping command to write the directoring going into it.
 # §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
 
 # §now §todo: use local function, they exist!! (not that sure, false positive.)> check zsh doc
+# [§]
 function a() {
     function b () {
 	echo $1
@@ -67,9 +71,11 @@ function a() {
     b 2
     b 4
 }
-# ¤> extract file chck, file edit, and else and EVAL DIR!!!
+# check b dont come polute: otherwise use _diraction_functions
+# ¤> extract file check, file edit, and else and EVAL DIR!!!
 
-function _alvar-dispatch () {
+
+function _diraction-dispatch () {
     # §see: send var name or directory?
 
     local dir=$1   cdir=$PWD   # capture first arguments
@@ -111,7 +117,7 @@ function _alvar-dispatch () {
 	    eval "(cd \"$dir\"  && ${_DIRSPATCH_EDITOR:-emacs -Q -nw} $@ )"
 	    # §later: once complete and working, duplicate it to v| visual
 	    # §later: also for quick emacs and vim anyway : em vi
-	    # §so: extract a generate pattern. _alvar_edit (local functions)
+	    # §so: extract a generate pattern. _diraction_edit (local functions)
 	    ;;
 	e|"exec")
 	    if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
@@ -146,14 +152,14 @@ function _alvar-dispatch () {
 	i|interactive)
 	    # §maybe: add other names
 	    echo "Entering interactive mode in $dir folder:"
-	    echo -n "$_ALVAR_DISPATCH_INTERACTIVE_PROMPT" # §todo: make it bold
+	    echo -n "$_DIRACTION_INTERACTIVE_PROMPT" # §todo: make it bold
 	    (cd "$dir" && while read c; do
 		    echo -n "$reset_color"
 		    eval "$c" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2
 		    # §maybe: laterswitch on some commands: : exit quit, to move out of dir.
 		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
 		    # §see how * glob subtitution work.
-		    echo -n $_ALVAR_DISPATCH_INTERACTIVE_PROMPT
+		    echo -n $_DIRACTION_INTERACTIVE_PROMPT
 		    done)
 	    # §todo: color prompt + command
 	    # completion so over kill...
@@ -172,4 +178,4 @@ function _alvar-dispatch () {
 
 
 # ¤> Completion
-## §later: do basic completion function for _alvar-dispatch
+## §later: do basic completion function for _diraction-dispatch
