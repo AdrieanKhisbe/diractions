@@ -30,31 +30,43 @@
 # §bonux: option pour forcer.....
 
 function diraction(){
-    local var="_$1" # name of the variable
+    local var="_$2" # name of the variable
+    case $1 in
 
-    # §TODO: check if dir existe, sinon logger message.
-    # §maybe log externaly?
+	create|new) # ¤note: name dir
+	    # §maybe: extract function diraction-create
 
-    # create variable if not already bound
-    if [ -z "${(P)var}" ] ; then
-	eval "export $var=$2" # §see: keep export?
-	# §readonly probably better?
-    fi
+	    # §TODO: check if dir existe, sinon logger message.
+	    # §maybe: log externaly?
 
-    # create an alias: call to the _diraction-dispach function with directory as argument
-    alias "$1"="_diraction-dispatch ${(P)var}"
-    # §see: keep var or not? if yes use $var prefixed by \$
+	    # create variable if not already bound
+	    if [ -z "${(P)var}" ] ; then
+		eval "export $var=$3" # §see: keep export?
+		# §readonly: probably better?
+		# §later: register in hasg
+	    fi
+	    # ¤note: create an alias: call to the _diraction-dispach function with directory as argument
+	    alias "$1"="_diraction-dispatch ${(P)var}" # §later: option to keep var or not
+	    # §see: keep var or not? if yes use $var prefixed by \$
+	    ;; #
+	disable) disable -a $2 ;;
+	enable)  enable -a $2 ;;
+	destroy) unalias $2 ;;
+	# §todo: check if $2. using function migh be a security issue... (if cannot prevent redefine)
+
+	# §LATER: LIST!
+
+	*) echo "No such subcommand" >&2; return 1 ;;
+	esac
 }
 
 # ¤> Config
-# §see: what prefix? _DIRSPATCH
-# ¤>> commands variables
+# ¤>> Commands variables
 # ¤node: add command variable to enable user
 # _DIRACTION_EDIT §or just let them and put default in implet
 
-
 # ¤>> Vars
-_DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"
+_DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
 # oh yes, yell like zsh!!
 
 
@@ -152,10 +164,11 @@ function _diraction-dispatch () {
 	i|interactive)
 	    # §maybe: add other names
 	    echo "Entering interactive mode in $dir folder:"
-	    echo -n "$_DIRACTION_INTERACTIVE_PROMPT" # §todo: make it bold
+	    echo -n "$_DIRACTION_INTERACTIVE_PROMPT"
 	    (cd "$dir" && while read c; do
+		    # §todo: make a recap. (C-d quit)
 		    echo -n "$reset_color"
-		    eval "$c" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2
+		    eval "$c" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2 # modif
 		    # §maybe: laterswitch on some commands: : exit quit, to move out of dir.
 		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
 		    # §see how * glob subtitution work.
