@@ -5,7 +5,7 @@
 
 # §TODO: HEADER §next (+licence) §now :)
 # §bonux: mini stupid logo. :) (paaaneaux)
-
+# §see: if meta data convention in zsh plugins
 
 # §rawidea: (for a v15)  function suite?
 # for create diractions new dir val?
@@ -33,11 +33,14 @@
 
 
 function diraction(){
+
+    # §TODO: check arguments
+
     local var="_$2" # name of the variable
     case $1 in
 
 	create|new) # ¤note: name dir
-	    # §maybe: extract function diraction-create
+	    # §maybe: extract function diraction-create to invoke directly
 
 	    # §TODO: check if dir existe, sinon logger message.
 	    # §maybe: log externaly?
@@ -55,9 +58,9 @@ function diraction(){
 	disable) disable -a $2 ;;
 	enable)  enable -a $2 ;;
 	destroy) unalias $2 ;;
-	# §todo: check if $2. using function migh be a security issue... (if cannot prevent redefine)
+	# §todo: check if $2. using function might be a security issue... (since can't prevent redefine)
 
-	# §LATER: LIST!
+	# §LATER: LIST! (get list of alias.) # when hash table to store them!
 
 	*) echo "No such subcommand" >&2; return 1 ;;
 	esac
@@ -71,26 +74,16 @@ function diraction(){
 #------------------------------------------------------------------------------#
 # ¤>> Vars
 _DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
-# oh yes, yell like zsh!!
+# oh yes, yell like a zsh var!!
 
 ################################################################################
 # ¤> Dispatch function
 # ¤note: maybe add wrapping command to write the directoring going into it.
 # §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
-
-# §now §todo: use local function, they exist!! (not that sure, false positive.)> check zsh doc
-# probably just dynamic defined function: check run b before having run a.
-# [§]
-function a() {
-    function b () {
-	echo $1
-    }
-    b 2
-    b 4
-}
+# ¤note: as may expect, no local function (was a stupid idea)
 # check b dont come polute: otherwise use _diraction_functions
 
-# extract file check, file edit, and else and EVAL DIR!!!
+# §todo: refactor: extract dir check, file edit, and else and EVAL DIR!!!
 function _diraction-dispatch () {
     # §see: send var name or directory?
 
