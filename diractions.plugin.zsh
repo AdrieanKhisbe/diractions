@@ -3,7 +3,7 @@
 #    ACTIONS   #        Doing Anything, Anywhere                          ##
 ############################################################################
 
-# §TODO: HEADER §next (+licence)
+# §TODO: HEADER §next (+licence) §now :)
 # §bonux: mini stupid logo. :) (paaaneaux)
 
 
@@ -16,18 +16,21 @@
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
-
+################################################################################
 # ¤> "Alvar" diractions functions
 # ¤>> Notes:
-# declaration depuis fichier, chaine texte [cf antigen bundle]
+# declaration des alvar depuis fichier, chaine texte [cf antigen bundle]
 # §maybe: also store in hash? (for cleanup for instance)
 
-
-# ¤>> Function
+#------------------------------------------------------------------------------#
+# ¤>> Functions
+## §FIXME: Update documentation
+# §todo: see convention for zsh fonction doc. (see OMZ)
 ##' Alias&Variable Combo function:
 ##' Diraction: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
 ##'  ¤note: si variable déjà définie ne sera pas surchargée
 # §bonux: option pour forcer.....
+
 
 function diraction(){
     local var="_$2" # name of the variable
@@ -60,21 +63,23 @@ function diraction(){
 	esac
 }
 
+################################################################################
 # ¤> Config
 # ¤>> Commands variables
 # ¤node: add command variable to enable user
 # _DIRACTION_EDIT §or just let them and put default in implet
-
+#------------------------------------------------------------------------------#
 # ¤>> Vars
 _DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
 # oh yes, yell like zsh!!
 
-
+################################################################################
 # ¤> Dispatch function
 # ¤note: maybe add wrapping command to write the directoring going into it.
 # §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
 
 # §now §todo: use local function, they exist!! (not that sure, false positive.)> check zsh doc
+# probably just dynamic defined function: check run b before having run a.
 # [§]
 function a() {
     function b () {
@@ -84,9 +89,8 @@ function a() {
     b 4
 }
 # check b dont come polute: otherwise use _diraction_functions
-# ¤> extract file check, file edit, and else and EVAL DIR!!!
 
-
+# extract file check, file edit, and else and EVAL DIR!!!
 function _diraction-dispatch () {
     # §see: send var name or directory?
 
@@ -111,19 +115,21 @@ function _diraction-dispatch () {
     fi
 
     case $cmd in
-	l) ls $dir;;
+	l) ls $dir;; # §maybe: add other args?
 	t|tree) tree $dir;;
 	c|cd) cd "$1/$3" ;;
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
 
 	# §maybe : o, open?
 	b|browser) $BROWSER $dir
-	    # §TOFIx: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
-	    # platform specific. §DIg (and fix personnal config)
 
-	    # §todo: task and write [in todo, or other file]
+	    # §TOFIX: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
+	    # platform specific. §DIG (and fix personnal config)
 	    ;;
 
+	lc) #§other names?
+	    ls $dir && cd $dir ;;
+	    # §maybe reverse cl: cd then ls
 	ed|edit)
 	    # §later: check files exists.
 	    eval "(cd \"$dir\"  && ${_DIRSPATCH_EDITOR:-emacs -Q -nw} $@ )"
@@ -141,7 +147,7 @@ function _diraction-dispatch () {
 	    # ¤note: might not be necessary to injection protect..... var about evaluation
 	    ;;
 
-	# make ¤run with no evaluation!!!! [or reverse)
+	# §later: make ¤run with no evaluation!!!! [or reverse)
 	# just take a string command.
 	# how to decide name??
 
@@ -153,13 +159,14 @@ function _diraction-dispatch () {
 	    # ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
 	    # ¤later: check functione xist: otherwise :(eval):1: command not found: nautilus
 	    eval "(cd \"$dir\" && $cmd $@)" ;;
+
 	# §check; quote: protection?
-	# maybe extract function for the eval.. (local function?)
+	# §maybe: extract function for the eval.. (local function?)
+	# eval in dir?
 
-	# §todo: other
-	# - todo? add to local todo.
-	# - du, ncdu..;
-
+	# §todo: other transfer commande?
+	# - todo? add to local todo. (fonction user?)
+        # §todo: task and write [in todo, or other file] (via touch ou cat
 
 	i|interactive)
 	    # §maybe: add other names
@@ -168,6 +175,7 @@ function _diraction-dispatch () {
 	    (cd "$dir" && while read c; do
 		    # §todo: make a recap. (C-d quit)
 		    echo -n "$reset_color"
+		    # §todo: check return code of eval: eval error (synctax), ou interpreted command error.
 		    eval "$c" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2 # modif
 		    # §maybe: laterswitch on some commands: : exit quit, to move out of dir.
 		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
@@ -188,7 +196,6 @@ function _diraction-dispatch () {
     # §later: for perfomance reason put most used first!
 
 }
-
 
 # ¤> Completion
 ## §later: do basic completion function for _diraction-dispatch
