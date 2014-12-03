@@ -1,0 +1,131 @@
+#+TITLE: Notes d'analyse d'antigen.zsh.
+#+AUTHOR:
+
+Tips à appliquer pour =diractions=
+
+Antigen, globalement trop bien foutu!!! :)
+
+
+
+* Zsh découvertes
+- appel de commande avec chaine de caractère et substitution de variable
+- functions pour tester si variable est la bonne
+- see what he does for private functions
+  - unfunctions?
+
+* Bonnes pratiques
+
+- extrait les argument tout au début avec des local
+- chainage de commande pour filtrer
+- définition de fonction de setup (et éventuel appel à la fin)
+
+** Maybe
+- documentation en dessous fonction
+- local var definie sans fonction
+
+** à creuser
+#+BEGIN_SRC sh
+ if (( $+functions[pmodload] )); then
+
+  {
+      # pipe block
+  } >
+#+END_SRC
+* Quelques "patterns"
+** Dry Dispatch function
+
+#+BEGIN_SRC sh
+  # A syntax sugar to avoid the `-` when calling antigen commands. With this
+  # function, you can write `antigen-bundle` as `antigen bundle` and so on.
+  antigen () {
+      local cmd="$1"
+      if [[ -z "$cmd" ]]; then
+          echo 'Antigen: Please give a command to run.' >&2
+          return 1
+      fi
+      shift
+
+      if functions "antigen-$cmd" > /dev/null; then
+          "antigen-$cmd" "$@"
+      else
+          echo "Antigen: Unknown command: $cmd" >&2
+      fi
+  }
+
+#+END_SRC
+
+
+** Completion
+# §check namming pattern
+#+BEGIN_SRC sh
+  compdef _antigen antigen
+
+  # Setup antigen's autocompletion
+  _antigen () {
+      compadd        \
+          bundle     \
+          bundles
+      # ....
+  }
+
+#+END_SRC
+
+
+** Read config from file
+#+BEGIN_SRC sh
+  # The snapshot content lines are pairs of repo-url and git version hash, in
+   # the form:
+   #   <version-hash> <repo-url>
+   local snapshot_content="$(-antigen-echo-record |
+       grep 'true$' |
+       sed 's/ .*$//' |
+       sort -u |
+       while read url; do
+           local dir="$(-antigen-get-clone-dir "$url")"
+           local version_hash="$(cd "$dir" && git rev-parse HEAD)"
+           echo "$version_hash $url"
+       done)"
+
+#+END_SRC
+
+** Bulks added
+
+Utiliser un grep pour filtrer les lignes
+
+#+BEGIN_SRC sh
+  antigen-bundles () {
+      # Bulk add many bundles at one go. Empty lines and lines starting with a `#`
+      # are ignored. Everything else is given to `antigen-bundle` as is, no
+      # quoting rules applied.
+
+      local line
+
+      grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+          # Using `eval` so that we can use the shell-style quoting in each line
+          # piped to `antigen-bundles`.
+          eval "antigen-bundle $line"
+      done
+  }
+
+#+END_SRC
+
+** TODO Fonction éphémère
+
+Voir la différence entre les deux.
+
+*** Tmp
+#+BEGIN_SRC sh
+  chksum() { (md5sum; test $? = 127 && md5) 2>/dev/null | cut -d' ' -f1 }
+  local checksum="$(echo "$snapshot_content" | chksum)"
+  unset -f chksum;
+#+END_SRC
+
+*** Fonction privée.
+Factorisation
+#+BEGIN_SRC sh
+# def....
+  --add-var "${name//-/_}" "$value"
+  # ....
+      unfunction -- --add-var
+
+#+END_SRC
