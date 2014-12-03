@@ -1,6 +1,7 @@
 Zsh Diractions
 ==============
 
+<!-- TODO: make a gh-page -->
 <!-- Maybe: add version? -->
 
 ## Warning

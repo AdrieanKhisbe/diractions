@@ -35,10 +35,10 @@
 function diraction(){
 
     # §TODO: check arguments
+    # §NOW §maybe: employ same pattern than antigen function
 
     local var="_$2" # name of the variable
     case $1 in
-
 	create|new) # ¤note: name dir
 	    # §maybe: extract function diraction-create to invoke directly
 
@@ -75,6 +75,7 @@ function diraction(){
 # ¤>> Vars
 _DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
 # oh yes, yell like a zsh var!!
+
 
 ################################################################################
 # ¤> Dispatch function
@@ -191,4 +192,21 @@ function _diraction-dispatch () {
 }
 
 # ¤> Completion
+# ¤>> utils diraction
+compdef _diraction diraction
+
+_diraction () {     # ¤sync
+    # Setup diraction's autocompletion
+    compadd  \
+	create \
+	new \
+	disable \
+	enable \
+	destroy \
+	help
+  }
+compdef _diraction diraction
+
+# ¤>>
 ## §later: do basic completion function for _diraction-dispatch
+## §think: decide or not if register completion fonction for all the diractions shortcult?
