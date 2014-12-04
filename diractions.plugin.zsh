@@ -7,11 +7,6 @@
 # §bonux: mini stupid logo. :) (paaaneaux)
 # §see: if meta data convention in zsh plugins
 
-# §rawidea: (for a v15)  function suite?
-# for create diractions new dir val?
-#  alaso: delete, disable, other
-
-# §later: some way to read config from file. (clear separation of data and function)
 
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
@@ -21,6 +16,8 @@
 # ¤>> Notes:
 # declaration des alvar depuis fichier, chaine texte [cf antigen bundle]
 # §maybe: also store in hash? (for cleanup for instance)
+
+
 
 #------------------------------------------------------------------------------#
 # ¤>> Functions
@@ -36,29 +33,30 @@ function diraction(){
 
     # §TODO: check arguments
     # §NOW §maybe: employ same pattern than antigen function
-
+    local cmd=$1
+    local alias="$2" # §todo: check no space
     local var="_$2" # name of the variable
-    case $1 in
-	create|new) # ¤note: name dir
-	    # §maybe: extract function diraction-create to invoke directly
 
+    case $cmd in
+	create|new) # ¤note: name dir
 	    # §TODO: check if dir existe, sinon logger message.
 	    # §maybe: log externaly?
 
 	    # create variable if not already bound
 	    if [ -z "${(P)var}" ] ; then
-		eval "export $var=$3" # §see: keep export?
+		export "$var=$3" # §see: keep export?
 		# §readonly: probably better?
 		# §later: register in hasg
 	    fi
 	    # ¤note: create an alias: call to the _diraction-dispach function with directory as argument
-	    alias "$1"="_diraction-dispatch ${(P)var}" # §later: option to keep var or not
+	    alias "$alias"="_diraction-dispatch ${(P)var}" # §later: option to keep var or not
 	    # §see: keep var or not? if yes use $var prefixed by \$
-	    ;; #
-	disable) disable -a $2 ;;
-	enable)  enable -a $2 ;;
-	destroy) unalias $2 ;;
-	# §todo: check if $2. using function might be a security issue... (since can't prevent redefine)
+	    ;;
+	disable) disable -a $alias ;;
+	enable)  enable -a $alias ;;
+	destroy) unalias $alias ;;
+	help) echo "usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>\n help" ;;
+	# §todo: check if using function might be a security issue... (since can't prevent redefine)
 
 	# §LATER: LIST! (get list of alias.) # when hash table to store them!
 
@@ -66,14 +64,26 @@ function diraction(){
 	esac
 }
 
+# §todo: extract + see alias for new
+# diraction-create(){
+# }
+
+
 ################################################################################
 # ¤> Config
 # ¤>> Commands variables
 # ¤node: add command variable to enable user
+# §HERE
 # _DIRACTION_EDIT §or just let them and put default in implet
+# _DIRACTION_DEFUNS, _DIRARATION_DEF_FILE: choix de specifier soit le fichier
+# soit une liste de defun déjà défini et stockée dans var
 #------------------------------------------------------------------------------#
 # ¤>> Vars
+# §TODO: default, so that user can customize.
+# §see: edit??
 _DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
+
+
 # oh yes, yell like a zsh var!!
 
 
@@ -91,6 +101,7 @@ function _diraction-dispatch () {
     local dir=$1   cdir=$PWD   # capture first arguments
     shift # get ride of initial args
 
+    # §HERE
     # §todo: perf -> dir checking at creation time!!
     if [[ -z "$dir" ]] || [[ ! -d "$dir" ]] ; then
 	# ¤later: something if same?
