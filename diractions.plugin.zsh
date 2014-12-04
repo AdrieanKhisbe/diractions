@@ -39,25 +39,41 @@ function diraction(){
 
     case $cmd in
 	create|new) diraction-create $alias $3 ;;
-	disable) disable -a $alias ;;
-	enable)  enable -a $alias ;;
-	destroy) unalias $alias ;;
+	disable) diraction-disable  $alias ;;
+	enable) diraction-enable  $alias ;;
+	destroy) diraction-destroy $alias ;;
 	help) echo $_DIRACTION_USAGE;;
-	# §todo: check if using function might be a security issue... (since can't prevent redefine)
-
 	# §LATER: LIST! (get list of alias.) # when hash table to store them!
 
 	*) echo "No such subcommand" >&2; return 1 ;;
 	esac
 }
 
-##' Alias&Variable Combo function:
-##' Diraction: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
-##'  ¤note: si variable déjà définie ne sera pas surchargée
-# §bonux: option pour forcer.....
-# §todo: extract + see alias for new
+# §HERE
+# util fonction to check existing diraction!!
+
+function diraction-disable {
+    # disable attached alias
+    # §TODO check alias
+    disable -a $1
+
+}
+function diraction-enable {
+    # reenable attached alias
+    # §TODO check alias
+    enable -a $1
+}
+function diraction-destroy {
+    # §TODO check alias
+    unalias $1
+    unset "$_1" # §check
+}
+
+##' ¤>> Alias&Variable Combo function:
+##' Diraction-create: Link a directory to create both a variable '_$1', and a "dispatch" alias '$1'
+##' ¤note: si variable déjà définie ne sera pas surchargée
+##' §bonux: option pour forcer.....
 function diraction-create(){
-    # ¤note: name dir
 
     if [[ $# != 2 ]]; then
         echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
@@ -113,23 +129,17 @@ readonly _DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable d
 # ¤note: maybe add wrapping command to write the directoring going into it.
 # §note: ¤doc: add how should be invocated. [maybe rather in a readme once extracted
 # ¤note: as may expect, no local function (was a stupid idea)
-# check b dont come polute: otherwise use _diraction_functions
+# check dont come polute: otherwise use _diraction_functions
 
-# §todo: refactor: extract dir check, file edit, and else and EVAL DIR!!!
+# §todo: refactor: file edit, and else and EVAL DIR!!!
 function _diraction-dispatch () {
     # §see: send var name or directory?
 
     local dir=$1   cdir=$PWD   # capture first arguments
     shift # get ride of initial args
 
-    # §HERE
-    # §todo: perf -> dir checking at creation time!!
-    if [[ -z "$dir" ]] || [[ ! -d "$dir" ]] ; then
-	# ¤later: something if same?
-	echo "Invalid usage of dispatch function: $dir is not a dir!" >&2
-	# ¤note: >2 consider 2 as a file, need & to precise this is a stream
-	return 1
-    fi
+    # ¤note: disabled checking for performance issue.
+    #        assume that function that was correctly created with diraction-create
 
     if [[ -n "$1" ]]; then
 	# capture command and shift
