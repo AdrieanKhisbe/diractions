@@ -7,15 +7,15 @@
 # §bonux: mini stupid logo. :) (paaaneaux)
 # §see: if meta data convention in zsh plugins
 
-
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
 ################################################################################
 # ¤> "Alvar" diractions functions
 # ¤>> Notes:
+# §doing
 # declaration des alvar depuis fichier, chaine texte [cf antigen bundle]
-# §maybe: also store in hash? (for cleanup for instance)
+# §todo: also store in hash? (for cleanup for instance)
 
 
 
@@ -23,15 +23,15 @@
 # ¤>> Functions
 ## §FIXME: Update documentation
 # §todo: see convention for zsh fonction doc. (see OMZ)
-##' Alias&Variable Combo function:
-##' Diraction: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
-##'  ¤note: si variable déjà définie ne sera pas surchargée
-# §bonux: option pour forcer.....
 
-
+# Command dispatcher
 function diraction(){
 
-    # §TODO: check arguments
+    if [[ $# == 0 ]]; then
+        echo "Please provide a command\n${_DIRACTION_USAGE}" >&2
+        return 1
+    fi
+
     # §NOW §maybe: employ same pattern than antigen function
     local cmd=$1
     local alias="$2" # §todo: check no space
@@ -41,21 +41,20 @@ function diraction(){
 	create|new) # ¤note: name dir
 	    # §TODO: check if dir existe, sinon logger message.
 	    # §maybe: log externaly?
-
 	    # create variable if not already bound
 	    if [ -z "${(P)var}" ] ; then
-		export "$var=$3" # §see: keep export?
+		export $var="$3" # §see: keep export?
 		# §readonly: probably better?
-		# §later: register in hasg
+		# §later: register in hash!!
 	    fi
-	    # ¤note: create an alias: call to the _diraction-dispach function with directory as argument
+	    # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
 	    alias "$alias"="_diraction-dispatch ${(P)var}" # §later: option to keep var or not
-	    # §see: keep var or not? if yes use $var prefixed by \$
+	    # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
 	    ;;
 	disable) disable -a $alias ;;
 	enable)  enable -a $alias ;;
 	destroy) unalias $alias ;;
-	help) echo "usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>\n help" ;;
+	help) echo $_DIRACTION_USAGE;;
 	# §todo: check if using function might be a security issue... (since can't prevent redefine)
 
 	# §LATER: LIST! (get list of alias.) # when hash table to store them!
@@ -64,6 +63,10 @@ function diraction(){
 	esac
 }
 
+##' Alias&Variable Combo function:
+##' Diraction: Link a directory to create both a variable  '_$2', and a "dispatch" alias '$2'
+##'  ¤note: si variable déjà définie ne sera pas surchargée
+# §bonux: option pour forcer.....
 # §todo: extract + see alias for new
 # diraction-create(){
 # }
@@ -81,11 +84,13 @@ function diraction(){
 # ¤>> Vars
 # §TODO: default, so that user can customize.
 # §see: edit??
+
 _DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
-
-
 # oh yes, yell like a zsh var!!
 
+# ¤>> constants
+readonly _DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
+# §maybe: dis, cause problem when resourcing file. (if not set )
 
 ################################################################################
 # ¤> Dispatch function
