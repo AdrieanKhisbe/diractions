@@ -24,7 +24,7 @@
 ## §FIXME: Update documentation
 # §todo: see convention for zsh fonction doc. (see OMZ)
 
-# Command dispatcher
+#' Command dispatcher
 function diraction(){
 
     if [[ $# == 0 ]]; then
@@ -32,25 +32,13 @@ function diraction(){
         return 1
     fi
 
-    # §NOW §maybe: employ same pattern than antigen function
+    # §TODO §NOW §maybe: employ same pattern than antigen function
+
     local cmd=$1
     local alias="$2" # §todo: check no space
-    local var="_$2" # name of the variable
 
     case $cmd in
-	create|new) # ¤note: name dir
-	    # §TODO: check if dir existe, sinon logger message.
-	    # §maybe: log externaly?
-	    # create variable if not already bound
-	    if [ -z "${(P)var}" ] ; then
-		export $var="$3" # §see: keep export?
-		# §readonly: probably better?
-		# §later: register in hash!!
-	    fi
-	    # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
-	    alias "$alias"="_diraction-dispatch ${(P)var}" # §later: option to keep var or not
-	    # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
-	    ;;
+	create|new) diraction-create $alias $3 ;;
 	disable) disable -a $alias ;;
 	enable)  enable -a $alias ;;
 	destroy) unalias $alias ;;
@@ -68,8 +56,27 @@ function diraction(){
 ##'  ¤note: si variable déjà définie ne sera pas surchargée
 # §bonux: option pour forcer.....
 # §todo: extract + see alias for new
-# diraction-create(){
-# }
+function diraction-create(){
+    # ¤note: name dir
+    # §maybe: log externaly?
+    local alias=$1
+    local var="_$alias"
+    local dir=$2
+
+    # §TODO: check if dir existe, sinon logger message.
+
+    # create variable if not already bound
+    if [ -z "${(P)var}" ] ; then
+	export $var="$dir" # §see: keep export?
+	# §readonly: probably better?
+	# §later: register in hash!!
+    fi
+    # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
+    alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
+    # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
+    # ¤note: déréférencement de variable: ${(P)var}
+
+ }
 
 
 ################################################################################
