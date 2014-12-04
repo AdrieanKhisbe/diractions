@@ -58,23 +58,32 @@ function diraction(){
 # §todo: extract + see alias for new
 function diraction-create(){
     # ¤note: name dir
-    # §maybe: log externaly?
+
+    if [[ $# != 2 ]]; then
+        echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
+        return 1
+    fi
+
     local alias=$1
     local var="_$alias"
-    local dir=$2
+    local dir="$2"
 
-    # §TODO: check if dir existe, sinon logger message.
+    if [[ ! -d "$dir" ]]; then
+        echo "diraction: $dir is not a real directory" >&2
+        return 2
+    fi
 
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
+	# ¤note: déréférencement de variable: ${(P)var}
 	export $var="$dir" # §see: keep export?
 	# §readonly: probably better?
+	# §TODO: check expand full name
 	# §later: register in hash!!
     fi
     # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
-    # ¤note: déréférencement de variable: ${(P)var}
 
  }
 
