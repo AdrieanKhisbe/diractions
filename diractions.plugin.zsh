@@ -52,21 +52,23 @@ function diraction(){
 # §HERE
 # util fonction to check existing diraction!!
 
+##' disable attached alias
 function diraction-disable {
-    # disable attached alias
     # §TODO check alias
     disable -a $1
-
 }
+
+##' reenable attached alias
 function diraction-enable {
-    # reenable attached alias
     # §TODO check alias
     enable -a $1
 }
+
+##' destroy alias and variable
 function diraction-destroy {
-    # §TODO check alias
+    # §TODO check alias and provided var
     unalias $1
-    unset "$_1" # §check
+    unset "_$1"
 }
 
 ##' ¤>> Alias&Variable Combo function:
