@@ -35,7 +35,7 @@
 function diraction(){
 
     if [[ $# == 0 ]]; then
-        echo "Please provide a command\n${_DIRACTION_USAGE}" >&2
+        echo "Please provide a command\n${DIRACTION_USAGE}" >&2
         return 1
     fi
     local cmd=$1
@@ -45,7 +45,7 @@ function diraction(){
 	# ¤note: functions print all function or specified one
         "diraction-$cmd" "$@"
     else
-	 echo "No such subcommand" >&2;
+	 echo "No such subcommand\n${DIRACTION_USAGE}" >&2;
 	 return 1
     fi
 }
@@ -124,7 +124,7 @@ function diraction-destroy {
 }
 
 function diraction-help {
-    echo $_DIRACTION_USAGE
+    echo $DIRACTION_USAGE
     # §maybe more?
 }
 
@@ -155,12 +155,17 @@ function diraction-help {
 -set-default DIRACTION_BROWSER # §todo: update
 # §bonux: more config
 # §bonux: provide documentation too!
-unset -set-default
+unset -- -set-default
 
 # ¤>> constants
 # §todo: same util func
-readonly _DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
-# §maybe: dis, cause problem when resourcing file. (if not set )
+-set-constant () {
+    eval "test -z \"\$$1\" && readonly $1='$2'"
+}
+
+-set-constant DIRACTION_USAGE "usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
+# §MORE?
+unset -- -set-constant
 
 ################################################################################
 # ¤> Dispatch function
