@@ -148,6 +148,19 @@ function diraction-destroy {
     fi
 }
 
+function diraction-destroy-all {
+    if [[ "-f" == $1  ]] || [[ "--force" == $1  ]]
+    then
+	for a in ${(k)DIRACTION_DEFUNS}; do
+	    diraction-destroy $a
+	done
+    else
+	echo "If you wanna really destroy all diraction add the -f/--force flag" >&2
+	return 1
+    fi
+}
+
+
 function diraction-help {
     echo $DIRACTION_USAGE
     # §maybe more?
