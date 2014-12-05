@@ -24,29 +24,25 @@
 ## §FIXME: Update documentation
 # §todo: see convention for zsh fonction doc. (see OMZ)
 
-#' Command dispatcher
+##' Command dispatcher
+## ' ¤note: inspired from Antigen Shrikant Sharat Kandula
+
 function diraction(){
 
     if [[ $# == 0 ]]; then
         echo "Please provide a command\n${_DIRACTION_USAGE}" >&2
         return 1
     fi
-
-    # §TODO §NOW §maybe: employ same pattern than antigen function
-
     local cmd=$1
-    local alias="$2" # §todo: check no space
+    shift
 
-    case $cmd in
-	create|new) diraction-create $alias $3 ;;
-	disable) diraction-disable  $alias ;;
-	enable) diraction-enable  $alias ;;
-	destroy) diraction-destroy $alias ;;
-	help) echo $_DIRACTION_USAGE;;
-	# §LATER: LIST! (get list of alias.) # when hash table to store them!
-
-	*) echo "No such subcommand" >&2; return 1 ;;
-    esac
+    if functions "diraction-$cmd" > /dev/null; then
+	# ¤note: functions print all function or specified one
+        "diraction-$cmd" "$@"
+    else
+	 echo "No such subcommand" >&2;
+	 return 1
+    fi
 }
 
 ##' ¤>> Alias&Variable Combo function:
@@ -88,6 +84,8 @@ function diraction-check { # exist?
     [[ -n $1 ]] && local var="_$1" && [[ -d ${(P)var} ]]
 }
 
+# §NEXT: LIST! (get list of alias.) # when hash table to store them!
+
 ##' disable attached alias
 function diraction-disable {
     if diraction-check $1 ;then
@@ -120,6 +118,10 @@ function diraction-destroy {
     fi
 }
 
+function diraction-help {
+    echo $_DIRACTION_USAGE
+    # §maybe more?
+}
 
 ################################################################################
 # ¤> Config
