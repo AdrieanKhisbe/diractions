@@ -50,6 +50,8 @@ function diraction(){
     fi
 }
 
+
+
 ##' ¤>> Alias&Variable Combo function:
 ##' Diraction-create: Link a directory to create both a variable '_$1', and a "dispatch" alias '$1'
 ##' ¤note: si variable déjà définie ne sera pas surchargée
@@ -78,9 +80,12 @@ function diraction-create(){
 	# §TODO: check expand full name
 	# §later: register in hash!!
     fi
-    # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
+    # create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
+
+    # register the variable
+    DIRACTION_DEFUNS[$alias]="$dir"
 }
 
 # ¤>> Other utils functions
@@ -90,6 +95,10 @@ function diraction-check { # exist?
 }
 
 # §NEXT: LIST! (get list of alias.) # when hash table to store them!
+# grep to grep themp
+# § (O) to sort them
+
+# §TODO: SETUP + SETUP
 
 ##' disable attached alias
 function diraction-disable {
@@ -117,6 +126,7 @@ function diraction-destroy {
 	# §TODO check alias and provided var
 	unalias $1
 	unset "_$1"
+	unset "DIRACTION_DEFUNS[$1]"
     else
 	echo "Provided argument is not a registered diraction" >&2
 	return 1
@@ -131,13 +141,12 @@ function diraction-help {
 ################################################################################
 # ¤> Config
 # ¤>> Commands variables
-# §HERE
 #------------------------------------------------------------------------------#
 # ¤>> Vars
-# §TODO: default, so that user can customize. (dont overwrite)
-# retrievefunction from antigen
+## variable accumulating the defuns
+declare -A DIRACTION_DEFUNS # §todo: change
+# §maybe: keep the disabled defuns
 
-# _DIRACTION_DEFUNS,
 # soit une liste de defun déjà défini et stockée dans var
 -set-default () {
     # ¤note: from antigen
@@ -178,8 +187,8 @@ unset -- -set-constant
 function _diraction-dispatch () {
     # §see: send var name or directory?
 
-    local dir=$1   cdir=$PWD   # capture first arguments
-    shift # get ride of initial args
+    local dir=$1 cdir=$PWD  # capture first arguments
+    shift                   # get ride of initial args
 
     # ¤note: disabled checking for performance issue.
     #        assume that function that was correctly created with diraction-create
