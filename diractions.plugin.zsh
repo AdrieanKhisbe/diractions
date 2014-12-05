@@ -49,6 +49,40 @@ function diraction(){
     esac
 }
 
+##' ¤>> Alias&Variable Combo function:
+##' Diraction-create: Link a directory to create both a variable '_$1', and a "dispatch" alias '$1'
+##' ¤note: si variable déjà définie ne sera pas surchargée
+##' §bonux: option pour forcer.....
+function diraction-create(){
+
+    if [[ $# != 2 ]]; then
+        echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
+        return 1
+    fi
+
+    local alias=$1
+    local var="_$alias"
+    local dir="$2"
+
+    if [[ ! -d "$dir" ]]; then
+        echo "diraction: $dir is not a real directory" >&2
+        return 2
+    fi
+
+    # create variable if not already bound
+    if [ -z "${(P)var}" ] ; then
+	# ¤note: déréférencement de variable: ${(P)var}
+	export $var="$dir" # §see: keep export?
+	# §readonly: probably better?
+	# §TODO: check expand full name
+	# §later: register in hash!!
+    fi
+    # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
+    alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
+    # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
+}
+
+# ¤>> Other utils functions
 function diraction-check { # exist?
     # §later: update with future index
     [[ -n $1 ]] && local var="_$1" && [[ -d ${(P)var} ]]
@@ -84,40 +118,6 @@ function diraction-destroy {
 	echo "Provided argument is not a registered diraction" >&2
 	return 1
     fi
-}
-
-##' ¤>> Alias&Variable Combo function:
-##' Diraction-create: Link a directory to create both a variable '_$1', and a "dispatch" alias '$1'
-##' ¤note: si variable déjà définie ne sera pas surchargée
-##' §bonux: option pour forcer.....
-function diraction-create(){
-
-    if [[ $# != 2 ]]; then
-        echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
-        return 1
-    fi
-
-    local alias=$1
-    local var="_$alias"
-    local dir="$2"
-
-    if [[ ! -d "$dir" ]]; then
-        echo "diraction: $dir is not a real directory" >&2
-        return 2
-    fi
-
-    # create variable if not already bound
-    if [ -z "${(P)var}" ] ; then
-	# ¤note: déréférencement de variable: ${(P)var}
-	export $var="$dir" # §see: keep export?
-	# §readonly: probably better?
-	# §TODO: check expand full name
-	# §later: register in hash!!
-    fi
-    # ¤doc: create an alias: call to the _diraction-dispach function with directory as argument
-    alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
-    # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
-
 }
 
 
