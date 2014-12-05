@@ -94,6 +94,21 @@ function diraction-check { # exist?
     [[ -n $1 ]] && local var="_$1" && [[ -d ${(P)var} ]]
 }
 
+function diraction-list {
+    echo "List of diractions:"
+    for a in ${(ko)DIRACTION_DEFUNS}; do
+	echo "$a\t -  $DIRACTION_DEFUNS[$a]"
+	# §TODO: indent
+    done
+}
+
+function diraction-list-alias {
+    echo ${(ko)DIRACTION_DEFUNS}
+}
+function diraction-list-dir {
+    echo ${(ov)DIRACTION_DEFUNS}
+}
+
 # §NEXT: LIST! (get list of alias.) # when hash table to store them!
 # grep to grep themp
 # § (O) to sort them
