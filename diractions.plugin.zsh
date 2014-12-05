@@ -109,9 +109,29 @@ function diraction-list-dir {
     echo ${(ov)DIRACTION_DEFUNS}
 }
 
-# §NEXT: LIST! (get list of alias.) # when hash table to store them!
-# grep to grep themp
-# § (O) to sort them
+function diraction-grep {
+    if [[ $# == 0 ]]; then
+	echo "Please provide something to grep it with" >&2
+	return 1
+    else
+	echo "List of diractions: matching '$@'"
+	for a in ${(ko)DIRACTION_DEFUNS}; do
+	    echo "$a\t -  $DIRACTION_DEFUNS[$a]"
+	    # §TODO: indent
+	done | grep $@
+    fi
+}
+
+##' grep alias to find matching alias
+function diraction-grep-alias {
+    if [[ $# == 0 ]]; then
+	echo "Please provide something to grep it with" >&2
+	return 1
+    else
+	echo "List of diractions alias matching '$@'"
+	diraction-list-alias | grep $@
+    fi
+}
 
 # §TODO: SETUP + SETUP
 
