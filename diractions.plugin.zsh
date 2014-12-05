@@ -46,29 +46,44 @@ function diraction(){
 	# §LATER: LIST! (get list of alias.) # when hash table to store them!
 
 	*) echo "No such subcommand" >&2; return 1 ;;
-	esac
+    esac
 }
 
-# §HERE
-# util fonction to check existing diraction!!
+function diraction-check { # exist?
+    # §later: update with future index
+    [[ -n $1 ]] && local var="_$1" && [[ -d ${(P)var} ]]
+}
 
 ##' disable attached alias
 function diraction-disable {
-    # §TODO check alias
-    disable -a $1
+    if diraction-check $1 ;then
+	disable -a $1
+    else
+	echo "Provided argument is not a registered diraction" >&2
+	return 1
+    fi
 }
 
 ##' reenable attached alias
 function diraction-enable {
-    # §TODO check alias
-    enable -a $1
+    if diraction-check $1 ;then
+	enable -a $1
+    else
+	echo "Provided argument is not a registered diraction" >&2
+	return 1
+    fi
 }
 
 ##' destroy alias and variable
 function diraction-destroy {
-    # §TODO check alias and provided var
-    unalias $1
-    unset "_$1"
+    if diraction-check $1 ;then
+	# §TODO check alias and provided var
+	unalias $1
+	unset "_$1"
+    else
+	echo "Provided argument is not a registered diraction" >&2
+	return 1
+    fi
 }
 
 ##' ¤>> Alias&Variable Combo function:
@@ -103,7 +118,7 @@ function diraction-create(){
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
 
- }
+}
 
 
 ################################################################################
@@ -167,7 +182,7 @@ function _diraction-dispatch () {
 
 	lc) #§other names?
 	    ls $dir && cd $dir ;;
-	    # §maybe reverse cl: cd then ls
+	# §maybe reverse cl: cd then ls
 	ed|edit)
 	    # §later: check files exists.
 	    eval "(cd \"$dir\"  && ${_DIRSPATCH_EDITOR:-emacs -Q -nw} $@ )"
@@ -248,7 +263,7 @@ _diraction () {     # ¤sync
 	enable \
 	destroy \
 	help
-  }
+}
 compdef _diraction diraction
 
 # ¤>>
