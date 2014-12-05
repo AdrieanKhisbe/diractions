@@ -10,14 +10,19 @@
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
+
+
+# §SEE: WERE TO PUT UTILS FUCTION? TOP OR BOTTOM?
+# §TODO: Check dependancy handling
+
+
+
 ################################################################################
 # ¤> "Alvar" diractions functions
 # ¤>> Notes:
 # §doing
 # declaration des alvar depuis fichier, chaine texte [cf antigen bundle]
 # §todo: also store in hash? (for cleanup for instance)
-
-
 
 #------------------------------------------------------------------------------#
 # ¤>> Functions
@@ -126,20 +131,34 @@ function diraction-help {
 ################################################################################
 # ¤> Config
 # ¤>> Commands variables
-# ¤node: add command variable to enable user
 # §HERE
-# _DIRACTION_EDIT §or just let them and put default in implet
-# _DIRACTION_DEFUNS, _DIRARATION_DEF_FILE: choix de specifier soit le fichier
-# soit une liste de defun déjà défini et stockée dans var
 #------------------------------------------------------------------------------#
 # ¤>> Vars
-# §TODO: default, so that user can customize.
-# §see: edit??
+# §TODO: default, so that user can customize. (dont overwrite)
+# retrievefunction from antigen
 
-_DIRACTION_INTERACTIVE_PROMPT="$fg[red]>> $fg[blue]"  # §todo: make it bold
+# _DIRACTION_DEFUNS,
+# soit une liste de defun déjà défini et stockée dans var
+-set-default () {
+    # ¤note: from antigen
+    local arg_name="$1"
+    local arg_value="$2"
+    eval "test -z \"\$$arg_name\" && export $arg_name='$arg_value'"
+    # §see: make it not exportable?
+}
+
+-set-default DIRACTION_INTERACTIVE_PROMPT "$fg[red]>> $fg[blue]"  # §todo: make it bold
 # oh yes, yell like a zsh var!!
+-set-default DIRACTION_EDITOR ${EDITOR:-vi}
+-set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §TODO: choix de specifier soit le fichier
+# système à réaliser!
+-set-default DIRACTION_BROWSER # §todo: update
+# §bonux: more config
+# §bonux: provide documentation too!
+unset -set-default
 
 # ¤>> constants
+# §todo: same util func
 readonly _DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
 # §maybe: dis, cause problem when resourcing file. (if not set )
 
@@ -176,7 +195,7 @@ function _diraction-dispatch () {
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
 
 	# §maybe : o, open?
-	b|browser) $BROWSER $dir
+	b|browser) $DIRACTION_BROWSER $dir
 
 	    # §TOFIX: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
 	    # platform specific. §DIG (and fix personnal config)
@@ -187,7 +206,7 @@ function _diraction-dispatch () {
 	# §maybe reverse cl: cd then ls
 	ed|edit)
 	    # §later: check files exists.
-	    eval "(cd \"$dir\"  && ${_DIRSPATCH_EDITOR:-emacs -Q -nw} $@ )"
+	    eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )"
 	    # §later: once complete and working, duplicate it to v| visual
 	    # §later: also for quick emacs and vim anyway : em vi
 	    # §so: extract a generate pattern. _diraction_edit (local functions)
@@ -202,31 +221,32 @@ function _diraction-dispatch () {
 	    # ¤note: might not be necessary to injection protect..... var about evaluation
 	    ;;
 
-	# §later: make ¤run with no evaluation!!!! [or reverse)
+	# §later: make ¤run with no evaluation!!!! [or witch ename with exec]
 	# just take a string command.
-	# how to decide name??
 
 	## ¤>> transfer commands
 	# build tools + files utils
 	make|rake|sbt|gradle|git|cask|bundler| \
 	    ncdu|du|nemo|nautilus|open|xdg-open|ls)
+
 	    # ¤note: others to add
 	    # ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
+	    # §idea: extract to the "*)" pattern and perfom a list match with list
 	    # ¤later: check functione xist: otherwise :(eval):1: command not found: nautilus
 	    eval "(cd \"$dir\" && $cmd $@)" ;;
 
 	# §check; quote: protection?
-	# §maybe: extract function for the eval.. (local function?)
+	# §todoNOW: extract function for the eval.. (local function?)
 	# eval in dir?
 
-	# §todo: other transfer commande?
-	# - todo? add to local todo. (fonction user?)
-        # §todo: task and write [in todo, or other file] (via touch ou cat
+	## §todo: other (non transfert) commands?
+	## - todo? add to local todo. (fonction user?)
+        ## §todo: task and write [in todo, or other file] (via touch ou cat)
 
 	i|interactive)
 	    # §maybe: add other names
 	    echo "Entering interactive mode in $dir folder:"
-	    echo -n "$_DIRACTION_INTERACTIVE_PROMPT"
+	    echo -n "$DIRACTION_INTERACTIVE_PROMPT"
 	    (cd "$dir" && while read c; do
 		    # §todo: make a recap. (C-d quit)
 		    echo -n "$reset_color"
@@ -235,7 +255,7 @@ function _diraction-dispatch () {
 		    # §maybe: laterswitch on some commands: : exit quit, to move out of dir.
 		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
 		    # §see how * glob subtitution work.
-		    echo -n $_DIRACTION_INTERACTIVE_PROMPT
+		    echo -n $DIRACTION_INTERACTIVE_PROMPT
 		    done)
 	    # §todo: color prompt + command
 	    # completion so over kill...
@@ -246,7 +266,9 @@ function _diraction-dispatch () {
 	help) echo "$fg[red]Help to do" ;;
 	# §TODO: USAGE to write.
 
-	*) echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
+	*)
+
+	    echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
     esac
     # §later: for perfomance reason put most used first!
 
