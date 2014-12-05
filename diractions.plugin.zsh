@@ -182,8 +182,19 @@ function diraction-destroy-all {
 
 
 function diraction-help {
-    echo $DIRACTION_USAGE
-    # §maybe more?
+    if [[ $# != 1 ]] ; then
+	echo $DIRACTION_USAGE
+    else
+	if diraction-check $1 ;then
+	    "$1 diraction is bound to ${DIRACTION_DEFUNS[$1]} the directory"
+	else
+	    cat <<EOF
+There is no diraction named $1
+For more help about diraction please run 'diraction help'.
+EOF
+	fi
+	# §MAYBE: rather make a doc about existing commands?
+    fi
 }
 
 ################################################################################
