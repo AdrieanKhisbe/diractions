@@ -134,6 +134,7 @@ function diraction-grep-alias {
 }
 
 # §TODO: SETUP + SETUP
+# §call to config + flag
 
 ##' disable attached alias
 function diraction-disable {
@@ -180,6 +181,13 @@ function diraction-destroy-all {
     fi
 }
 
+function diraction-reset {
+    echo "Reseting diraction environment"
+    diraction-destroy-all -f
+    -diraction-config # load config
+    #diractions.plugin.zsh
+    # §maybe: for security issue. add some env flag this has been done?
+}
 
 function diraction-help {
     if [[ $# != 1 ]] ; then
@@ -245,8 +253,9 @@ function -diraction-config {
     # Load personal function if existing
     # §todo: doc
     if functions "diraction-personal-config" > /dev/null; then
-       # §later: add security about function content?
-       #  "$(functions diraction-personal-config | grep "^[[:space:]]*diraction-")"
+	# §later: add security about function content?
+	# §maybe: set the name of the function as a custom variable
+	#  "$(functions diraction-personal-config | grep "^[[:space:]]*diraction-")"
 	diraction-personal-config
     fi
 
