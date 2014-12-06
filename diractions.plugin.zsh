@@ -235,6 +235,40 @@ unset -- -set-default
 # §MORE?
 unset -- -set-constant
 
+# ¤>> Charging of personnal config
+
+#
+function -diraction-config {
+    ## two option, function or file.
+    ## load both, function taking precedence
+
+    if [[ -f "$DIRACTION_DEF_FILE" ]] &&  -diraction-parse-file "$DIRACTION_DEF_FILE" ; then
+	echo "Error while parsing $DIRACTION_DEF_FILE, please it has check correct syntax" >&2
+	return 1
+    fi
+
+    # §todo: check function set
+    # call it
+
+}
+
+function -diraction-parse-file {
+    if [[ ! -f "$1" ]]
+    then
+	echo 'diraction parse file need to be given a file!' >&2
+	return 2;
+    else
+	cat $1 | grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+            # Using `eval` so that we can use the shell-style quoting in each line
+            # piped to `antigen-bundles`.   ¤note: inspired form antigen
+            eval "diraction-create $line"
+	done
+    fi
+}
+# §maybe: create a batch create function
+
+
+
 ################################################################################
 # ¤> Dispatch function
 # ¤note: maybe add wrapping command to write the directoring going into it.
@@ -260,6 +294,8 @@ function _diraction-dispatch () {
 	# just jump to the dir
 	cd $dir ; return $?
     fi
+
+    ## §todo: local eval
 
     case $cmd in
 	l) ls $dir;; # §maybe: add other args?
@@ -346,6 +382,7 @@ function _diraction-dispatch () {
     # §later: for perfomance reason put most used first!
 
 }
+
 
 # ¤> Completion
 # ¤>> utils diraction
