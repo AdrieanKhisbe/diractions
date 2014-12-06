@@ -239,17 +239,21 @@ unset -- -set-constant
 
 #
 function -diraction-config {
-    ## two option, function or file.
+    ## two options, function or file.
     ## load both, function taking precedence
+
+    # Load personal function if existing
+    # §todo: doc
+    if functions "diraction-personal-config" > /dev/null; then
+       # §later: add security about function content?
+       #  "$(functions diraction-personal-config | grep "^[[:space:]]*diraction-")"
+	diraction-personal-config
+    fi
 
     if [[ -f "$DIRACTION_DEF_FILE" ]] &&  -diraction-parse-file "$DIRACTION_DEF_FILE" ; then
 	echo "Error while parsing $DIRACTION_DEF_FILE, please it has check correct syntax" >&2
 	return 1
     fi
-
-    # §todo: check function set
-    # call it
-
 }
 
 function -diraction-parse-file {
@@ -403,3 +407,7 @@ compdef _diraction diraction
 # ¤>>
 ## §later: do basic completion function for _diraction-dispatch
 ## §think: decide or not if register completion fonction for all the diractions shortcult?
+
+
+## ¤> final configuration
+-diraction-config # load config
