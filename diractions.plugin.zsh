@@ -1,28 +1,26 @@
 ############################################################################
-# DIR          #  Make some stupid pitch/quote around there               ##
-#    ACTIONS   #        Doing Anything, Anywhere                          ##
+# DIR          #  Doing Anything, Anywhere                                ##
+#    ACTIONS   #                           From there                     ##
 ############################################################################
 
-# §TODO: HEADER §next (+licence) §now :)
-# §bonux: mini stupid logo. :) (paaaneaux)
-# §see: if meta data convention in zsh plugins
+# Diractions: Doing Anything, Anywhere, from here
+# Author: Adriean Khisbe
+# Homepage: http://github.com/AdrieanKhisbe/diractions
+# License: MIT License<Adriean.Khisbe@live.fr
 
+# §bonux: mini stupid logo. :) (paaaneaux)
+
+################################################################################
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
-
-
 
 # §SEE: WERE TO PUT UTILS FUCTION? TOP OR BOTTOM?
 # §TODO: Check dependancy handling
 
 
-
 ################################################################################
 # ¤> "Alvar" diractions functions
 # ¤>> Notes:
-# §doing
-# declaration des alvar depuis fichier, chaine texte [cf antigen bundle]
-# §todo: also store in hash? (for cleanup for instance)
 
 #------------------------------------------------------------------------------#
 # ¤>> Functions
@@ -31,7 +29,6 @@
 
 ##' Command dispatcher
 ## ' ¤note: inspired from Antigen Shrikant Sharat Kandula
-
 function diraction(){
 
     if [[ $# == 0 ]]; then
