@@ -296,19 +296,20 @@ function _diraction-dispatch () {
     local dir=$1 cdir=$PWD  # capture first arguments
     shift                   # get ride of initial args
 
+
     # ¤note: disabled checking for performance issue.
     #        assume that function that was correctly created with diraction-create
 
     if [[ -n "$1" ]]; then
 	# capture command and shift
 	local cmd="$1"
-	shift
+	shift # ¤note: shift take no argument
     else
 	# just jump to the dir
 	cd $dir ; return $?
     fi
 
-    ## §todo: local eval
+    ## §todo: local eval §maybe. §see
 
     case $cmd in
 	l) ls $dir;; # §maybe: add other args?
@@ -335,12 +336,9 @@ function _diraction-dispatch () {
 	    ;;
 	e|"exec")
 	    if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
-
-	    # §todo: see doc.
-	    #¤note: shift take no argument
 	    eval "(cd \"$dir\" && $@ )"
-	    # §see: change directory, but not change back if failure?
-	    # ¤note: might not be necessary to injection protect..... var about evaluation
+	    # ¤note: might not be necessary to protect injection.....
+	    # §see: var about evaluation to disable it.
 	    ;;
 
 	# §later: make ¤run with no evaluation!!!! [or witch ename with exec]
@@ -365,7 +363,7 @@ function _diraction-dispatch () {
 	## - todo? add to local todo. (fonction user?)
         ## §todo: task and write [in todo, or other file] (via touch ou cat)
 
-	i|interactive)
+	i|interactive|prompt|shell)
 	    # §maybe: add other names
 	    echo "Entering interactive mode in $dir folder:"
 	    echo -n "$DIRACTION_INTERACTIVE_PROMPT"
@@ -403,7 +401,7 @@ If you have a set of command to to, you can use the i/interactive subcommand
 	*)  echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
 
     esac
-    # §later: for perfomance reason put most used first!
+    # §later: for performance reason put most used first!
 
 }
 
