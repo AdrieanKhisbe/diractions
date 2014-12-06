@@ -385,12 +385,23 @@ function _diraction-dispatch () {
 	    # for a bunch of consecutive commands
 	    ;;
 
-	help) echo "$fg[red]Help to do" ;;
-	# §TODO: USAGE to write.
+	help) echo "$fg[green]This is a diraction dispatch function.
 
-	*)
+This one is attached to the $dir directory
+If you provide no argument, you will jump in the associated directory
+Oherwise it will perform some action in the context of the directory
 
-	    echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
+For instance with l or ls it will list file inside.
+With e/exec you will perform a command in the context of the directory
+If you have a set of command to to, you can use the i/interactive subcommand
+"
+	    # §TODO: more DOC (editor, and so on)
+	    # §bonux: more precise about targeted command (help)
+	    ;;
+
+	# default
+	*)  echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
+
     esac
     # §later: for perfomance reason put most used first!
 
