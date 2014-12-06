@@ -405,12 +405,13 @@ _diraction () {     # ¤sync
     # Setup diraction's autocompletion
     compadd  \
 	create \
-	new \
-	disable \
-	enable \
-	destroy \
+	disable enable \
+	destroy destory-all reset \
+	list list-alias list-dir \
+	grep grep-alias \
 	help
 }
+	# new \ §later when alaias
 compdef _diraction diraction
 
 # ¤>>
