@@ -262,22 +262,25 @@ function -diraction-config {
     fi
 }
 
+##' parse file as diraction definition
 function -diraction-parse-file {
     if [[ ! -f "$1" ]]
     then
 	echo 'diraction parse file need to be given a file!' >&2
 	return 2;
     else
-	cat $1 | grep '^[[:space:]]*[^[:space:]#]' | while read line; do
-            # Using `eval` so that we can use the shell-style quoting in each line
-            # piped to `antigen-bundles`.   ¤note: inspired form antigen
-            eval "diraction-create $line"
-	done
+	cat $1 | diraction-batch-create
     fi
 }
-# §maybe: create a batch create function
 
-
+##' function to create a set of batch definition from sdin
+function diraction-batch-create {
+    grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+        # Using `eval` so that we can use the shell-style quoting in each line
+        # piped to `antigen-bundles`.   ¤note: inspired form antigen
+        eval "diraction-create $line"
+    done
+}
 
 ################################################################################
 # ¤> Dispatch function
