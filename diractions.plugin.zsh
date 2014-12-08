@@ -65,7 +65,7 @@ function diraction-create(){
     local dir="$2"
 
     if [[ ! -d "$dir" ]]; then
-        echo "diraction: $dir is not a real directory" >&2
+        echo "diraction: $dir is not a real directory ($var)" >&2
         return 2
     fi
 
@@ -96,6 +96,7 @@ function diraction-list {
     for a in ${(ko)DIRACTION_DEFUNS}; do
 	echo "$a\t -  $DIRACTION_DEFUNS[$a]"
 	# §TODO: indent
+	# §TODO: Reaplce /home/$USER by ~
     done
 }
 
@@ -280,7 +281,11 @@ function diraction-batch-create {
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
         eval "diraction-create $line"
     done
+    # §FIXME: will complain if folder does  not exist when created!
+    # §todo add a bypass to create!?
 }
+
+## §TODO: CHECK FUNCTION. status, to have config file
 
 ################################################################################
 # ¤> Dispatch function
