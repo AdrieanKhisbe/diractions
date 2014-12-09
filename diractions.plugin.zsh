@@ -52,10 +52,11 @@ function diraction(){
 ##' ¤>> Alias&Variable Combo function:
 ##' Diraction-create: Link a directory to create both a variable '_$1', and a "dispatch" alias '$1'
 ##' ¤note: si variable déjà définie ne sera pas surchargée
-##' §bonux: option pour forcer.....
+##' §bonux: option pour forcer..... --ignore-missing-dir
+## §TODO: HERE would need to refactor to handle option if want to place if in the end
 function diraction-create(){
 
-    if [[ $# != 2 ]]; then
+    if [[ $# -lt 2 ]]; then
         echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
         return 1
     fi
@@ -64,8 +65,9 @@ function diraction-create(){
     local var="_$alias"
     local dir="$2"
 
-    if [[ ! -d "$dir" ]]; then
-        echo "diraction: $dir is not a real directory ($var)" >&2
+    if [[ "--ignore-missing-dir" != "$3" ]] && [[ ! -d "$dir" ]]; then
+        echo "diraction: $dir is not a real directory ($var)
+you can force creation adding --ignore-missing-dir flag" >&2
         return 2
     fi
 
@@ -271,16 +273,18 @@ function -diraction-parse-file {
 	echo 'diraction parse file need to be given a file!' >&2
 	return 2;
     else
-	cat $1 | sed 's/~/$HOME/' |diraction-batch-create
+	cat $1 | sed 's/~/$HOME/' | diraction-batch-create --ignore-missing-dir
+	return $?
     fi
 }
 
 ##' function to create a set of batch definition from sdin
 function diraction-batch-create {
     grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+	# §maybe: add check only two elem by ligne
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
-        eval "diraction-create $line"
+        eval "diraction-create $line $1" # §transfer ignore arg
     done
     # §FIXME: will complain if folder does  not exist when created!
     # §todo add a bypass to create!?
