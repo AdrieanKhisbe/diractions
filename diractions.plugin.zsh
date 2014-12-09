@@ -333,7 +333,7 @@ function _diraction-dispatch () {
 	c|cd) cd "$1/$3" ;;
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
 
-	# §maybe : o, open?
+	# §maybe : o, open? (wrapping with glob?)
 	b|browser) $DIRACTION_BROWSER $dir
 
 	    # §TOFIX: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
@@ -364,11 +364,10 @@ function _diraction-dispatch () {
 	# build tools + files utils
 	make|rake|sbt|gradle|git|cask|bundler| \
 	    ncdu|du|nemo|nautilus|open|xdg-open|ls)
-
 	    # ¤note: others to add
 	    # ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
 	    # §idea: extract to the "*)" pattern and perfom a list match with list
-	    # ¤later: check functione xist: otherwise :(eval):1: command not found: nautilus
+	    # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
 	    eval "(cd \"$dir\" && $cmd $@)" ;;
 
 	# §check; quote: protection?
@@ -380,24 +379,27 @@ function _diraction-dispatch () {
         ## §todo: task and write [in todo, or other file] (via touch ou cat)
 
 	i|interactive|prompt|shell)
+	     # for a bunch of consecutive commands
 	    # §maybe: add other names
 	    echo "Entering interactive mode in $dir folder:"
-	    echo -n "$DIRACTION_INTERACTIVE_PROMPT"
+	    # §maybe: make a recap. (C-d quit)
+	    # §note: exit will just exist the loop since we are in subprocess
+	    echo -n "$DIRACTION_INTERACTIVE_PROMPT" # §maybe: prefix by alias name!
 	    local icmd # to protect if similar alias
 	    (cd "$dir" && while read icmd; do
-		    # §todo: make a recap. (C-d quit)
+
 		    echo -n "$reset_color"
 		    # §todo: check return code of eval: eval error (synctax), ou interpreted command error.
-		    eval "$icmd" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2 # modif
-		    # §maybe: later switch on some commands: : exit quit, to move out of dir.
-		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
+		    eval "$icmd"
+
+		    # §maybe: customize some command behavior: ? q ?
 		    # §see how * glob subtitution work.
 		    echo -n $DIRACTION_INTERACTIVE_PROMPT
 		    done)
 	    # §todo: color prompt + command
 	    # completion so over kill...
 	    echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
-	    # for a bunch of consecutive commands
+
 	    ;;
 
 	help) echo "$fg[green]This is a diraction dispatch function.
@@ -416,13 +418,13 @@ If you have a set of command to to, you can use the i/interactive subcommand
 
 	# default
 	*)  echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
-
+	# §todo : transwwer allowed command!
     esac
     # §later: for performance reason put most used first!
 
 }
 
-
+################################################################################
 # ¤> Completion
 # ¤>> utils diraction
 compdef _diraction diraction
