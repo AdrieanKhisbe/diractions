@@ -98,7 +98,7 @@ function diraction-list {
     for a in ${(ko)DIRACTION_DEFUNS}; do
 	echo "$a\t -  $DIRACTION_DEFUNS[$a]"
 	# §TODO: indent
-	# §TODO: Reaplce /home/$USER by ~
+	# §TODO: Replace /home/$USER by ~
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
@@ -280,7 +280,9 @@ function -diraction-parse-file {
 
 ##' function to create a set of batch definition from sdin
 function diraction-batch-create {
-    grep '^[[:space:]]*[^[:space:]#]' | while read line; do
+    grep '^[[:space:]]*[^[:space:]#]' |
+    # kill comment for the eval
+    sed 's:#.*$::' | while read line; do
 	# §maybe: add check only two elem by ligne
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
