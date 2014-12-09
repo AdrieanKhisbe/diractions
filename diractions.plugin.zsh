@@ -28,7 +28,7 @@
 # §todo: see convention for zsh fonction doc. (see OMZ)
 
 ##' Command dispatcher
-## ' ¤note: inspired from Antigen Shrikant Sharat Kandula
+##' ¤note: inspired from Antigen Shrikant Sharat Kandula
 function diraction(){
 
     if [[ $# == 0 ]]; then
@@ -69,6 +69,7 @@ function diraction-create(){
         echo "diraction: $dir is not a real directory ($var)
 you can force creation adding --ignore-missing-dir flag" >&2
         return 2
+	# §maybe: log dir is missing. count numb of miss
     fi
 
     # create variable if not already bound
@@ -260,7 +261,7 @@ function -diraction-config {
 	diraction-personal-config
     fi
 
-    if [[ -f "$DIRACTION_DEF_FILE" ]] &&  -diraction-parse-file "$DIRACTION_DEF_FILE" ; then
+    if [[ -f "$DIRACTION_DEF_FILE" ]] && ! -diraction-parse-file "$DIRACTION_DEF_FILE" ; then
 	echo "Error while parsing $DIRACTION_DEF_FILE, please it has check correct syntax" >&2
 	return 1
     fi
@@ -286,7 +287,10 @@ function diraction-batch-create {
 	# §maybe: add check only two elem by ligne
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
-        eval "diraction-create $line $1" # §transfer ignore arg
+
+	# §HERE maybe capture line, and check just two elem.
+        local fail=$(eval "diraction-create $line $1") # §transfer ignore arg
+	if $fail ; then return $fail ; fi
     done
     # §FIXME: will complain if folder does  not exist when created!
     # §todo add a bypass to create!?
