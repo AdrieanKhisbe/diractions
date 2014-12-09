@@ -97,7 +97,8 @@ function diraction-list {
 	echo "$a\t -  $DIRACTION_DEFUNS[$a]"
 	# §TODO: indent
 	# §TODO: Reaplce /home/$USER by ~
-    done
+    done | sed "s;$HOME;~;" # waiting for regexp
+    # beware separation while evaluating
 }
 
 function diraction-list-alias {
@@ -270,7 +271,7 @@ function -diraction-parse-file {
 	echo 'diraction parse file need to be given a file!' >&2
 	return 2;
     else
-	cat $1 | diraction-batch-create
+	cat $1 | sed 's/~/$HOME/' |diraction-batch-create
     fi
 }
 
