@@ -383,12 +383,13 @@ function _diraction-dispatch () {
 	    # §maybe: add other names
 	    echo "Entering interactive mode in $dir folder:"
 	    echo -n "$DIRACTION_INTERACTIVE_PROMPT"
-	    (cd "$dir" && while read c; do
+	    local icmd # to protect if similar alias
+	    (cd "$dir" && while read icmd; do
 		    # §todo: make a recap. (C-d quit)
 		    echo -n "$reset_color"
 		    # §todo: check return code of eval: eval error (synctax), ou interpreted command error.
-		    eval "$c" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2 # modif
-		    # §maybe: laterswitch on some commands: : exit quit, to move out of dir.
+		    eval "$icmd" || echo "$fg[red]BE CAREFULL!, your evaluation is gonna be wrong otherwise!" >&2 # modif
+		    # §maybe: later switch on some commands: : exit quit, to move out of dir.
 		    # §protect about other alvar dispatch?: migth have to use a which a, and grep it against
 		    # §see how * glob subtitution work.
 		    echo -n $DIRACTION_INTERACTIVE_PROMPT
