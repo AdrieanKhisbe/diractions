@@ -17,6 +17,43 @@
 # §SEE: WERE TO PUT UTILS FUCTION? TOP OR BOTTOM?
 # §TODO: Check dependancy handling
 
+################################################################################
+# ¤> Config
+# ¤>> Commands variables
+#------------------------------------------------------------------------------#
+# ¤>> Vars
+## variable accumulating the defuns
+declare -A DIRACTION_DEFUNS # §todo: change
+# §maybe: keep the disabled defuns
+
+# soit une liste de defun déjà défini et stockée dans var
+-set-default () {
+    # ¤note: from antigen
+    local arg_name="$1"
+    local arg_value="$2"
+    eval "test -z \"\$$arg_name\" && export $arg_name='$arg_value'"
+    # §see: make it not exportable?
+}
+
+-set-default DIRACTION_INTERACTIVE_PROMPT "$fg[red]>> $fg[blue]"  # §todo: make it bold
+# oh yes, yell like a zsh var!!
+-set-default DIRACTION_EDITOR ${EDITOR:-vi}
+-set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §TODO: choix de specifier soit le fichier
+# système à réaliser!
+-set-default DIRACTION_BROWSER # §todo: update
+# §bonux: more config
+# §bonux: provide documentation too!
+unset -- -set-default
+
+# ¤>> constants
+# §todo: same util func
+-set-constant () {
+    eval "test -z \"\$$1\" && readonly $1='$2'"
+}
+
+-set-constant DIRACTION_USAGE "usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
+# §MORE?
+unset -- -set-constant
 
 ################################################################################
 # ¤> "Alvar" diractions functions
@@ -207,47 +244,12 @@ EOF
     fi
 }
 
+
 ################################################################################
-# ¤> Config
-# ¤>> Commands variables
-#------------------------------------------------------------------------------#
-# ¤>> Vars
-## variable accumulating the defuns
-declare -A DIRACTION_DEFUNS # §todo: change
-# §maybe: keep the disabled defuns
-
-# soit une liste de defun déjà défini et stockée dans var
--set-default () {
-    # ¤note: from antigen
-    local arg_name="$1"
-    local arg_value="$2"
-    eval "test -z \"\$$arg_name\" && export $arg_name='$arg_value'"
-    # §see: make it not exportable?
-}
-
--set-default DIRACTION_INTERACTIVE_PROMPT "$fg[red]>> $fg[blue]"  # §todo: make it bold
-# oh yes, yell like a zsh var!!
--set-default DIRACTION_EDITOR ${EDITOR:-vi}
--set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §TODO: choix de specifier soit le fichier
-# système à réaliser!
--set-default DIRACTION_BROWSER # §todo: update
-# §bonux: more config
-# §bonux: provide documentation too!
-unset -- -set-default
-
-# ¤>> constants
-# §todo: same util func
--set-constant () {
-    eval "test -z \"\$$1\" && readonly $1='$2'"
-}
-
--set-constant DIRACTION_USAGE "usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
-# §MORE?
-unset -- -set-constant
-
+# ¤> Config functions
 # ¤>> Charging of personnal config
 
-# ¤>> Config functions §TODO: MOVE UP
+##' §TODOC
 function -diraction-config {
     ## two options, function or file.
     ## load both, function taking precedence
@@ -285,6 +287,8 @@ function diraction-batch-create {
     # kill comment for the eval
     # §maybe: extract to function when fill do check-syntax, check file exist.
     # should rafine to have a read keeping memory in count?. (maybe cat -n)
+    # Must take a function. # should be private ?. or defined
+
     sed 's:#.*$::' | while read line; do
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
