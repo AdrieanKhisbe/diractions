@@ -321,13 +321,18 @@ function -diraction-file-check-dir {
 	return 2
     fi
 
+    # §TODO: extract function, or just constant pattern!!
     # use cat -n + so adaptpattern > and use cut::!!
-    cat -n $1 | grep '^[[:space:]][[:digit:]][[:space:]]*[[:space:]]*[^[:space:]#]' |
-    # MAYBE §TODO: improve patter,!!
+    cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
+    # §maybe: use a real regexp
+    # will let skip quote with # inside..
+    # if add a trailing $ will refuse path with space inside.
+    # more checking inside
     sed 's:#.*$::' | while read line; do
 	## §TODO Content functions
 	# §TODO: retrieve line item by index
 	echo "LINE>> $line"
+	# cut sans field c'est TAB
     done
     return 12
 }
