@@ -304,15 +304,44 @@ function diraction-batch-create {
     # §todo add a bypass to create!?
 }
 
-## §TODO: CHECK FUNCTION. status, to have config file
-# §maybe: made it independant from file? inner function: -diraction-file-check-syntax
-function diraction-config-check-syntax {
-    # §maybe: add a counter by line
 
+## §TODO: CHECK FUNCTION. status, to have config file
+# §maybe: made it independant from file? inner function:
+
+function -diraction-file-check-syntax {
+    echo "NOT IMPLEMENTED YET" >&2
+    return 1
+}
+
+function -diraction-file-check-dir {
+    # use cat -n + so adaptpattern > and use cut::!!
+    grep '^[[:space:]]*[^[:space:]#]' |
+    # MAYBE
+    sed 's:#.*$::' | while read line; do
+	## §TODO Content functions
+    echo "NOT IMPLEMENTED YET" >&2
+    return 1
+    done
+}
+
+function diraction-config-check-syntax {
+    # §maybe: refactor: extract function perform on DEF file
+    if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
+	-diraction-file-check-syntax ${DIRACTION_DEF_FILE}
+	return $? # §check
+    else
+	echo "Config file does not exist" >&2
+    fi
 }
 
 function diraction-config-check-dir {
-
+    # §maybe: add a counter by line
+    if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
+	-diraction-file-check-dir ${DIRACTION_DEF_FILE}
+	return $? # §check
+    else
+	echo "Config file does not exist" >&2
+    fi
 }
 
 ################################################################################
