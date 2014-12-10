@@ -247,7 +247,7 @@ unset -- -set-constant
 
 # ¤>> Charging of personnal config
 
-#
+# ¤>> Config functions §TODO: MOVE UP
 function -diraction-config {
     ## two options, function or file.
     ## load both, function taking precedence
@@ -283,10 +283,14 @@ function -diraction-parse-file {
 function diraction-batch-create {
     grep '^[[:space:]]*[^[:space:]#]' |
     # kill comment for the eval
+    # §maybe: extract to function when fill do check-syntax, check file exist.
+    # should rafine to have a read keeping memory in count?. (maybe cat -n)
     sed 's:#.*$::' | while read line; do
-	# §maybe: add check only two elem by ligne
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
+
+	# §maybe: add check only two elem by ligne
+	# local
 
 	# §HERE maybe capture line, and check just two elem.
         local fail=$(eval "diraction-create $line $1") # §transfer ignore arg
@@ -297,6 +301,15 @@ function diraction-batch-create {
 }
 
 ## §TODO: CHECK FUNCTION. status, to have config file
+# §maybe: made it independant from file? inner function: -diraction-file-check-syntax
+function diraction-config-check-syntax {
+    # §maybe: add a counter by line
+
+}
+
+function diraction-config-check-dir {
+
+}
 
 ################################################################################
 # ¤> Dispatch function
