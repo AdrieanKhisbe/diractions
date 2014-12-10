@@ -309,19 +309,27 @@ function diraction-batch-create {
 # §maybe: made it independant from file? inner function:
 
 function -diraction-file-check-syntax {
+    # §NEXT: mimic check dic, or used exyracy function
     echo "NOT IMPLEMENTED YET" >&2
     return 1
 }
 
 function -diraction-file-check-dir {
+
+    if [[ ! -f "$1" ]];then
+	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
+	return 2
+    fi
+
     # use cat -n + so adaptpattern > and use cut::!!
-    grep '^[[:space:]]*[^[:space:]#]' |
-    # MAYBE
+    cat -n $1 | grep '^[[:space:]][[:digit:]][[:space:]]*[[:space:]]*[^[:space:]#]' |
+    # MAYBE §TODO: improve patter,!!
     sed 's:#.*$::' | while read line; do
 	## §TODO Content functions
-    echo "NOT IMPLEMENTED YET" >&2
-    return 1
+	# §TODO: retrieve line item by index
+	echo "LINE>> $line"
     done
+    return 12
 }
 
 function diraction-config-check-syntax {
@@ -495,3 +503,4 @@ compdef _diraction diraction
 
 ## ¤> final configuration
 -diraction-config # load config
+# §maybe: only run with some flag

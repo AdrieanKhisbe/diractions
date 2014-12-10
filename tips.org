@@ -107,6 +107,17 @@ Utiliser un grep pour filtrer les lignes
 
 #+END_SRC
 
+** Check Arg%
+
+*** combo arg and file existing
+# by me :)
+#+BEGIN_SRC sh
+  if [[ ! -f "$1" ]];then
+      echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
+      return 2
+  fi
+
+#+END_SRC
 ** TODO Fonction éphémère
 
 Voir la différence entre les deux.
