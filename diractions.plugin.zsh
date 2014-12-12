@@ -307,11 +307,29 @@ function diraction-batch-create {
 
 ## §TODO: CHECK FUNCTION. status, to have config file
 # §maybe: made it independant from file? inner function:
-
+## §TODO: save test file to run test.
 function -diraction-file-check-syntax {
-    # §NEXT: mimic check dic, or used exyracy function
-    echo "NOT IMPLEMENTED YET" >&2
-    return 1
+    if [[ ! -f "$1" ]];then
+	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
+	return 2
+    fi
+
+    local ok=0
+    cat -n $1 |  sed 's:#.*$::' | while read line; do
+	set -A aline $line
+	# §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
+	# §todo: add checksum to file
+	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
+	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}"
+	    ok=1
+	elif ! eval "echo ${aline[2,-1]} >/dev/null" 2>/dev/null  ; then
+	# §todo: cekc eval?
+	    echo "At line ${aline[1]}, some syntax error occured ${aline[2,-1]}"
+	    ok=1
+	fi
+    done
+    return $ok
+
 }
 
 function -diraction-file-check-dir {
