@@ -305,10 +305,8 @@ function diraction-batch-create {
 }
 
 
-## §TODO: CHECK FUNCTION. status, to have config file
-# §maybe: made it independant from file? inner function:
 ## §TODO: save test file to run test.
-function -diraction-file-check-syntax {
+function -diraction-check-file-syntax {
     if [[ ! -f "$1" ]];then
 	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
 	return 2
@@ -332,7 +330,7 @@ function -diraction-file-check-syntax {
 
 }
 
-function -diraction-file-check-dir {
+function -diraction-check-file-dir {
 
     if [[ ! -f "$1" ]];then
 	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
@@ -348,7 +346,8 @@ function -diraction-file-check-dir {
     # if add a trailing $ will refuse path with space inside.
     # more checking inside
     sed 's:#.*$::' | while read line; do
-	# local aline=( "$line"  )
+
+	# §FIXME: should eval value!! (maybe local seetinng?)
 	set -A aline $line
 
 	if [[  ! -d "${aline[3]}" ]] ; then
@@ -361,20 +360,20 @@ function -diraction-file-check-dir {
     return $ok
 }
 
-function diraction-config-check-syntax {
+function diraction-check-config-syntax {
     # §maybe: refactor: extract function perform on DEF file
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
-	-diraction-file-check-syntax ${DIRACTION_DEF_FILE}
+	-diraction-check-file-syntax ${DIRACTION_DEF_FILE}
 	return $? # §check
     else
 	echo "Config file does not exist" >&2
     fi
 }
 
-function diraction-config-check-dir {
+function diraction-check-config-dir {
     # §maybe: add a counter by line
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
-	-diraction-file-check-dir ${DIRACTION_DEF_FILE}
+	-diraction-check-file-dir ${DIRACTION_DEF_FILE}
 	return $? # §check
     else
 	echo "Config file does not exist" >&2
