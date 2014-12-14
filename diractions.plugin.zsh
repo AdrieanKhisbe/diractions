@@ -115,7 +115,6 @@ you can force creation adding --ignore-missing-dir flag" >&2
 	export $var="$dir" # §see: keep export?
 	# §readonly: probably better?
 	# §TODO: check expand full name
-	# §later: register in hash!!
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
@@ -126,6 +125,7 @@ you can force creation adding --ignore-missing-dir flag" >&2
 }
 
 # ¤>> Other utils functions
+# §maybe: rename? (conflict name with check file...)
 function diraction-check { # exist?
     # §later: update with future index
     [[ -n $1 ]] && local var="_$1" && [[ -d ${(P)var} ]]
@@ -136,7 +136,6 @@ function diraction-list {
     for a in ${(ko)DIRACTION_DEFUNS}; do
 	echo "$a\t -  $DIRACTION_DEFUNS[$a]"
 	# §TODO: indent
-	# §TODO: Replace /home/$USER by ~
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
@@ -346,21 +345,15 @@ function -diraction-check-file-dir {
     # §maybe: use a real regexp
     # will let skip quote with # inside..
     # if add a trailing $ will refuse path with space inside.
-    # more checking inside
-    sed 's/~/$HOME/' | # ¤hack to have ~ substitution
-    sed 's:#.*$::'   | while read line; do
+    sed 's:#.*$::' | while read line; do
+	local aline; set -A aline $line
 
-	# §FIXME: should eval value!! (maybe local seetinng?)
-	set -A aline $line
-
-	# local
 	local var="_$aline[2]"
-	local "$var"="$(eval echo ${aline[3]})" # eval for expansion of dir
+	local "$var"="$(eval echo ${aline[3]/\~/\$HOME})" # eval for expansion of dir
 	local dir=${(P)$(echo $var)}
-	#$(echo _$aline[2])}
-	if [[  ! -d $dir ]] ; then
+	if [[  ! -d "$dir" ]] ; then
 	    # ¤note: double quote prevent tilde from being expanded
-	    echo "At line ${aline[1]}, directory ${aline[3]} does not exist"
+	    echo "At line ${aline[1]}, directory ${aline[3]/\$HOME/~} does not exist"
 	    ok=1
 	    # §maybe: use incr to have number of failing directory?
 	fi
