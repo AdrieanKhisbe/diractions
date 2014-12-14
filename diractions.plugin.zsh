@@ -126,6 +126,7 @@ function diraction-exist {
     [[ -n "$DIRACTION_DEFUNS[$1]" ]]
 }
 
+##' List existing diractions
 function diraction-list {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_DEFUNS}; do
@@ -135,13 +136,17 @@ function diraction-list {
     # beware separation while evaluating
 }
 
+##' list existing diraction aliases
 function diraction-list-alias {
     echo ${(ko)DIRACTION_DEFUNS}
 }
+
+##' list existing diraction directories
 function diraction-list-dir {
     echo ${(ov)DIRACTION_DEFUNS}
 }
 
+##' Grep existing diraction to find matching aliases
 function diraction-grep {
     if [[ $# == 0 ]]; then
 	echo "Please provide something to grep it with" >&2
@@ -166,9 +171,6 @@ function diraction-grep-alias {
 	diraction-list-alias | grep $@
     fi
 }
-
-# §TODO: SETUP + SETUP
-# §call to config + flag
 
 ##' disable attached alias
 function diraction-disable {
@@ -203,6 +205,8 @@ function diraction-destroy {
     fi
 }
 
+##' destroy all diraction variables
+##' need -f/--force flag to perform
 function diraction-destroy-all {
     if [[ "-f" == $1  ]] || [[ "--force" == $1  ]]
     then
@@ -215,6 +219,7 @@ function diraction-destroy-all {
     fi
 }
 
+##' reset direction environment by first destroying everython then reloading config
 function diraction-reset {
     echo "Reseting diraction environment"
     diraction-destroy-all -f
@@ -223,6 +228,9 @@ function diraction-reset {
     # §maybe: for security issue. add some env flag this has been done?
 }
 
+# §TODO: diraction-dump: flux ou dir
+
+##' print help (and banner) for diraction
 function diraction-help {
     if [[ $# != 1 ]] ; then
 	# §later: colors :D
@@ -255,10 +263,10 @@ EOF
 # ¤> Config functions
 # ¤>> Charging of personnal config
 
-##' §TODOC
+##' Load personal config of user
+##' first load predefined function if exist. then load config file
 function diraction-load-config {
-    ## two options, function or file.
-    ## load both, function taking precedence
+    ## two options, function or file. load both, function taking precedence
 
     # Load personal function if existing
     # §todo: doc
@@ -329,6 +337,9 @@ function diraction-batch-create {
 
 
 ## §TODO: save test file to run test.
+
+##' check if syntax of provided file is correct
+## §maybe: can acces it from outside §here
 function -diraction-check-file-syntax {
     if [[ ! -f "$1" ]];then
 	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
@@ -354,6 +365,7 @@ function -diraction-check-file-syntax {
 
 }
 
+##' check if directoryes of provided file exists
 function -diraction-check-file-dir {
 
     if [[ ! -f "$1" ]];then
@@ -361,12 +373,10 @@ function -diraction-check-file-dir {
 	return 2
     fi
 
-    local ok=0
-    # §TODO: extract function, or just constant pattern!!
-    # use cat -n + so adaptpattern > and use cut::!!
+    local ok=true
 
-    ( # §TODO CHECK: in subprocess?
-    cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
+    (cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
+    # §maybe: extract function, or just constant pattern!
     # §maybe: use a real regexp
     # will let skip quote with # inside..
     # if add a trailing $ will refuse path with space inside.
@@ -379,8 +389,8 @@ function -diraction-check-file-dir {
 	if [[  ! -d "$dir" ]] ; then
 	    # ¤note: double quote prevent tilde from being expanded
 	    echo "At line ${aline[1]}, directory ${aline[3]/\$HOME/~} does not exist"
-	    ok=1
-	    # §maybe: use incr to have number of failing directory?
+	    ok=false
+	    # §todo: use incr to have number of failing directory?
 	fi
 	# ¤note: cut sans field c'est TAB
     done
@@ -388,21 +398,21 @@ function -diraction-check-file-dir {
     return $ok
 }
 
+##' check syntax of config file
+# §maybe swap name: config/syntax
 function diraction-check-config-syntax {
-    # §maybe: refactor: extract function perform on DEF file
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
 	-diraction-check-file-syntax ${DIRACTION_DEF_FILE}
-	return $? # §check
+	return $?
     else
 	echo "Config file does not exist" >&2
     fi
 }
-
+##' check directory existance of config file
 function diraction-check-config-dir {
-    # §maybe: add a counter by line
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
 	-diraction-check-file-dir ${DIRACTION_DEF_FILE}
-	return $? # §check
+	return $?
     else
 	echo "Config file does not exist" >&2
     fi
