@@ -268,7 +268,7 @@ function -diraction-config {
 	diraction-personal-config
     fi
 
-    if [[ -f "$DIRACTION_DEF_FILE" ]] && ! -diraction-parse-file "$DIRACTION_DEF_FILE" ; then
+    if [[ -f "$DIRACTION_DEF_FILE" ]] && ! -diraction-parse-file "$DIRACTION_DEF_FILE" --ignore-missing-dir ; then
 	echo "Error while parsing $DIRACTION_DEF_FILE, please it has check correct syntax" >&2
 	return 1
     fi
@@ -281,7 +281,7 @@ function -diraction-parse-file {
 	echo 'diraction parse file need to be given a file!' >&2
 	return 2;
     else
-	cat $1 | sed 's/~/$HOME/' | diraction-batch-create --ignore-missing-dir
+	cat $1 | sed 's/~/$HOME/' | diraction-batch-create $2
 	return $?
     fi
 }
