@@ -120,10 +120,9 @@ you can force creation adding --ignore-missing-dir flag" >&2
 }
 
 # ¤>> Other utils functions
-# §maybe: rename? (conflict name with check file...)
-function diraction-check { # exist?
-    # §later: update with future index
-    [[ -n $1 ]] && local var="_$1" && [[ -d ${(P)var} ]]
+##' check if alias attached to diraction
+function diraction-exist {
+    [[ -n "$DIRACTION_DEFUNS[$1]" ]]
 }
 
 function diraction-list {
@@ -161,6 +160,7 @@ function diraction-grep-alias {
 	echo "Please provide something to grep it with" >&2
 	return 1
     else
+	# §todo: refactor using reverse indexing (302)
 	echo "List of diractions alias matching '$@'"
 	diraction-list-alias | grep $@
     fi
@@ -171,7 +171,7 @@ function diraction-grep-alias {
 
 ##' disable attached alias
 function diraction-disable {
-    if diraction-check $1 ;then
+    if diraction-exist $1 ;then
 	disable -a $1
     else
 	echo "Provided argument is not a registered diraction" >&2
@@ -181,7 +181,7 @@ function diraction-disable {
 
 ##' reenable attached alias
 function diraction-enable {
-    if diraction-check $1 ;then
+    if diraction-exist $1 ;then
 	enable -a $1
     else
 	echo "Provided argument is not a registered diraction" >&2
@@ -191,7 +191,7 @@ function diraction-enable {
 
 ##' destroy alias and variable
 function diraction-destroy {
-    if diraction-check $1 ;then
+    if diraction-exist $1 ;then
 	# §TODO check alias and provided var
 	unalias $1
 	unset "_$1"
@@ -224,6 +224,7 @@ function diraction-reset {
 
 function diraction-help {
     if [[ $# != 1 ]] ; then
+	# §later: colors :D
 	cat <<"BANNER"
       ____  _                 __  _
      / __ \(_)________ ______/ /_(_)___  ____  _____
@@ -236,7 +237,7 @@ BANNER
 	# ¤note: "EOF" protect from () eval
 	echo $DIRACTION_USAGE
     else
-	if diraction-check $1 ;then
+	if diraction-exist $1 ;then
 	    "$1 diraction is bound to ${DIRACTION_DEFUNS[$1]} the directory"
 	else
 	    cat <<EOF
