@@ -288,25 +288,42 @@ function -diraction-parse-file {
 
 ##' function to create a set of batch definition from sdin
 function diraction-batch-create {
-    grep '^[[:space:]]*[^[:space:]#]' |
+    cat -n |  sed 's:#.*$::' |
     # kill comment for the eval
     # §maybe: extract to function when fill do check-syntax, check file exist.
     # should rafine to have a read keeping memory in count?. (maybe cat -n)
     # Must take a function. # should be private ?. or defined
-
-    sed 's:#.*$::' | while read line; do
+    grep -v '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+$' |
+    while read line ; do
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
-	# §HERE maybe capture line, and check just two elem.
-        local fail=$(diraction-create $line $1) # §transfer ignore arg
-	if $fail ; then
+
+	local ko=false
+
+	# local aline  §todo: check combo for local array!
+	set -A aline $line
+	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
+	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
+	    ko=true
+	elif [[ $1 == "--ignore-missing-dir" ]]; then
+	    diraction-create $aline[2] "$aline[3]" --ignore-missing-dir
+	else
+	    local dir=$(eval echo "$aline[3]")
+
+	    if [[ -d "$dir" ]]; then
+		diraction-create  $aline[2] "$dir"
+	    else
+		echo "At line ${aline[1]}, directory '$dir' does not exists" >&2
+		ko=true
+	    fi
+
+	fi
+	if $ko ; then
 	    echo "Error occured during batch create, so stopping the process:\n$line" >&2
 	    # §todo: more specific error, check arg line
-	    return $fail
+	    return 1
 	fi
     done
-    # §FIXME: will complain if folder does  not exist when created!
-    # §todo add a bypass to create!?
 }
 
 
@@ -319,7 +336,8 @@ function -diraction-check-file-syntax {
 
     local ok=0
     cat -n $1 |  sed 's:#.*$::' | while read line; do
-	local set -A aline $line
+	# local aline; §fixme
+	set -A aline $line
 	# §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
 	# §todo: add checksum to file
 	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
