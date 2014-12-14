@@ -297,13 +297,13 @@ function diraction-batch-create {
     sed 's:#.*$::' | while read line; do
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
-
-	# §maybe: add check only two elem by ligne
-	# local
-
 	# §HERE maybe capture line, and check just two elem.
-        local fail=$(eval "diraction-create $line $1") # §transfer ignore arg
-	if $fail ; then return $fail ; fi
+        local fail=$(diraction-create $line $1) # §transfer ignore arg
+	if $fail ; then
+	    echo "Error occured during batch create, so stopping the process:\n$line" >&2
+	    # §todo: more specific error, check arg line
+	    return $fail
+	fi
     done
     # §FIXME: will complain if folder does  not exist when created!
     # §todo add a bypass to create!?
@@ -319,7 +319,7 @@ function -diraction-check-file-syntax {
 
     local ok=0
     cat -n $1 |  sed 's:#.*$::' | while read line; do
-	set -A aline $line
+	local set -A aline $line
 	# §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
 	# §todo: add checksum to file
 	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
