@@ -42,18 +42,13 @@ declare -A DIRACTION_DEFUNS # §todo: change
 # système à réaliser!
 -set-default DIRACTION_BROWSER # §todo: update
 # §bonux: more config
-# §bonux: provide documentation too!
+# §bonux: provide documentation too! : store in an array?
 unset -- -set-default
 
 # ¤>> constants
-# §todo: same util func
--set-constant () {
-    eval "test -z \"\$$1\" && readonly $1='$2'"
-}
-
--set-constant DIRACTION_USAGE "usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
-# §MORE?
-unset -- -set-constant
+DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
+# ¤note: function -set-constant wasn't working
+# §later? maybe restore notion of constant?
 
 ################################################################################
 # ¤> "Alvar" diractions functions
@@ -534,7 +529,9 @@ _diraction () {     # ¤sync
 	grep grep-alias \
 	help
 }
-	# new \ §later when alaias
+# new \ §todo: later when alaias
+# §maybe: use a variable to hold the completion commande (or extract from a DIRACTION_CMD_HELP array!)
+
 compdef _diraction diraction
 
 # ¤>>
