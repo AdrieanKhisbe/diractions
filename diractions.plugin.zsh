@@ -41,6 +41,7 @@ declare -A DIRACTION_DEFUNS # §todo: change
 -set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §TODO: choix de specifier soit le fichier
 # système à réaliser!
 -set-default DIRACTION_BROWSER # §todo: update
+-set-default DIRACTION_AUTO_CONFIG true
 # §bonux: more config
 # §bonux: provide documentation too! : store in an array?
 unset -- -set-default
@@ -217,7 +218,7 @@ function diraction-destroy-all {
 function diraction-reset {
     echo "Reseting diraction environment"
     diraction-destroy-all -f
-    -diraction-config # load config
+    diraction-load-config # load config
     #diractions.plugin.zsh
     # §maybe: for security issue. add some env flag this has been done?
 }
@@ -255,7 +256,7 @@ EOF
 # ¤>> Charging of personnal config
 
 ##' §TODOC
-function -diraction-config {
+function diraction-load-config {
     ## two options, function or file.
     ## load both, function taking precedence
 
@@ -559,5 +560,6 @@ compdef _diraction diraction
 
 
 ## ¤> final configuration
--diraction-config # load config
-# §maybe: only run with some flag
+if $DIRACTION_AUTO_CONFIG ;then
+    diraction-load-config
+fi
