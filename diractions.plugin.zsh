@@ -156,7 +156,7 @@ function diraction-grep {
 	echo "List of diractions: matching '$@'"
 	for a in ${(ko)DIRACTION_DEFUNS}; do
 	    echo "$a\t -  $DIRACTION_DEFUNS[$a]"
-	    # §TODO: indent
+	    # §TODO: indent: see padding: http://zsh.sourceforge.net/Doc/Release/Expansion.html
 	done | grep $@
     fi
 }
@@ -340,23 +340,33 @@ function -diraction-check-file-dir {
     local ok=0
     # §TODO: extract function, or just constant pattern!!
     # use cat -n + so adaptpattern > and use cut::!!
+
+    ( # §TODO CHECK: in subprocess?
     cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
     # §maybe: use a real regexp
     # will let skip quote with # inside..
     # if add a trailing $ will refuse path with space inside.
     # more checking inside
-    sed 's:#.*$::' | while read line; do
+    sed 's/~/$HOME/' | # ¤hack to have ~ substitution
+    sed 's:#.*$::'   | while read line; do
 
 	# §FIXME: should eval value!! (maybe local seetinng?)
 	set -A aline $line
 
-	if [[  ! -d "${aline[3]}" ]] ; then
+	# local
+	local var="_$aline[2]"
+	local "$var"="$(eval echo ${aline[3]})" # eval for expansion of dir
+	local dir=${(P)$(echo $var)}
+	#$(echo _$aline[2])}
+	if [[  ! -d $dir ]] ; then
+	    # ¤note: double quote prevent tilde from being expanded
 	    echo "At line ${aline[1]}, directory ${aline[3]} does not exist"
 	    ok=1
 	    # §maybe: use incr to have number of failing directory?
 	fi
 	# ¤note: cut sans field c'est TAB
     done
+)
     return $ok
 }
 
