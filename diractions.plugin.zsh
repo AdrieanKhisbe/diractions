@@ -229,6 +229,16 @@ function diraction-reset {
 
 function diraction-help {
     if [[ $# != 1 ]] ; then
+	cat <<"BANNER"
+      ____  _                 __  _
+     / __ \(_)________ ______/ /_(_)___  ____  _____
+    / / / / / ___/ __ `/ ___/ __/ / __ \/ __ \/ ___/
+   / /_/ / / /  / /_/ / /__/ /_/ / /_/ / / / (__  )
+  /_____/_/_/   \__,_/\___/\__/_/\____/_/ /_/____/
+
+BANNER
+	# ¤note: figlet -f slant Diractions
+	# ¤note: "EOF" protect from () eval
 	echo $DIRACTION_USAGE
     else
 	if diraction-check $1 ;then
