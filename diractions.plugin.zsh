@@ -302,7 +302,6 @@ function diraction-batch-create {
     # §maybe: extract to function when fill do check-syntax, check file exist.
     # should rafine to have a read keeping memory in count?. (maybe cat -n)
     # Must take a function. # should be private ?. or defined
-    grep -v '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+$' |
     while read line ; do
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
@@ -311,7 +310,9 @@ function diraction-batch-create {
 
 	# local aline  §todo: check combo for local array!
 	set -A aline $line
-	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
+	if [[  "${#aline}" == 1 ]]; then
+	    # next: ignore empty line
+	elif [[  ! "${#aline}" == 3 ]] ; then
 	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
 	    ko=true
 	elif [[ $1 == "--ignore-missing-dir" ]]; then
