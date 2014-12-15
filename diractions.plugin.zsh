@@ -23,7 +23,7 @@
 #------------------------------------------------------------------------------#
 # ¤>> Vars
 ## variable accumulating the defuns
-declare -A DIRACTION_DEFUNS # §todo: change
+typeset -A DIRACTION_DEFUNS # §todo: change
 # §maybe: keep the disabled defuns
 
 # soit une liste de defun déjà défini et stockée dans var
@@ -118,6 +118,7 @@ you can force creation adding --ignore-missing-dir flag" >&2
 
     # register the variable
     DIRACTION_DEFUNS[$alias]="$dir"
+    # §tofix: §here: not visible when handled by antigen
 }
 
 # ¤>> Other utils functions
