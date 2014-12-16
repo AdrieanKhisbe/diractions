@@ -23,7 +23,16 @@
 #------------------------------------------------------------------------------#
 # ¤>> Vars
 ## variable accumulating the defuns
-typeset -A DIRACTION_DEFUNS # §todo: change
+
+declare -A DIRACTION_REGISTER # §todo: change
+# §NOTE: Arrays are not exported :/
+# http://stackoverflow.com/questions/5564418/exporting-an-array-in-bash-script/5564589#5564589
+# might be the same in zsh
+# so list only work when sourced!
+# §todo: try workaround: @smoser
+# §maybe use an alternative storage format? Or make it clear in the readme
+# http://stackoverflow.com/questions/688849/associative-arrays-in-shell-scripts/4444841#4444841
+
 # §maybe: keep the disabled defuns
 
 # soit une liste de defun déjà défini et stockée dans var
@@ -88,7 +97,6 @@ function diraction(){
 ##' §bonux: option pour forcer..... --ignore-missing-dir
 ## §TODO: HERE would need to refactor to handle option if want to place if in the end
 function diraction-create(){
-
     if [[ $# -lt 2 ]]; then
         echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
         return 1
@@ -116,22 +124,21 @@ you can force creation adding --ignore-missing-dir flag" >&2
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
 
-    # register the variable
-    DIRACTION_DEFUNS[$alias]="$dir"
-    # §tofix: §here: not visible when handled by antigen
+    ## §FIXME : adapt list
+    [[ -n "$DIRACTION_REGISTER" ]] && DIRACTION_REGISTER[$alias]="$dir"
 }
 
 # ¤>> Other utils functions
 ##' check if alias attached to diraction
 function diraction-exist {
-    [[ -n "$DIRACTION_DEFUNS[$1]" ]]
+    [[ -n "$DIRACTION_REGISTER[$1]" ]]
 }
 
 ##' List existing diractions
 function diraction-list {
     echo "List of diractions:"
-    for a in ${(ko)DIRACTION_DEFUNS}; do
-	echo "$a\t -  $DIRACTION_DEFUNS[$a]"
+    for a in ${(ko)DIRACTION_REGISTER}; do
+	echo "$a\t -  $DIRACTION_REGISTER[$a]"
 	# §TODO: indent
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
@@ -139,12 +146,12 @@ function diraction-list {
 
 ##' list existing diraction aliases
 function diraction-list-alias {
-    echo ${(ko)DIRACTION_DEFUNS}
+    echo ${(ko)DIRACTION_REGISTER}
 }
 
 ##' list existing diraction directories
 function diraction-list-dir {
-    echo ${(ov)DIRACTION_DEFUNS}
+    echo ${(ov)DIRACTION_REGISTER}
 }
 
 ##' Grep existing diraction to find matching aliases
@@ -154,8 +161,8 @@ function diraction-grep {
 	return 1
     else
 	echo "List of diractions: matching '$@'"
-	for a in ${(ko)DIRACTION_DEFUNS}; do
-	    echo "$a\t -  $DIRACTION_DEFUNS[$a]"
+	for a in ${(ko)DIRACTION_REGISTER}; do
+	    echo "$a\t -  $DIRACTION_REGISTER[$a]"
 	    # §TODO: indent: see padding: http://zsh.sourceforge.net/Doc/Release/Expansion.html
 	done | grep $@
     fi
@@ -199,7 +206,7 @@ function diraction-destroy {
 	# §TODO check alias and provided var
 	unalias $1
 	unset "_$1"
-	unset "DIRACTION_DEFUNS[$1]"
+	unset "DIRACTION_REGISTER[$1]"
     else
 	echo "Provided argument is not a registered diraction" >&2
 	return 1
@@ -211,7 +218,7 @@ function diraction-destroy {
 function diraction-destroy-all {
     if [[ "-f" == $1  ]] || [[ "--force" == $1  ]]
     then
-	for a in ${(k)DIRACTION_DEFUNS}; do
+	for a in ${(k)DIRACTION_REGISTER}; do
 	    diraction-destroy $a
 	done
     else
@@ -248,7 +255,7 @@ BANNER
 	echo $DIRACTION_USAGE
     else
 	if diraction-exist $1 ;then
-	    "$1 diraction is bound to ${DIRACTION_DEFUNS[$1]} the directory"
+	    "$1 diraction is bound to ${DIRACTION_REGISTER[$1]} the directory"
 	else
 	    cat <<EOF
 There is no diraction named $1
@@ -568,7 +575,6 @@ compdef _diraction diraction
 # ¤>>
 ## §later: do basic completion function for _diraction-dispatch
 ## §think: decide or not if register completion fonction for all the diractions shortcult?
-
 
 ## ¤> final configuration
 if $DIRACTION_AUTO_CONFIG ;then
