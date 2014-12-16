@@ -24,7 +24,10 @@
 # ¤>> Vars
 ## variable accumulating the defuns
 
-declare -A DIRACTION_REGISTER # §todo: change
+declare -A DIRACTION_REGISTER
+# §maybe: keep the disabled defuns
+export DIRACTION_REGISTER_SERIALIZED
+
 # §NOTE: Arrays are not exported :/
 # http://stackoverflow.com/questions/5564418/exporting-an-array-in-bash-script/5564589#5564589
 # might be the same in zsh
@@ -33,7 +36,21 @@ declare -A DIRACTION_REGISTER # §todo: change
 # §maybe use an alternative storage format? Or make it clear in the readme
 # http://stackoverflow.com/questions/688849/associative-arrays-in-shell-scripts/4444841#4444841
 
-# §maybe: keep the disabled defuns
+# §TOTEST /HERE
+-diraction-ensure-register (){
+    #  declare -A DIRACTION_REGISTER
+    set --  DIRACTION_REGISTER_SERIALIZED
+    unset DIRACTION_REGISTER && DIRACTION_REGISTER=( $@ )
+}
+-diraction-serialize-register(){
+    DIRACTION_REGISTER_SERIALIZED=$(getopt --shell sh --options "" -- -- "$@")
+    DIRACTION_REGISTER_SERIALIZED=${DIRACTION_REGISTER_SERIALIZED# --}
+    # eval set -- "$payload"
+    #   eval "unset $name && $name=("\$@")"
+}
+# §later: maybe disable checkying by redefined
+
+
 
 # soit une liste de defun déjà défini et stockée dans var
 -set-default () {
@@ -72,6 +89,8 @@ DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <al
 ##' Command dispatcher
 ##' ¤note: inspired from Antigen Shrikant Sharat Kandula
 function diraction(){
+
+    ## Ensure register is there.
 
     if [[ $# == 0 ]]; then
         echo "Please provide a command\n${DIRACTION_USAGE}" >&2
