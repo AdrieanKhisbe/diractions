@@ -309,8 +309,7 @@ function diraction-batch-create {
 
 	local ko=false
 
-	# §todo: apply to others
-	local -a aline;
+	local -a aline
 	set -A aline ${(@s: :)line}
 
 	if [[  "${#aline}" -le 1 ]]; then
@@ -350,8 +349,8 @@ function -diraction-check-file-syntax {
 
     local ok=0
     cat -n $1 |  sed 's:#.*$::' | while read line; do
-	# local aline; §fixme
-	set -A aline $line  #§todo: check!
+	local -a aline;
+	set -A aline $line
 	# §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
 	# §todo: add checksum to file
 	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
@@ -383,7 +382,7 @@ function -diraction-check-file-dir {
     # will let skip quote with # inside..
     # if add a trailing $ will refuse path with space inside.
     sed 's:#.*$::' | while read line; do
-	local aline; set -A aline $line
+	local -a aline; set -A aline $line #§check
 
 	local var="_$aline[2]"
 	local "$var"="$(eval echo ${aline[3]/\~/\$HOME})" # eval for expansion of dir
