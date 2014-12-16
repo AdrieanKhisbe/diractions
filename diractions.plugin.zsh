@@ -298,7 +298,7 @@ function -diraction-parse-file {
 
 ##' function to create a set of batch definition from sdin
 function diraction-batch-create {
-    cat -n |  sed 's:#.*$::' |
+    cat -n |  sed 's:#.*$::' | sed -r 's:\s+: :g' |
     # kill comment for the eval
     # §maybe: extract to function when fill do check-syntax, check file exist.
     # should rafine to have a read keeping memory in count?. (maybe cat -n)
@@ -309,9 +309,11 @@ function diraction-batch-create {
 
 	local ko=false
 
-	# local aline  §todo: check combo for local array!
-	set -A aline $line
-	if [[  "${#aline}" == 1 ]]; then
+	# §todo: apply to others
+	local -a aline;
+	set -A aline ${(@s: :)line}
+
+	if [[  "${#aline}" -le 1 ]]; then
 	    # next: ignore empty line
 	elif [[  ! "${#aline}" == 3 ]] ; then
 	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
@@ -320,14 +322,12 @@ function diraction-batch-create {
 	    diraction-create $aline[2] "$aline[3]" --ignore-missing-dir
 	else
 	    local dir=$(eval echo "$aline[3]")
-
 	    if [[ -d "$dir" ]]; then
-		diraction-create  $aline[2] "$dir"
+		diraction-create $aline[2] "$dir"
 	    else
 		echo "At line ${aline[1]}, directory '$dir' does not exists" >&2
 		ko=true
 	    fi
-
 	fi
 	if $ko ; then
 	    echo "Error occured during batch create, so stopping the process:\n$line" >&2
@@ -351,7 +351,7 @@ function -diraction-check-file-syntax {
     local ok=0
     cat -n $1 |  sed 's:#.*$::' | while read line; do
 	# local aline; §fixme
-	set -A aline $line
+	set -A aline $line  #§todo: check!
 	# §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
 	# §todo: add checksum to file
 	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
