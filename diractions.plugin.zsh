@@ -108,9 +108,9 @@ you can force creation adding --ignore-missing-dir flag" >&2
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
 	# ¤note: déréférencement de variable: ${(P)var}
-	export $var="$dir" # §see: keep export?
-	# §readonly: probably better?
-	# §TODO: check expand full name
+	export $var=$(eval echo "$dir")
+	# §see: keep export?
+	# §readonly: probably better??
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
