@@ -30,20 +30,20 @@ export DIRACTION_REGISTER_SERIALIZED
 
 # §NOTE: Arrays are not exported :/
 # http://stackoverflow.com/questions/5564418/exporting-an-array-in-bash-script/5564589#5564589
-# might be the same in zsh
+#  same in zsh; http://stackoverflow.com/questions/18268083/setting-environment-variable-in-zsh-gives-number-expected
 # so list only work when sourced!
 # §todo: try workaround: @smoser
 # §maybe use an alternative storage format? Or make it clear in the readme
 # http://stackoverflow.com/questions/688849/associative-arrays-in-shell-scripts/4444841#4444841
 
-# §TOTEST /HERE
+# §TOTEST /HERE (sinon serialisation maison)
 -diraction-ensure-register (){
     #  declare -A DIRACTION_REGISTER
     set --  DIRACTION_REGISTER_SERIALIZED
     unset DIRACTION_REGISTER && DIRACTION_REGISTER=( $@ )
 }
 -diraction-serialize-register(){
-    DIRACTION_REGISTER_SERIALIZED=$(getopt --shell sh --options "" -- -- "$@")
+    DIRACTION_REGISTER_SERIALIZED=$(getopt --shell sh --options "" -- -- "$DIRACTION_REGISTER" )
     DIRACTION_REGISTER_SERIALIZED=${DIRACTION_REGISTER_SERIALIZED# --}
     # eval set -- "$payload"
     #   eval "unset $name && $name=("\$@")"
@@ -599,3 +599,7 @@ compdef _diraction diraction
 if $DIRACTION_AUTO_CONFIG ;then
     diraction-load-config
 fi
+
+# perfor a backup of the array in case this is not scripted
+-diraction-serialize-register
+echo $DIRACTION_REGISTER_SERIALIZED
