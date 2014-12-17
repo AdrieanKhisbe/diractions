@@ -6,16 +6,13 @@
 # Diractions: Doing Anything, Anywhere, from here
 # Author: Adriean Khisbe
 # Homepage: http://github.com/AdrieanKhisbe/diractions
-# License: MIT License<Adriean.Khisbe@live.fr
+# License: MIT License<Adriean.Khisbe@live.fr>
 
 # §bonux: mini stupid logo. :) (paaaneaux)
 
 ################################################################################
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
-
-# §SEE: WERE TO PUT UTILS FUCTION? TOP OR BOTTOM?
-# §TODO: Check dependancy handling
 
 ################################################################################
 # ¤> Config
@@ -26,7 +23,7 @@
 
 declare -gA DIRACTION_REGISTER
 # -g flag so it persist oustide the script
-# §NOTE: Arrays are not exported :/
+# §NOTE: Arrays are not exported in child process :/
 # §maybe: keep the disabled defuns
 
 # soit une liste de defun déjà défini et stockée dans var
@@ -38,15 +35,14 @@ declare -gA DIRACTION_REGISTER
     # §see: make it not exportable?
 }
 
+# oh yes, yell like a zsh var!! :D
 -set-default DIRACTION_INTERACTIVE_PROMPT "$fg[red]>> $fg[blue]"  # §todo: make it bold
-# oh yes, yell like a zsh var!!
 -set-default DIRACTION_EDITOR ${EDITOR:-vi}
--set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §TODO: choix de specifier soit le fichier
-# système à réaliser!
+-set-default DIRACTION_DEF_FILE "$HOME/.diractions"
 -set-default DIRACTION_BROWSER # §todo: update
 -set-default DIRACTION_AUTO_CONFIG true
 # §bonux: more config
-# §bonux: provide documentation too! : store in an array?
+# §bonux: provide documentation too! : store in an array? (name var and doc)
 unset -- -set-default
 
 # ¤>> constants
@@ -66,8 +62,6 @@ DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <al
 ##' Command dispatcher
 ##' ¤note: inspired from Antigen Shrikant Sharat Kandula
 function diraction(){
-
-    ## Ensure register is there.
 
     if [[ $# == 0 ]]; then
         echo "Please provide a command\n${DIRACTION_USAGE}" >&2
@@ -106,7 +100,7 @@ function diraction-create(){
         echo "diraction: $dir is not a real directory ($var)
 you can force creation adding --ignore-missing-dir flag" >&2
         return 2
-	# §maybe: log dir is missing. count numb of miss
+	# §maybe: log "dir is missing". count numb of miss
     fi
 
     # create variable if not already bound
@@ -114,7 +108,7 @@ you can force creation adding --ignore-missing-dir flag" >&2
 	# ¤note: déréférencement de variable: ${(P)var}
 	export $var=$(eval echo "$dir")
 	# §see: keep export?
-	# §readonly: probably better??
+	# §maybe: readonly probably better?? (maybe not: could not unset then)
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
@@ -134,7 +128,7 @@ function diraction-list {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
 	echo "$a\t -  $DIRACTION_REGISTER[$a]"
-	# §TODO: indent
+	# §TODO: indent [retrieve zsh link]
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
@@ -189,6 +183,7 @@ function diraction-disable {
 function diraction-enable {
     if diraction-exist $1 ;then
 	enable -a $1
+	# §maybe: disable variable or not?
     else
 	echo "Provided argument is not a registered diraction" >&2
 	return 1
@@ -198,7 +193,6 @@ function diraction-enable {
 ##' destroy alias and variable
 function diraction-destroy {
     if diraction-exist $1 ;then
-	# §TODO check alias and provided var
 	unalias $1
 	unset "_$1"
 	unset "DIRACTION_REGISTER[$1]"
@@ -227,11 +221,12 @@ function diraction-reset {
     echo "Reseting diraction environment"
     diraction-destroy-all -f
     diraction-load-config # load config
-    #diractions.plugin.zsh
     # §maybe: for security issue. add some env flag this has been done?
 }
 
 # §TODO: diraction-dump: flux ou dir
+# §maybe: reuse serialisation function that was once develop
+# ¤note: keep insertion order in this case.
 
 ##' print help (and banner) for diraction
 function diraction-help {
@@ -338,7 +333,6 @@ function diraction-batch-create {
     done
 }
 
-
 ## §TODO: save test file to run test.
 
 ##' check if syntax of provided file is correct
@@ -365,7 +359,6 @@ function -diraction-check-file-syntax {
 	fi
     done
     return $ok
-
 }
 
 ##' check if directoryes of provided file exists
@@ -434,7 +427,6 @@ function _diraction-dispatch () {
 
     local dir=$1 cdir=$PWD  # capture first arguments
     shift                   # get ride of initial args
-
 
     # ¤note: disabled checking for performance issue.
     #        assume that function that was correctly created with diraction-create
@@ -555,7 +547,7 @@ compdef _diraction diraction
 _diraction () {     # ¤sync
     # Setup diraction's autocompletion
     compadd  \
-	create \
+	create batch-create \
 	disable enable \
 	destroy destory-all reset \
 	list list-alias list-dir \
@@ -566,6 +558,8 @@ _diraction () {     # ¤sync
 # §maybe: use a variable to hold the completion commande (or extract from a DIRACTION_CMD_HELP array!)
 
 compdef _diraction diraction
+# §tofix: happen too hearly, so compdef not defined, or something like that
+# §todo: voir si compdef offre un hook ou quelquechose similaire
 
 # ¤>>
 ## §later: do basic completion function for _diraction-dispatch
