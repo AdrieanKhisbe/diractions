@@ -24,55 +24,10 @@
 # ¤>> Vars
 ## variable accumulating the defuns
 
-declare -A DIRACTION_REGISTER
-# §maybe: keep the disabled defuns
+declare -gA DIRACTION_REGISTER
+# -g flag so it persist oustide the script
 # §NOTE: Arrays are not exported :/
-# http://stackoverflow.com/questions/5564418/exporting-an-array-in-bash-script/5564589#5564589
-#  same in zsh; http://stackoverflow.com/questions/18268083/setting-environment-variable-in-zsh-gives-number-expected
-# so list only work when sourced!
-# §todo: try workaround: @smoser
-# §maybe use an alternative storage format? Or make it clear in the readme
-# http://stackoverflow.com/questions/688849/associative-arrays-in-shell-scripts/4444841#4444841
-
-# §TOTEST /HERE (sinon serialisation maison)
--diraction-ensure-register (){
-    if [[ -z "$DIRACTION_REGISTER" ]]; then
-	echo "Register need to be restored"
-	unset DIRACTION_REGISTER
-	declare -gA DIRACTION_REGISTER # Hurra the g flag!
-	echo $$
-	echo $DIRACTION_REGISTER_SERIALIZED |
-	sed 's:<>:\n:g' |head -n -1 |while read reg
-	# head get ride of the last line that destroyed the array
-	do
-	    echo $DIRACTION_REGISTER
-	    echo $$ reg- $reg
-	    echo "attempt restore DIRACTION_REGISTER[${reg%%:*}]=${reg#*:}"
-	    DIRACTION_REGISTER[${reg%%:*}]=${reg#*:}
-	    # echo reg- $reg
-	    # local key=${reg%%:*} value=${reg#:*}
-	    # echo attempt restore $key $value
-	    # DIRACTION_REGISTER[$key]=$value
-	done
-    fi
-    echo OK
-	    echo $DIRACTION_REGISTER
-echo end func
-export DIRACTION_REGISTER
-}
-
-
--diraction-serialize-register(){
-    echo $DIRACTION_REGISTER
-    eval "export DIRACTION_REGISTER_SERIALIZED='"$(
-	for a in ${(ko)DIRACTION_REGISTER}; do
-	    echo "$a:$DIRACTION_REGISTER[$a]<>"
-	done
-    )"'"
-    # beware quoting!
-    echo $DIRACTION_REGISTER_SERIALIZED
-}
-# §later: maybe disable checkying by redefined
+# §maybe: keep the disabled defuns
 
 # soit une liste de defun déjà défini et stockée dans var
 -set-default () {
@@ -165,8 +120,6 @@ you can force creation adding --ignore-missing-dir flag" >&2
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
 
-    ## §FIXME : adapt list
-    # [[ -n "$DIRACTION_REGISTER" ]] &&
     DIRACTION_REGISTER[$alias]="$dir"
 }
 
@@ -621,8 +574,4 @@ compdef _diraction diraction
 ## ¤> final configuration
 if $DIRACTION_AUTO_CONFIG ;then
     diraction-load-config
-    echo $DIRACTION_REGISTER
 fi
-
-# perfor a backup of the array in case this is not scripted
--diraction-serialize-register
