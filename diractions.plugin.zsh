@@ -514,6 +514,8 @@ function _diraction-dispatch () {
 	    # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
 	    eval "(cd \"$dir\" && $cmd $@)" ;;
 
+	# §SEE!!! §IDEA maybe using ./- to just eval what follow?
+
 	# §check; quote: protection?
 	# §todoNOW: extract function for the eval.. (local function?)
 	# eval in dir?
