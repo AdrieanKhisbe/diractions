@@ -334,6 +334,31 @@ function diraction-batch-create {
 }
 
 ## §TODO: save test file to run test.
+function diraction-check(){
+    # §todo: alias doctor
+
+    #§maybe refactor which command as a variable?
+    if [[ "$1" == "config" ]]; then
+	echo ">> Checkying config [${DIRACTION_DEF_FILE}] syntax:"
+	diraction-check-config-syntax && echo "Syntax seems fine :)"
+	echo ">> Checkying config [${DIRACTION_DEF_FILE}] directory existance:"
+	diraction-check-config-dir && echo "All dir seems to exist"
+
+    elif [[ "$1" == "file" ]]; then
+	if [[ -f "$2" ]]; then
+	    echo "Checkying file [$2] syntax: "
+	    -diraction-check-file-syntax $2 && echo "Syntax seems fine :)"
+	    echo "Checkying file [$2] diractories: "
+	    -diraction-check-file-dir  $2 && echo "All dir seems to exist"
+	else
+	    echo "Please provide some file to check" >&2
+	fi
+    else
+	echo "Please say what you want to check :) config/file syntax/alias" >&2
+        return 1
+
+    fi
+}
 
 ##' check if syntax of provided file is correct
 ## §maybe: can acces it from outside §here
