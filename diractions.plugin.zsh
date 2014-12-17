@@ -26,8 +26,6 @@
 
 declare -A DIRACTION_REGISTER
 # §maybe: keep the disabled defuns
-export DIRACTION_REGISTER_SERIALIZED
-
 # §NOTE: Arrays are not exported :/
 # http://stackoverflow.com/questions/5564418/exporting-an-array-in-bash-script/5564589#5564589
 #  same in zsh; http://stackoverflow.com/questions/18268083/setting-environment-variable-in-zsh-gives-number-expected
@@ -38,19 +36,37 @@ export DIRACTION_REGISTER_SERIALIZED
 
 # §TOTEST /HERE (sinon serialisation maison)
 -diraction-ensure-register (){
-    #  declare -A DIRACTION_REGISTER
-    set --  DIRACTION_REGISTER_SERIALIZED
-    unset DIRACTION_REGISTER && DIRACTION_REGISTER=( $@ )
+    if [[ -z "$DIRACTION_REGISTER" ]]; then
+	echo "Register need to be restored"
+	unset DIRACTION_REGISTER
+	declare -A DIRACTION_REGISTER
+	# §check range?
+
+	echo $DIRACTION_REGISTER_SERIALIZED |
+	sed 's:<>:\n:g' |while read reg
+	do
+	    echo reg- $reg
+	    echo "attempt restore DIRACTION_REGISTER[${reg%%:*}]=${reg#*:}"
+	    DIRACTION_REGISTER[${reg%%:*}]=${reg#*:}
+	    # echo reg- $reg
+	    # local key=${reg%%:*} value=${reg#:*}
+	    # echo attempt restore $key $value
+	    # DIRACTION_REGISTER[$key]=$value
+	done
+    fi
 }
+
 -diraction-serialize-register(){
-    DIRACTION_REGISTER_SERIALIZED=$(getopt --shell sh --options "" -- -- "$DIRACTION_REGISTER" )
-    DIRACTION_REGISTER_SERIALIZED=${DIRACTION_REGISTER_SERIALIZED# --}
-    # eval set -- "$payload"
-    #   eval "unset $name && $name=("\$@")"
+    echo $DIRACTION_REGISTER
+    eval "export DIRACTION_REGISTER_SERIALIZED='"$(
+	for a in ${(ko)DIRACTION_REGISTER}; do
+	    echo "$a:$DIRACTION_REGISTER[$a]<>"
+	done
+    )"'"
+    # beware quoting!
+    echo $DIRACTION_REGISTER_SERIALIZED
 }
 # §later: maybe disable checkying by redefined
-
-
 
 # soit une liste de defun déjà défini et stockée dans var
 -set-default () {
@@ -144,7 +160,8 @@ you can force creation adding --ignore-missing-dir flag" >&2
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
 
     ## §FIXME : adapt list
-    [[ -n "$DIRACTION_REGISTER" ]] && DIRACTION_REGISTER[$alias]="$dir"
+    # [[ -n "$DIRACTION_REGISTER" ]] &&
+    DIRACTION_REGISTER[$alias]="$dir"
 }
 
 # ¤>> Other utils functions
@@ -598,8 +615,8 @@ compdef _diraction diraction
 ## ¤> final configuration
 if $DIRACTION_AUTO_CONFIG ;then
     diraction-load-config
+    echo $DIRACTION_REGISTER
 fi
 
 # perfor a backup of the array in case this is not scripted
 -diraction-serialize-register
-echo $DIRACTION_REGISTER_SERIALIZED
