@@ -394,9 +394,9 @@ function -diraction-check-file-dir {
 	return 2
     fi
 
-    local ok=true
+    local nbMiss=0
 
-    (cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
+     cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
     # §maybe: extract function, or just constant pattern!
     # §maybe: use a real regexp
     # will let skip quote with # inside..
@@ -410,13 +410,17 @@ function -diraction-check-file-dir {
 	if [[  ! -d "$dir" ]] ; then
 	    # ¤note: double quote prevent tilde from being expanded
 	    echo "At line ${aline[1]}, directory ${aline[3]/\$HOME/~} does not exist"
-	    ok=false
+	    ((++nbMiss))
 	    # §todo: use incr to have number of failing directory?
 	fi
 	# ¤note: cut sans field c'est TAB
     done
-)
-    return $ok
+    if [[ $nbMiss -ge 0 ]];then
+	echo "There is $nbMiss missing directories"
+	return 1;
+    else
+	return 0
+    fi
 }
 
 ##' check syntax of config file
