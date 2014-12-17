@@ -9,17 +9,29 @@ Zsh Diractions
 The goal of this plugin is enable the user to perform quick actions on registered directory, `cd` into it, `ls` it, `git` it, running some command, ... *(Wait that I get a better pitch)*
 §HERE
 
-use to quick navigation, and use as shortcut in file command
-all prefixed by _
-
 map nom nemotechniques. Directory indexing. -> alias and var
+§here
+use to quick navigation, and use as shortcut in file command
+all prefixed by `_`
 
-Example. Suppose that I have an hypothetical XXX directory that i use a alot.
+Example: Suppose that I have a hypothetical `favdir` and `mydir` directories that i use a alot.
+Here are a simple scenario: you go in `favdir`, see what file there is then copy one in `mydir` using the variable.
+Then checkying has been copied to the directory with `mydir ls`.
 
+```sh
+[~]        >> favdir
+[~_favdir] >> ls
+              some-file
+[~_favdir] >> cp some-file $_mydir
+[~_favdir] >> mydir ls
+              other-file some-file
+```
 
-*This is just a glimpse of what you can do, more *
+<!-- §todo: Add some example, gif of example -->
 
-<!-- §todo: Add some example -->
+*This is just a glimpse of what you can do, go down*
+
+<!-- §see: inner link document -->
 
 ## Warning
 
@@ -31,26 +43,56 @@ It's working, I use it on my terminal (for a long time), but some glitch are pos
 (I'm aware of the potential security issues: zsh env/function poisoinning, and evaluated code/injections,... but it's aimed to be used only in interactive mode on your shell so as insecure as a shell bash config.
 So for now, I would advise not to use it without a glance of the source)
 
+The diraction aliases point to a "dispatch function" taking the attached directory as first argument. (then subcommand, and its eventual arguments)
+
 ## Usage
 
+§TODO
 *Documentation in building*
 
-###
+### Define your own diractions
+§TODO: Create
+
+you can also create many §ss with the `batch-create` command
+reading STDIN (so pipe a file to it, or use here docs) which can be usefull in configs.
+
+§TODO
+see config.
+
+You can see the existing *diraction* using `list`, `list-alias`, `list-dir` and even `grep` throught them
 
 ### Use you diraction
 
-§todo: Liste des principales commandes, argument.
-Celle des passes plats.
+Now that you have a *diraction* it's time to use it.
 
-###
+Simpliest way is to just type it's name to go in the attached directory.
+Here are the main commands. Commands that are executed in the context of the diraction:
+- `l|ls` : just some ls
+- `c|cd <subdir>` : jump in the subdirectory specified
+- `ed|edit <filename>` : edit the file (being relative to the diractoin)
+- `e|exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
+- `i|interactive|prompt|shell` : to run several command in the context of the diraction directory
 
-### Other
-<!-- Dev notes to do...
-  - Définition d'alias.
-  - Utilisation simple, saut var
-  - Utilisation commandes
+<!-- §todo: Celle des passes plats. -->
+
+You can also use the diraction variable in any command. `$_mydir` will be expanded to the attached directory.
+
+### Autres Commandes Diractions
+
+- `disable <dirname>` : disable attached alias
+- `enable <dirname>` : reenable it
+- `destroy <dirname>` : destroy the alias.
+- `destroy-all` : destroy all the existing diractions, need a `-f`, `--force` argument
+- `reset` : destroy the diraction and reload them from the configuration
+
+and of course, the `help` subcommand
 
 ## Installation
+§TODO!!!
+source the file
+
+other wise if you use `antigen` (*which I recommend*), just add diraction to your bundles as `AdrieanKhisbe/diractions`
+§todolink!
 
 ## Configuration
 <!-- Blala conf, main plus importantes -->
@@ -58,17 +100,42 @@ Celle des passes plats.
 List of predefined diraction can be customized in two way
 
 #### The Diraction Config file
-§todo
+§todo!
 
 ##### Checkying the config
+§TOFO!
+
+You
+
 
 #### The custom hook
 
+Another to customize diractions is to define a function named `diraction-personal-config`.
 
+This functions is executed by the `diraction-load-config` if it exists.
+Definitions in the function will take precedence
 
+Here is some Example:
 
-### Variables
+```zsh
+diraction-personal-config (){
+    # put your config here
+	diraction-batch-create <<DIR
+	    dir1  /my/path/number1
+		yasp  /yet/another/stupid/path
+    DIR
+}
+```
 
+### Customs
+There is also some variables to customize the behavior of diraction to fit your needs.
+
+Here are the main ones:
+
+- `DIRACTION_AUTO_CONFIG` : is the config automaticaly loaded after loading of plugin, true by default
+- `DIRACTION_DEF_FILE` : the name of the file containing your diraction definition
+- `DIRACTION_EDITOR` : which editor command is used for the edit command
+- `DIRACTION_INTERACTIVE_PROMPT` : the "prompt" for the "interactive" command
 
 ## History
 
@@ -79,6 +146,8 @@ With a new repo, he got a new name **Diractions** (*never explain an overobvious
 and is growing ever since with new functionnalities.
 
 After some fall stall, we might reach the first major version around the new year.
+
+<!-- Maybe list of feature introduced after 1 will go there? -->
 
 <!-- §TODO: contribution note -->
 

@@ -27,14 +27,14 @@
 # ¤>> Commands variables
 #------------------------------------------------------------------------------#
 # ¤>> Vars
-## variable accumulating the defuns
 
+##' variable accumulating the defuns
 declare -gA DIRACTION_REGISTER
 # -g flag so it persist oustide the script
 # §NOTE: Arrays are not exported in child process :/
 # §maybe: keep the disabled defuns
 
-# soit une liste de defun déjà défini et stockée dans var
+##' Util function pour définir valeur par default si celles-ci non définies
 -set-default () {
     # ¤note: from antigen
     local arg_name="$1"
@@ -46,7 +46,7 @@ declare -gA DIRACTION_REGISTER
 # oh yes, yell like a zsh var!! :D
 -set-default DIRACTION_INTERACTIVE_PROMPT "$fg[red]>> $fg[blue]"  # §todo: make it bold
 -set-default DIRACTION_EDITOR ${EDITOR:-vi}
--set-default DIRACTION_DEF_FILE "$HOME/.diractions"
+-set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §maybe rename to config file
 -set-default DIRACTION_BROWSER # §todo: update
 -set-default DIRACTION_AUTO_CONFIG true
 # §bonux: more config
@@ -364,7 +364,7 @@ function diraction-check(){
     else
 	echo "Please say what you want to check :) config/file syntax/alias" >&2
         return 1
-
+	# §maybe: add a help command
     fi
 }
 
@@ -481,8 +481,8 @@ function _diraction-dispatch () {
 
     case $cmd in
 	l) ls $dir;; # §maybe: add other args?
-	t|tree) tree $dir;;
-	c|cd) cd "$1/$3" ;;
+	t|tree) tree $dir;; # §beware: command not necessary installed
+	c|cd) cd "$dir/$1" ;; # §fix: maybe pattern
 	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
 
 	# §maybe : o, open? (wrapping with glob?)
@@ -497,7 +497,7 @@ function _diraction-dispatch () {
 	# §maybe reverse cl: cd then ls
 	ed|edit)
 	    # §later: check files exists.
-	    eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )"
+	    eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )" # §check §now eval not necessary
 	    # §later: once complete and working, duplicate it to v| visual
 	    # §later: also for quick emacs and vim anyway : em vi
 	    # §so: extract a generate pattern. _diraction_edit (local functions)
@@ -522,7 +522,7 @@ function _diraction-dispatch () {
 	    # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
 	    eval "(cd \"$dir\" && $cmd $@)" ;;
 
-	# §SEE!!! §IDEA maybe using ./- to just eval what follow?
+	# §SEE!!! §IDEA maybe using ,/./- to just eval what follow?
 
 	# §check; quote: protection?
 	# §todoNOW: extract function for the eval.. (local function?)
