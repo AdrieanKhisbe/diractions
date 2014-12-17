@@ -39,13 +39,14 @@ declare -A DIRACTION_REGISTER
     if [[ -z "$DIRACTION_REGISTER" ]]; then
 	echo "Register need to be restored"
 	unset DIRACTION_REGISTER
-	declare -A DIRACTION_REGISTER
-	# §check range?
-
+	declare -gA DIRACTION_REGISTER # Hurra the g flag!
+	echo $$
 	echo $DIRACTION_REGISTER_SERIALIZED |
-	sed 's:<>:\n:g' |while read reg
+	sed 's:<>:\n:g' |head -n -1 |while read reg
+	# head get ride of the last line that destroyed the array
 	do
-	    echo reg- $reg
+	    echo $DIRACTION_REGISTER
+	    echo $$ reg- $reg
 	    echo "attempt restore DIRACTION_REGISTER[${reg%%:*}]=${reg#*:}"
 	    DIRACTION_REGISTER[${reg%%:*}]=${reg#*:}
 	    # echo reg- $reg
@@ -54,7 +55,12 @@ declare -A DIRACTION_REGISTER
 	    # DIRACTION_REGISTER[$key]=$value
 	done
     fi
+    echo OK
+	    echo $DIRACTION_REGISTER
+echo end func
+export DIRACTION_REGISTER
 }
+
 
 -diraction-serialize-register(){
     echo $DIRACTION_REGISTER
