@@ -7,7 +7,7 @@ Zsh Diractions
 
 ## Aim
 The goal of this plugin is *directory indexing*, map a short logical/mnemotechnical name to directory to quickly access them, or perform action in them.
-Thanks to diraction user can perform quick actions on its registered directory, `cd` into it, `ls` it, `git` it, running some command, or refering to them in any command with short variable to denote them.
+Thanks to **diraction** user can perform quick actions on its registered directory, `cd` into it, `ls` it, `git` it, running some command, or refering to them in any command with short variable to denote them.
 
 ### Example:
 Suppose that I have a hypothetical `favdir` and `mydir` directories that i use a alot.
@@ -32,8 +32,8 @@ Then checkying has been copied to the directory with `mydir ls`.
 
 ## Warning
 
-This is still an inbuilding young plugin. So if you are using it by directly cloning the repo rathen than antigen, prefer the master branch.
-It's working, I use it on my terminal (for a long time), but some glitch are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
+This is still an inbuilding young plugin. So if you are using it by directly cloning the repo rather than using antigen, prefer the `master` branch.
+It's working, I use it on my terminal (for a long time), but some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
 
 **If you have any remark, refactor suggestion or you are using it and had some unexpected behavior or bug (*soooory*), just post an issue ;)**
 
@@ -45,7 +45,7 @@ The diraction aliases point to a "dispatch function" taking the attached directo
 ## Usage
 
 Here is some more in depth description about how to use *Diractions*.
-*Diraction* is both a function suite, and the function alias and var it will create for you.
+*Diraction* is both a function suite, and the function aliases and vars it will create for you.
 
 ### Define your own diractions
 First step is to define your *diractions*, associate name to your most used directory.
@@ -54,6 +54,7 @@ First step is to define your *diractions*, associate name to your most used dire
   - by default it will check if directory exist
   - to bypass this check use the `--ignore-missing-dir`
 + you can also create many *diractions* with the `batch-create` command. it readss STDIN (so pipe a file to it, or use here docs) which can be usefull in configs.
+
    ```sh
    diraction batch-create <<DIR
    dir1 /long/dir/one
@@ -65,8 +66,8 @@ First step is to define your *diractions*, associate name to your most used dire
 ### Use you diraction
 
 Now that you have a *diraction* it's time to use it. :)
-
 Simpliest way is to just type it's name to go in the attached directory.
+
 Here are the main commands. Commands that are executed in the context of the diraction:
 - `l|ls` : just some ls
 - `c|cd <subdir>` : jump in the subdirectory specified
@@ -90,7 +91,7 @@ and of course, the `help` subcommand
 
 ## Installation
 "Installation" is far simple, just get the file and source it.
-Other wise if you use [antigen](https://github.com/zsh-users/antigen) (*which I recommend*), just add diraction to your bundles as `AdrieanKhisbe/diractions`
+Other wise if you use [antigen](https://github.com/zsh-users/antigen) (*which I recommend*), just add **diractions** to your bundles as `AdrieanKhisbe/diractions`
 
 ## Configuration
 
@@ -162,4 +163,4 @@ After some fall stall, we might reach the first major version around the new yea
 <!-- §maybe: analytics? -->
 
 ### Changelog
-*Comming soon*
+*Coming soon*
