@@ -25,14 +25,14 @@ Then checkying has been copied to the directory with `mydir ls`.
 <!-- §todo: Add some other example, gif of example
 §see: ho to do them -->
 
-*This is just a glimpse of what you can do, if you wnna see more scroll down a bit*
+*This is just a glimpse of what you can do, if you wanna see more [scroll down a bit](#Usage)*
 
 <!-- §see: inner link document -->
 
 ## Warning
 
 This is still an inbuilding young plugin. So if you are using it by directly cloning the repo rathen than antigen, prefer the master branch.
-It's working, I use it on my terminal (for a long time), but some glitch are possible, mainly with latest feature introduced. I'm using it with Zsh 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
+It's working, I use it on my terminal (for a long time), but some glitch are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
 
 **If you have any remark, refactor suggestion or you are using it and had some unexpected behavior or bug (*soooory*), just post an issue ;)**
 
@@ -142,11 +142,11 @@ Here are the main ones:
 
 ## History
 
-This plugins started out as some growing tweak in my config.
-First it was named alvar. (as a compaction of alias and variable) It just created variable about to jump in some dir, and a variable to refer to the directory. Later it was extended to perform some action in these directory.
+This plugins started out as some growing *tweak* in my zsh personal config.
+First it was named *alvar*. (as a compaction of alias and variable) It just created an alias to jump in some dir, and a variable to refer to the directory. Later it was extended to perform some action in these directories.
 Then it was then extracted into is own repo, hence the troubled initial history.
 With a new repo, he got a new name **Diractions** (*never explain an overobvious pun*),
-and is growing ever since with new functionnalities.
+and is growing ever since with new functionnalities. :)
 
 After some fall stall, we might reach the first major version around the new year.
 
@@ -158,3 +158,6 @@ After some fall stall, we might reach the first major version around the new yea
 <!-- Maybe: add version? -->
 
 <!-- §maybe: analytics? -->
+
+### Changelog
+*Comming soon*
