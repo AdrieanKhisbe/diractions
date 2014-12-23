@@ -20,7 +20,8 @@ Then checkying has been copied to the directory with `mydir ls`.
               some-file
 [~_favdir] >> cp some-file $_mydir
 [~_favdir] >> mydir ls
-              other-file some-file```
+              other-file some-file
+```
 
 <!-- §todo: Add some other example, gif of example
 §see: ho to do them -->
@@ -129,7 +130,8 @@ Here is some Example:
 	    dir1  /my/path/number1
 		yasp  /yet/another/stupid/path
     DIR
-   }```
+   }
+```
 
 ### Customs
 There is also some variables to customize the behavior of diraction to fit your needs.
