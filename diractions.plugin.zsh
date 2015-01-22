@@ -51,13 +51,11 @@ declare -gA DIRACTION_REGISTER
 -set-default DIRACTION_AUTO_CONFIG true
 
 # --
-# §later : do it with an array
--set-default DIRACTION_DISPATCH_WHITELIST  \
-    "(make|rake|sbt|gradle|git|cask|bundler| ncdu|du|nemo|nautilus|open|xdg-open|ls)"
-# "(make rake sbt gradle git cask bundler  ncdu du nemo nautilus open xdg-open ls)"
-
-# for  build tools + files utils
-# ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
+if [[ -z $DIRACTION_DISPATCH_WHITELIST ]]; then
+    # for  build tools + files utils
+    DIRACTION_DISPATCH_WHITELIST=(make rake sbt gradle git cask bundler  ncdu du nemo nautilus open xdg-open ls)
+    # §maybe: later, add function to register to whitelist command
+fi
 # --
 
 # §bonux: more config
@@ -470,6 +468,8 @@ function diraction-check-config-dir {
 # check dont come polute: otherwise use _diraction_functions
 
 # §todo: refactor: file edit, and else and EVAL DIR!!!
+# ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
+# §maybe: sed the errorto remove the eval
 function _diraction-dispatch () {
     # §see: send var name or directory?
 
@@ -576,8 +576,8 @@ If you have a set of command to to, you can use the i/interactive subcommand
 
 	*) # handling the remaining
 	    # if command is whitelisted run it
-	    if [[ "$cmd" =~ "${DIRACTION_DISPATCH_WHITELIST}" ]] ;
-		# §maybe: replace regexp match with an array!!
+	    if [[ ${DIRACTION_DISPATCH_WHITELIST[(r)$cmd]} == $cmd ]]
+		# ¤note: r flag for reverse indexing
 	    then
 		eval "(cd \"$dir\" && $cmd $@)"
 	    else
