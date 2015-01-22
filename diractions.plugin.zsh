@@ -49,6 +49,17 @@ declare -gA DIRACTION_REGISTER
 -set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §maybe rename to config file
 -set-default DIRACTION_BROWSER # §todo: update
 -set-default DIRACTION_AUTO_CONFIG true
+
+# --
+# §check if work with array!!
+-set-default DIRACTION_DISPATCH_WHITELIST "(make rake sbt gradle git cask bundler  ncdu du nemo nautilus open xdg-open ls)"
+
+#  "make|rake|sbt|gradle|git|cask|bundler| ncdu|du|nemo|nautilus|open|xdg-open|ls""
+
+# build tools + files utils
+# ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
+# --
+
 # §bonux: more config
 # §bonux: provide documentation too! : store in an array? (name var and doc)
 unset -- -set-default
@@ -513,14 +524,6 @@ function _diraction-dispatch () {
 	# just take a string command.
 
 	## ¤>> transfer commands
-	# build tools + files utils
-	make|rake|sbt|gradle|git|cask|bundler| \
-	    ncdu|du|nemo|nautilus|open|xdg-open|ls)
-	    # ¤note: others to add
-	    # ¤note: later, env var list of permitted values. [gs, etc. nom alias autorisés?]
-	    # §idea: extract to the "*)" pattern and perfom a list match with list
-	    # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
-	    eval "(cd \"$dir\" && $cmd $@)" ;;
 
 	# "passe plat"
 	[,._:-]) eval "(cd \"$dir\" && $@)" ;;
@@ -572,8 +575,18 @@ If you have a set of command to to, you can use the i/interactive subcommand
 	    ;;
 
 	# default
-	*)  echo "$fg[red]Invalid argument! <$cmd>"; return 1 ;;
-	# §todo : transwwer allowed command!
+	*)
+
+# if command is whitelist run it
+if false ;
+then
+
+	    eval "(cd \"$dir\" && $cmd $@)"
+
+else
+echo "$fg[red]Invalid argument! <$cmd>"
+return 1
+fi;;
     esac
     # §later: for performance reason put most used first!
 
