@@ -547,11 +547,12 @@ function _diraction-dispatch () {
 	    (cd "$dir" && while read icmd; do
 
 		    echo -n "$reset_color"
-		    # §todo: check return code of eval: eval error (synctax), ou interpreted command error.
-		    eval "$icmd"
+		    # §todo: check return code of eval: eval error (syntax), ou interpreted command error.
+		    eval "$icmd" |& sed 's/^(eval):1: //'
 
-		    # §maybe: customize some command behavior: ? q ?
+		    # §maybe: customize some command behavior:
 		    # §see how * glob subtitution work.
+		    # §maybe: see if could read multiple line?
 		    echo -n $DIRACTION_INTERACTIVE_PROMPT
 		    done)
 	    # §todo: color prompt + command
