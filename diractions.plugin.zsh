@@ -548,9 +548,16 @@ function _diraction-dispatch () {
 
 		    echo -n "$reset_color"
 		    # §todo: check return code of eval: eval error (syntax), ou interpreted command error.
-		    eval "$icmd" |& sed 's/^(eval):1: //'
 
-		    # §maybe: customize some command behavior:
+		    if [[ "$icmd" =~ "^(h|help|\?)" ]] ; then
+			# §maybe: customize some othercommand behavior:
+			echo "You are in the interactive mode of diraction
+command will be perfomed in '$dir' (content is evaluated)
+you can exit this mode by typing exit, or ^D"
+			else
+			eval "$icmd" |& sed 's/^(eval):1: //'
+		    fi
+
 		    # §see how * glob subtitution work.
 		    # §maybe: see if could read multiple line?
 		    echo -n $DIRACTION_INTERACTIVE_PROMPT
