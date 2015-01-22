@@ -51,12 +51,12 @@ declare -gA DIRACTION_REGISTER
 -set-default DIRACTION_AUTO_CONFIG true
 
 # --
-# §check if work with array!!
--set-default DIRACTION_DISPATCH_WHITELIST "(make rake sbt gradle git cask bundler  ncdu du nemo nautilus open xdg-open ls)"
+# §later : do it with an array
+-set-default DIRACTION_DISPATCH_WHITELIST  \
+    "(make|rake|sbt|gradle|git|cask|bundler| ncdu|du|nemo|nautilus|open|xdg-open|ls)"
+# "(make rake sbt gradle git cask bundler  ncdu du nemo nautilus open xdg-open ls)"
 
-#  "make|rake|sbt|gradle|git|cask|bundler| ncdu|du|nemo|nautilus|open|xdg-open|ls""
-
-# build tools + files utils
+# for  build tools + files utils
 # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
 # --
 
@@ -574,22 +574,18 @@ If you have a set of command to to, you can use the i/interactive subcommand
 	    # §bonux: more precise about targeted command (help)
 	    ;;
 
-	# default
-	*)
-
-# if command is whitelist run it
-if false ;
-then
-
-	    eval "(cd \"$dir\" && $cmd $@)"
-
-else
-echo "$fg[red]Invalid argument! <$cmd>"
-return 1
-fi;;
+	*) # handling the remaining
+	    # if command is whitelisted run it
+	    if [[ "$cmd" =~ "${DIRACTION_DISPATCH_WHITELIST}" ]] ;
+		# §maybe: replace regexp match with an array!!
+	    then
+		eval "(cd \"$dir\" && $cmd $@)"
+	    else
+		echo "$fg[red]Invalid argument! <$cmd>"
+		return 1
+	    fi;;
     esac
     # §later: for performance reason put most used first!
-
 }
 
 ################################################################################
