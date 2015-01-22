@@ -479,7 +479,7 @@ function _diraction-dispatch () {
 
     ## §todo: local eval §maybe. §see
 
-    case $cmd in
+    case "$cmd" in
 	l) ls $dir;; # §maybe: add other args?
 	t|tree) tree $dir;; # §beware: command not necessary installed
 	c|cd) cd "$dir/$1" ;; # §fix: maybe pattern
@@ -522,7 +522,8 @@ function _diraction-dispatch () {
 	    # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
 	    eval "(cd \"$dir\" && $cmd $@)" ;;
 
-	# §SEE!!! §IDEA maybe using ,/./- to just eval what follow?
+	# "passe plat"
+	[,._:-]) eval "(cd \"$dir\" && $@)" ;;
 
 	# §check; quote: protection?
 	# §todoNOW: extract function for the eval.. (local function?)
