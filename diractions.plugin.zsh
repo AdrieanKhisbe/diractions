@@ -493,8 +493,10 @@ function _diraction-dispatch () {
     case "$cmd" in
 	l) ls $dir;; # §maybe: add other args?
 	t|tree) tree $dir;; # §beware: command not necessary installed
-	c|cd) cd "$dir/$1" ;; # §fix: maybe pattern
-	# §maybe find a way to do this in genereic way. (have it for git, make, and so on).
+	c|cd|/) cd "$dir/$1" ;;
+	# §maybe: spetial handling of error. (stay in the home folder?)
+	/*) cd "$dir$cmd" ;;  # TO TEST
+
 
 	# §maybe : o, open? (wrapping with glob?)
 	b|browser) $DIRACTION_BROWSER $dir
