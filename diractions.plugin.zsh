@@ -493,10 +493,22 @@ function _diraction-dispatch () {
     case "$cmd" in
 	l) ls $dir;; # §maybe: add other args?
 	t|tree) tree $dir;; # §beware: command not necessary installed
-	c|cd|/) cd "$dir/$1" ;;
-	# §maybe: spetial handling of error. (stay in the home folder?)
-	/*) cd "$dir$cmd" ;;  # TO TEST
+	c|cd|/) # §maybe: extract diractin-jump subdir
+	    local sdir="$dir/$1"
+	    if [[ -d "$sdir" ]]; then
+		cd $sdir
+	    else
+		echo "$1 subdir does not exist" >&2;
+		cd $dir
+	    fi ;;
 
+	/*) local sdir="$dir$cmd"
+	    if [[ -d "$sdir" ]]; then
+		cd $sdir
+	    else
+		echo "$cmd subdir does not exist" >&2;
+		cd $dir
+	    fi ;;
 
 	# §maybe : o, open? (wrapping with glob?)
 	b|browser) $DIRACTION_BROWSER $dir
