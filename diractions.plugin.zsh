@@ -540,7 +540,8 @@ function _diraction-dispatch () {
 	## ¤>> transfer commands
 
 	# "passe plat"
-	[,._:-]) eval "(cd \"$dir\" && $@)" ;;
+	[,_-]) eval "(cd \"$dir\" && $@)" ;;
+	# :. suppressed for other use
 
 	# §check; quote: protection?
 	# §todoNOW: extract function for the eval.. (local function?)
