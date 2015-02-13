@@ -53,7 +53,7 @@ declare -gA DIRACTION_REGISTER
 # --
 if [[ -z $DIRACTION_DISPATCH_WHITELIST ]]; then
     # for  build tools + files utils
-    DIRACTION_DISPATCH_WHITELIST=(make rake sbt gradle git cask bundler  ncdu du nemo nautilus open xdg-open ls)
+    DIRACTION_DISPATCH_WHITELIST=(make rake sbt gradle git cask bundler ncdu du nemo nautilus open xdg-open ls)
     # §maybe: later, add function to register to whitelist command
 fi
 # --

@@ -9,18 +9,21 @@ Zsh Diractions
 The goal of this plugin is *directory indexing*, map a short logical/mnemotechnical name to directory to quickly access them, or perform action in them.
 Thanks to **diraction** user can perform quick actions on its registered directory, `cd` into it, `ls` it, `git` it, running some command, or refering to them in any command with short variable to denote them.
 
-### Example:
+### Hello Diraction
 Suppose that I have a hypothetical `favdir` and `mydir` directories that i use a alot.
 Here are a simple scenario: you go in `favdir`, see what file there is then copy one in `mydir` using the variable.
-Then checkying has been copied to the directory with `mydir ls`.
+Then I check it has been copied to the directory with `mydir ls`, then go in one of mydir subdirectory
 
 ```sh
-[~]        >> favdir
-[~_favdir] >> ls
-              some-file
-[~_favdir] >> cp some-file $_mydir
-[~_favdir] >> mydir ls
-              other-file some-file
+[~]           >> favdir                  # jumping in diraction folder
+[~_favdir]    >> ls
+                 some-file
+[~_favdir]    >> cp some-file $_mydir    # using mydir as a variable
+[~_favdir]    >> mydir ls                # calling ls in mydir
+                 other-file some-file
+[~_favdir]    >> mydir /sub              # jumping in a sub directory of mydir
+[~_mydir/sub] >> favdir - git status     # run any command or alias
+                 ? someuntrackfile
 ```
 
 <!-- §todo: Add some other example, gif of example
@@ -33,9 +36,9 @@ Then checkying has been copied to the directory with `mydir ls`.
 ## Warning
 
 This is still an inbuilding young plugin. So if you are using it by directly cloning the repo rather than using antigen, prefer the `master` branch.
-It's working, I use it on my terminal (for a long time), but some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
+It's working, I use it everyday on my terminal (for a long time). However some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
 
-**If you have any remark, refactor suggestion or you are using it and had some unexpected behavior or bug (*soooory*), just post an issue ;)**
+**If you have any remark, refactor suggestion or you are having some unexpected behavior or bug (*soooory*), just post an issue ;)**
 
 (I'm aware of the potential security issues: zsh env/function poisoinning, and evaluated code/injections,... but it's aimed to be used only in interactive mode on your shell so as insecure as a shell bash config.
 So for now, I would advise not to use it without a glance of the source)
@@ -65,14 +68,14 @@ First step is to define your *diractions*, associate name to your most used dire
 
 ### Use you diraction
 
-Now that you have a *diraction* it's time to use it. :)
+Now that you have a *diraction* it's time to use it. *:)*
 Simpliest way is to just type it's name to go in the attached directory.
 
 Here are the main commands. Commands that are executed in the context of the diraction:
 - `l|ls` : just some ls
 - `c|cd <subdir>` : jump in the subdirectory specified
-- `/ <subdi> | /<subdir>` : also jump in subdir
-- `ed|edit <filename>` : edit the file (being relative to the diractoin)
+- `/ <subdir> | /<subdir>` : also jump in subdir
+- `ed|edit <filename>` : edit the file (being relative to the diraction folder)
 - `e|exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
 - `-|,|_` : use the following as a command
 - `i|interactive|prompt|shell` : to run several command in the context of the diraction directory
