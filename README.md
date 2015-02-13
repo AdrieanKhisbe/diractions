@@ -40,7 +40,7 @@ It's working, I use it on my terminal (for a long time), but some glitches are p
 (I'm aware of the potential security issues: zsh env/function poisoinning, and evaluated code/injections,... but it's aimed to be used only in interactive mode on your shell so as insecure as a shell bash config.
 So for now, I would advise not to use it without a glance of the source)
 
-The diraction aliases point to a "dispatch function" taking the attached directory as first argument. (then subcommand, and its eventual arguments)
+The `diraction` aliases point to a *"dispatch function"*  taking the attached directory as first argument. (then subcommand, and its eventual arguments)
 
 ## Usage
 
@@ -71,8 +71,10 @@ Simpliest way is to just type it's name to go in the attached directory.
 Here are the main commands. Commands that are executed in the context of the diraction:
 - `l|ls` : just some ls
 - `c|cd <subdir>` : jump in the subdirectory specified
+- `/ <subdi> | /<subdir>` : also jump in subdir
 - `ed|edit <filename>` : edit the file (being relative to the diractoin)
 - `e|exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
+- `-|,|_` : use the following as a command
 - `i|interactive|prompt|shell` : to run several command in the context of the diraction directory
 
 <!-- §todo: Celle des passes plats. -->
@@ -151,8 +153,6 @@ Then it was then extracted into is own repo, hence the troubled initial history.
 With a new repo, he got a new name **Diractions** (*never explain an overobvious pun*),
 and is growing ever since with new functionnalities. :)
 
-After some fall stall, we might reach the first major version around the new year.
-
 <!-- Maybe list of feature introduced after 1 will go there? -->
 
 <!-- §TODO: contribution note -->
@@ -163,4 +163,8 @@ After some fall stall, we might reach the first major version around the new yea
 <!-- §maybe: analytics? -->
 
 ### Changelog
-*Coming soon*
+- `v0.9` :
+  - introduce `servicing hatch` subcommand with `-`, `,`, `_`
+  - improved subdir feature: warning if subdir does not exist. (making jump int parent anyway).
+    introduce `/` and `somesubdir` subcommand
+  - hiding of the `'(eval):1:'` error message in interactive mode
