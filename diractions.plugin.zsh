@@ -123,7 +123,7 @@ you can force creation adding --ignore-missing-dir flag" >&2
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
 	# ¤note: déréférencement de variable: ${(P)var}
-	export $var=$(eval echo "$dir")
+	export $var="$(eval echo "$dir")"
 	# §see: keep export?
 	# §maybe: readonly probably better?? (maybe not: could not unset then)
     fi
@@ -312,7 +312,10 @@ function -diraction-parse-file {
 
 ##' function to create a set of batch definition from sdin
 function diraction-batch-create {
-    cat -n |  sed 's:#.*$::' | sed -r 's:\s+: :g' |
+    local SED_OPT
+    if [[ "$(uname -s)" -eq "Darwin" ]] ; then SED_OPT="-E" ; else SED_OPT="-R" ; fi
+
+    cat -n |  sed 's:#.*$::' | sed $SED_OPT 's/[[:space:]]+/ /g' |
     # kill comment for the eval
     # §maybe: extract to function when fill do check-syntax, check file exist.
     # should rafine to have a read keeping memory in count?. (maybe cat -n)
@@ -332,11 +335,11 @@ function diraction-batch-create {
 	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
 	    ko=true
 	elif [[ $1 == "--ignore-missing-dir" ]]; then
-	    diraction-create $aline[2] "$aline[3]" --ignore-missing-dir
+	    diraction-create "$aline[2]" "$aline[3]" --ignore-missing-dir
 	else
 	    local dir=$(eval echo "$aline[3]")
 	    if [[ -d "$dir" ]]; then
-		diraction-create $aline[2] "$dir"
+		diraction-create "$aline[2]" "$dir"
 	    else
 		echo "At line ${aline[1]}, directory '$dir' does not exists" >&2
 		ko=true
