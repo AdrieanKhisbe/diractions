@@ -4,11 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Added
-- Introduce a real Changelog
+- introduce a real Changelog
 
 ## [0.9.1] - 2015-02-17
 ### Fixed
-- Fixes for Apple Darwin support (sed options)
+- fixes for Apple Darwin support (sed options)
 
 ## [0.9] - 2015-02-14
 ### Added
@@ -18,10 +18,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - hiding of the `'(eval):1:'` error message in interactive mode
 
-<!-- §TODO: old version -->
-## [0.8] - 2014 TODO
+## [0.8] - 2014-12-23
+### Added
+- proper README with examples
+- new Header
 
-## [0.7] - 2014 TODO
+## [0.7] - 2014-12-17
+### Added
+- function to check syntax of diraction defun file
+- function to check that directory exists or not
+
+## More history digging would be done one day
 
 [unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9.1...HEAD
 [0.9.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9...v0.9.1
