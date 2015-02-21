@@ -166,8 +166,5 @@ and is growing ever since with new functionnalities. :)
 <!-- §maybe: analytics? -->
 
 ### Changelog
-- `v0.9` :
-  - introduce `servicing hatch` subcommand with `-`, `,`, `_`
-  - improved subdir feature: warning if subdir does not exist. (making jump int parent anyway).
-    introduce `/` and `somesubdir` subcommand
-  - hiding of the `'(eval):1:'` error message in interactive mode
+
+Changelog might be consulted in the dedicated [file](CHANGELOG.md)
