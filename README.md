@@ -29,11 +29,11 @@ Then I check it has been copied to the directory with `mydir ls`, then go in one
 <!-- §todo: Add some other example, gif of example
 §see: ho to do them -->
 
-*This is just a glimpse of what you can do, if you wanna see more [scroll down a bit](#Usage)*
+*This is just a glimpse of what you can do, if you wanna see more [scroll down a bit](#Usage)*. Otherwise, go in the terminal and practice. completion is there to help you *:)*
 
 <!-- §see: inner link document -->
 
-## Warning
+## >> Warning <<
 
 This is still an inbuilding young plugin. So if you are using it by directly cloning the repo rather than using antigen, prefer the `master` branch.
 It's working, I use it everyday on my terminal (for a long time). However some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)

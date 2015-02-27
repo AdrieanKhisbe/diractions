@@ -1,29 +1,21 @@
 #compdef _diraction-dispatch
-## §later: do basic completion function for _diraction-dispatch
-## §think: decide or not if register completion fonction for all the diractions shortcult?
+# completion for the dispatcher command
 
-#  words: 1:function 2:directory 3:patterb
+#  words: 1:function 2:directory 3:pattern
 
 case $words[3] in
     /*) # Pattern :D
 	local diract=$words[2]
 	local dirdir=`eval echo $diract`
 	local pattern="${words[3]#/}"
+	local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
 
-	# bewaren il reutilise mon pattern!! how to change this
-	# -W
-	#_path_files -g "$dirdir$words[3]*"  && return 0 # Pb: give the full file
-	# echo ç "$pattern*" # :::  "/$pattern*"  -- dirdir $dirdir
-	 local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
-	# echo $cmd
-	 for dir in $(eval $cmd)
-	 do
-	     # echo @ dir $dir
-	     compadd $dir
-	 done && return 0
-	 # 56 shell imbriqués...
+	for dir in $(eval $cmd)
+	do
+	    compadd $dir
+	done && return 0
 ;;
-    *)
+    *)	# Basic argument
 	_arguments "2: :(ls exec interactive)" && return 0
+	# §LATER: more details!!
 esac
-	       # (ls exec interactive
