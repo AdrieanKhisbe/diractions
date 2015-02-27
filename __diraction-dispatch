@@ -8,10 +8,20 @@ case $words[3] in
     /*) # Pattern :D
 	local diract=$words[2]
 	local dirdir=`eval echo $diract`
-	echo ">>>>$diract::$dirdir<"
-	# bewaren il reutilise mon pattern!! how to change this
-	_path_files -W $dirdir  && return 0 # -g "${words[3]#/}"
+	local pattern="${words[3]#/}"
 
+	# bewaren il reutilise mon pattern!! how to change this
+	# -W
+	#_path_files -g "$dirdir$words[3]*"  && return 0 # Pb: give the full file
+	# echo ç "$pattern*" # :::  "/$pattern*"  -- dirdir $dirdir
+	 local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
+	# echo $cmd
+	 for dir in $(eval $cmd)
+	 do
+	     # echo @ dir $dir
+	     compadd $dir
+	 done && return 0
+	 # 56 shell imbriqués...
 ;;
     *)
 	_arguments "2: :(ls exec interactive)" && return 0
