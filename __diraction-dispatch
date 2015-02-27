@@ -2,4 +2,18 @@
 ## §later: do basic completion function for _diraction-dispatch
 ## §think: decide or not if register completion fonction for all the diractions shortcult?
 
-_arguments "2: :(ls exec interactive)" && return 0
+#  words: 1:function 2:directory 3:patterb
+
+case $words[3] in
+    /*) # Pattern :D
+	local diract=$words[2]
+	local dirdir=`eval echo $diract`
+	echo ">>>>$diract::$dirdir<"
+	# bewaren il reutilise mon pattern!! how to change this
+	_path_files -W $dirdir  && return 0 # -g "${words[3]#/}"
+
+;;
+    *)
+	_arguments "2: :(ls exec interactive)" && return 0
+esac
+	       # (ls exec interactive
