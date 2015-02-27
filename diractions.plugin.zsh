@@ -22,6 +22,8 @@
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
+
+
 ################################################################################
 # ¤> Config
 # ¤>> Commands variables
@@ -613,32 +615,6 @@ If you have a set of command to to, you can use the i/interactive subcommand
     esac
     # §later: for performance reason put most used first!
 }
-
-################################################################################
-# ¤> Completion
-# ¤>> utils diraction
-compdef _diraction diraction
-
-_diraction () {     # ¤sync
-    # Setup diraction's autocompletion
-    compadd  \
-	create batch-create \
-	disable enable \
-	destroy destory-all reset \
-	list list-alias list-dir \
-	grep grep-alias \
-	help
-}
-# new \ §todo: later when alaias
-# §maybe: use a variable to hold the completion commande (or extract from a DIRACTION_CMD_HELP array!)
-
-compdef _diraction diraction
-# §tofix: happen too hearly, so compdef not defined, or something like that
-# §todo: voir si compdef offre un hook ou quelquechose similaire
-
-# ¤>>
-## §later: do basic completion function for _diraction-dispatch
-## §think: decide or not if register completion fonction for all the diractions shortcult?
 
 ## ¤> final configuration
 if $DIRACTION_AUTO_CONFIG ;then

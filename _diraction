@@ -1,0 +1,8 @@
+#compdef diraction
+
+_arguments "1: :(batch-create check-config-syntax destroy-all exist help list-dir check create disable grep list load-config check-config-dir destroy enable grep-alias list-alias reset)
+
+# command liste
+# diraction-batch-create         diraction-check-config-syntax  diraction-destroy-all          diraction-exist                diraction-help                 diraction-list-dir
+# diraction-check                diraction-create               diraction-disable              diraction-grep                 diraction-list                 diraction-load-config
+#  diraction-check-config-dir     diraction-destroy              diraction-enable               diraction-grep-alias           diraction-list-alias           diraction-reset
