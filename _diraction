@@ -1,8 +1,30 @@
 #compdef diraction
 
-_arguments "1: :(batch-create check-config-syntax destroy-all exist help list-dir check create disable grep list load-config check-config-dir destroy enable grep-alias list-alias reset)
+local -a _1st_arguments
+_1st_arguments=(
+    'batch-create:Batch create diractions from stdin'
+    'check-config-dir:Check which dir exist in config'
+    'check-config-syntax:Check the syntax in config file'
+    'check:check the config'
+    'create:Create a new diraction'
+    'destroy-all:Destroy all diraction'
+    'destroy:Destroy specified alias'
+    'disable:Disable specified Diraction'
+    'enable:Enable the provided alias'
+    'exist:Chec if a diraction exist'
+    'grep-alias:Look for an existig alias'
+    'grep:Search in the existing diraction'
+    'help:Give more details about diraction'
+    'list-alias:List existing alias'
+    'list-dir:List all the directories'
+    'list:List the existing diraction'
+    'load-config:Load the configuration'
+    'reset:Reload all the diraction aliases'
+)
 
-# command liste
-# diraction-batch-create         diraction-check-config-syntax  diraction-destroy-all          diraction-exist                diraction-help                 diraction-list-dir
-# diraction-check                diraction-create               diraction-disable              diraction-grep                 diraction-list                 diraction-load-config
-#  diraction-check-config-dir     diraction-destroy              diraction-enable               diraction-grep-alias           diraction-list-alias           diraction-reset
+_arguments '*:: :->subcmds' && return 0
+
+if (( CURRENT == 1 )); then
+	_describe -t commands "Diraction subcommands" _1st_arguments
+	return
+fi
