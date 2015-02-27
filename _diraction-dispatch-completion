@@ -1,0 +1,7 @@
+#compdef _diraction-dispatch
+## §later: do basic completion function for _diraction-dispatch
+## §think: decide or not if register completion fonction for all the diractions shortcult?
+
+_diraction-dispatch-completion() {
+    _arguments "2: :(ls exec interactive)" && return 0
+}

@@ -22,7 +22,9 @@
 # ¤note: _dispatch is a zsh (or omz) reserved name for completion
 # ¤note: function return code by specify value.
 
-
+# completion
+source "$(dirname $0:A)/_diraction-dispatch-completion"
+compdef _diraction-dispatch-completion _diraction-dispatch
 
 ################################################################################
 # ¤> Config
