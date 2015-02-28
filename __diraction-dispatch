@@ -3,12 +3,16 @@
 
 #  words: 1:function 2:directory 3:pattern
 
+# §TODO: also switch based on current!
+# so that can improved completion of subcommand needing args
+
 case $words[3] in
     /*) # Pattern :D
 	local diract=$words[2]
 	local dirdir=`eval echo $diract`
 	local pattern="${words[3]#/}"
 	local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
+	# maybe extract fund
 
 	for dir in $(eval $cmd)
 	do
@@ -16,6 +20,22 @@ case $words[3] in
 	done && return 0
 ;;
     *)	# Basic argument
-	_arguments "2: :(ls exec interactive)" && return 0
-	# §LATER: more details!!
+	local -a subcommands
+	subcommands=(
+	    'ls:List files in the specified folder (alias l)'
+	    'exec:Exec (through eval) the specified command (alias e -,` )'
+	    'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
+	    '/:Go in some of the subfolder if provided (alias c cd)'
+	    'edit:Edit the given subfile (alias ed)'
+	    'brower:Launch browser on the directory (alias b)'
+	    'tree:Launch tree command (alias t)'
+	)
+	#TODO: maybe make this a gloabl variable to add user defined function?
+	# or extend the array here?
+
+	if (( CURRENT == 3)); then
+	    _describe -t commands "Dispatcher subcommand" subcommands
+	    return
+	fi
+
 esac

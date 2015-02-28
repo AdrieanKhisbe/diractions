@@ -3,6 +3,10 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Fixed
+- changelog links
+### Changed
+- Improved completion help
 
 ## [0.10] - 2015-02-27
 ### Added
@@ -35,7 +39,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9.1...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10...HEAD
 [0.10]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9.1...v0.10
 [0.9.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9...v0.9.1
 [0.9]: https://github.com/AdrieanKhisbe/diractions/compare/v0.8...v0.9
