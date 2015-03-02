@@ -17,13 +17,10 @@ then # Subcomand completion
 
 	    local pattern="${subcommand#/}"
 	    local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
-	    # maybe extract fund
+	    # §maybe extract fund
 	    # §todo: check no file are grabbed
-
-	    for dir in $(eval $cmd)
-	    do
-		compadd $dir
-	    done && return 0
+	    compadd -x "Available subdirs:" $(eval $cmd)
+	    return 0
 	    ;;
 
 	*)	# Basic argument
@@ -37,7 +34,7 @@ then # Subcomand completion
 		'browser:Launch browser on the directory (alias b)'
 		'tree:Launch tree command (alias t)'
 	    )
-	    compadd $DIRACTION_DISPATCH_WHITELIST
+	    compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
 	    # maybe extend subcommands with these value??
 	    # or extend the array here?
 
@@ -48,18 +45,16 @@ then # Subcomand completion
 else # argument completion
     # completion won't be called without a 2 arg, so sure will be 4+
     case $subcommand in
-	# no args
 	e|"exec") # maybe files?
-	    return 0
-	    ;;
-	i|interactive|prompt|shell|help) return 0;;
-	#§todo: search how to add message
+	    _message "no completion, you are on your own!" && return 0 ;;
+	i|interactive|prompt|shell|help)
+	    _message "Just hit enter, and enter the interactive mode :)" && return 0;;
+
+	# §todo: no args
 
 	*)
 	    local compfun="_${subcommand}"
-
-	    # shifting words args
-	    shift words; shift words
+	    shift words; shift words    # shifting words args
 	    if functions "$compfun" > /dev/null; then
 		# §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main
 		# if so do it up
@@ -67,7 +62,8 @@ else # argument completion
 		# beware to file completion:
 		# https://github.com/robbyrussell/oh-my-zsh/issues/2394
 	    else
-		# decide what to do. "no completion, you are on your own"
+		# decide what to do.
+		_message "No completion available for $subcommand"
 	    fi
 	    ;;
     esac
