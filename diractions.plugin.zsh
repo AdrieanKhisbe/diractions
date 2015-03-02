@@ -495,9 +495,9 @@ function _diraction-dispatch () {
     ## §todo: local eval §maybe. §see
 
     case "$cmd" in
-	l) ls $dir;; # §maybe: add other args?
-	t|tree) tree $dir;; # §beware: command not necessary installed
-	c|cd|/) # §maybe: extract diractin-jump subdir
+	l|ls) ls $dir $@ ;;
+	t|tree) tree $dir $@;; # §beware: command not necessary installed
+	c|cd|/) # §maybe: extract diraction-jump subdir
 	    local sdir="$dir/$1"
 	    if [[ -d "$sdir" ]]; then
 		cd $sdir

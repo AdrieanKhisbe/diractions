@@ -3,11 +3,14 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Changed
+- `ls` and `tree` subcommand can now take options
+
 
 ## [0.10.1] - 2015-03-02
 ### Fixed
 - changelog links
-- wrong alias suggestion for exec
+- wrong alias suggestion for `exec`
 ### Changed
 - improved completion help
 
