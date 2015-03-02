@@ -3,9 +3,13 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [0.10.2] - 2015-03-02
+### Added
+- completion of whitelisted commands
+- messages on completion groups
 ### Changed
 - `ls` and `tree` subcommand can now take options
-
 
 ## [0.10.1] - 2015-03-02
 ### Fixed
@@ -45,7 +49,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.1...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.2...HEAD
+[0.10.2]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10...v0.10.1
 [0.10]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9.1...v0.10
 [0.9.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9...v0.9.1
