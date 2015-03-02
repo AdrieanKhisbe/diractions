@@ -3,12 +3,14 @@
 
 #  words: 1:function 2:directory 3:pattern
 
+
+
 if (( CURRENT == 3));
 then # Subcomand completion
     case $words[3] in
 	/*) # Pattern :D
 	    local diract=$words[2]
-	    local dirdir=`eval echo $diract`
+	    local dirdir=`eval echo $diract` # §TODO: now, move up!!
 	    local pattern="${words[3]#/}"
 	    local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
 	    # maybe extract fund
@@ -48,6 +50,9 @@ else # argument completion
 	*)
 	    local compfun="_${words[3]}"
 	    if functions "$compfun" > /dev/null; then
+		# §TODO: should shift word so that it works.
+		# §TODO: how to improve context, change PWD?
+		# if so do it up
 		$compfun && return 0
 		# beware to file completion
 	    else
