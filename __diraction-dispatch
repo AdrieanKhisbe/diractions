@@ -12,6 +12,7 @@ PWD=$dirdir
 if (( CURRENT == 3));
 then # Subcomand completion
     case $subcommand in
+
 	/*) # Pattern :D
 
 	    local pattern="${subcommand#/}"
@@ -24,6 +25,7 @@ then # Subcomand completion
 		compadd $dir
 	    done && return 0
 	    ;;
+
 	*)	# Basic argument
 	    local -a subcommands
 	    subcommands=(
@@ -35,7 +37,8 @@ then # Subcomand completion
 		'browser:Launch browser on the directory (alias b)'
 		'tree:Launch tree command (alias t)'
 	    )
-	    #TODO: maybe make this a gloabl variable to add user defined function?
+	    compadd $DIRACTION_DISPATCH_WHITELIST
+	    # maybe extend subcommands with these value??
 	    # or extend the array here?
 
 	    _describe -t commands "Dispatcher subcommand" subcommands
