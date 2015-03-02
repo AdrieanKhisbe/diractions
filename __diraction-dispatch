@@ -23,7 +23,7 @@ case $words[3] in
 	local -a subcommands
 	subcommands=(
 	    'ls:List files in the specified folder (alias l)'
-	    'exec:Exec (through eval) the specified command (alias e -,` )'
+	    'exec:Exec (through eval) the specified command (alias e - , _ )'
 	    'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
 	    '/:Go in some of the subfolder if provided (alias c cd)'
 	    'edit:Edit the given subfile (alias ed)'
