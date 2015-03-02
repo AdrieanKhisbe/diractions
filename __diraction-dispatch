@@ -3,17 +3,21 @@
 
 #  words: 1:function 2:directory 3:pattern
 
+local diract=$words[2]
+local dirdir=`eval echo $diract`
+local subcommand=$words[3]
 
+PWD=$dirdir
 
 if (( CURRENT == 3));
 then # Subcomand completion
-    case $words[3] in
+    case $subcommand in
 	/*) # Pattern :D
-	    local diract=$words[2]
-	    local dirdir=`eval echo $diract` # §TODO: now, move up!!
-	    local pattern="${words[3]#/}"
+
+	    local pattern="${subcommand#/}"
 	    local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
 	    # maybe extract fund
+	    # §todo: check no file are grabbed
 
 	    for dir in $(eval $cmd)
 	    do
@@ -35,11 +39,12 @@ then # Subcomand completion
 	    # or extend the array here?
 
 	    _describe -t commands "Dispatcher subcommand" subcommands
+
 	    return
     esac
 else # argument completion
     # completion won't be called without a 2 arg, so sure will be 4+
-    case $words[3] in
+    case $subcommand in
 	# no args
 	e|"exec") # maybe files?
 	    return 0
@@ -48,13 +53,16 @@ else # argument completion
 	#§todo: search how to add message
 
 	*)
-	    local compfun="_${words[3]}"
+	    local compfun="_${subcommand}"
+
+	    # shifting words args
+	    shift words; shift words
 	    if functions "$compfun" > /dev/null; then
-		# §TODO: should shift word so that it works.
-		# §TODO: how to improve context, change PWD?
+		# §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main
 		# if so do it up
 		$compfun && return 0
-		# beware to file completion
+		# beware to file completion:
+		# https://github.com/robbyrussell/oh-my-zsh/issues/2394
 	    else
 		# decide what to do. "no completion, you are on your own"
 	    fi
