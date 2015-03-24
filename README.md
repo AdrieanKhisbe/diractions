@@ -4,6 +4,7 @@ Zsh Diractions
 *Doing Anything, Anywhere, from here*
 
 <!-- TODO: make a gh-page (and absorb most of the content?) Ou soyons fou, read the doc -->
+[![Join the chat https://gitter.im/AdrieanKhisbe/diractions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AdrieanKhisbe/diractions)
 
 ## Aim
 The goal of this plugin is *directory indexing*, map a short logical/mnemotechnical name to directory to quickly access them, or perform action in them.
