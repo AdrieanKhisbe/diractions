@@ -1,6 +1,8 @@
 Zsh Diractions
 ==============
 
+[![Join the chat at https://gitter.im/AdrieanKhisbe/diractions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AdrieanKhisbe/diractions?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 *Doing Anything, Anywhere, from here*
 
 <!-- TODO: make a gh-page (and absorb most of the content?) Ou soyons fou, read the doc -->
