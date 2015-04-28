@@ -3,6 +3,8 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- introduce a `where` function aliases to `w` and `?`
 
 ## [0.10.2] - 2015-03-02
 ### Added

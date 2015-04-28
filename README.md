@@ -80,7 +80,7 @@ Here are the main commands. Commands that are executed in the context of the dir
 - `e|exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
 - `-|,|_` : use the following as a command
 - `i|interactive|prompt|shell` : to run several command in the context of the diraction directory
-
+- `w|where|?` : to be remind what is the diraction folder
 <!-- §todo: Celle des passes plats. -->
 
 You can also use the diraction variable in any command. `$_mydir` will be expanded to the attached directory.

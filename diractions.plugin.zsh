@@ -584,8 +584,11 @@ you can exit this mode by typing exit, or ^D"
 	    # §todo: color prompt + command
 	    # completion so over kill...
 	    echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
-
 	    ;;
+
+        '?'|w|where)
+            echo "$dir"
+            ;;
 
 	help) echo "$fg[green]This is a diraction dispatch function.
 
