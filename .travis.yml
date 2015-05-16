@@ -6,7 +6,7 @@ install:
   # install antigen
   - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen.zsh
   - echo "source ~/antigen.zsh; antigen bundle rylnd/shpec; antigen apply" > ~/.zshrc
-  - source ~/.zshrc
+  - zsh ~/.zshrc
 script:
   - zsh --version
   - source ~/.zshrc
