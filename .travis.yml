@@ -10,9 +10,7 @@ install:
   - export SHELL=zsh
 script:
   - zsh --version
-  - source ~/.zshrc
-  - shpec --version
-  - shpec
+  - ./.travis-run.zsh
     # Check if shall not load diraction by hand
 before_install:
   - sudo apt-get install zsh
