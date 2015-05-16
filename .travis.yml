@@ -4,9 +4,8 @@ env:
   - SHELL=zsh
 install:
   # install antigen
-  - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > antigen.zsh
-  - source antigen.zsh
-  - antigen bundle rylnd/shpec
+  - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen.zsh
+  - echo "source ~/antigen.zsh\n antigen bundle rylnd/shpec" > ~/.zshrc
 script:
   - zsh --version
     # Check if shall not load diraction by hand
