@@ -4,9 +4,7 @@
 
 describe "Diraction Commands"
 
-  before
-     load $__/../diractions.plugin.zsh
-  end
+  source ./diractions.plugin.zsh
 
   describe "Dispatcher"
 
