@@ -6,12 +6,13 @@ install:
   # install antigen
   - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen.zsh
   - echo "source ~/antigen.zsh; antigen bundle rylnd/shpec; antigen apply" > ~/.zshrc
+  - source ~/.zshrc
 script:
   - zsh --version
-    # Check if shall not load diraction by hand
+  - source ~/.zshrc
   - shpec --version
   - shpec
-
+    # Check if shall not load diraction by hand
 before_install:
   - sudo apt-get install zsh
   - export SHELL=zsh
