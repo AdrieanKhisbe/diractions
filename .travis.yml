@@ -1,0 +1,20 @@
+# zsh shpec build draft
+language: zsh
+env:
+  - SHELL=zsh
+install:
+  # install antigen
+  - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen.zsh
+  - echo "source ~/antigen.zsh; antigen bundle rylnd/shpec; antigen apply" > ~/.zshrc
+  - zsh ~/.zshrc
+  - export SHELL=zsh
+script:
+  - zsh --version
+  - ./.travis-run.zsh
+    # Check if shall not load diraction by hand
+before_install:
+  - sudo apt-get install zsh
+  - export SHELL=zsh
+
+notifications:
+  email: false

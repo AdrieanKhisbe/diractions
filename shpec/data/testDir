@@ -1,0 +1,7 @@
+# Test no failure for existing dir
+# TODO: replace with dir
+ala ~/Dropbox
+dr  ~/Dropbox
+infob ~/Dropbox/Infobox
+# gros lolo
+here ~/Dropbox/Infobox/SomeDir
