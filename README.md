@@ -4,6 +4,7 @@ Zsh Diractions
 *Doing Anything, Anywhere, from here*
 
 <!-- TODO: make a gh-page (and absorb most of the content?) Ou soyons fou, read the doc -->
+[![Build Status](https://travis-ci.org/AdrieanKhisbe/diractions.svg)](https://travis-ci.org/AdrieanKhisbe/diractions)
 [![Join the chat https://gitter.im/AdrieanKhisbe/diractions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AdrieanKhisbe/diractions)
 
 ## Aim
