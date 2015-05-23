@@ -13,59 +13,59 @@ if (( CURRENT == 3));
 then # Subcomand completion
     case $subcommand in
 
-	/*) # Pattern :D
+        /*) # Pattern :D
 
-	    local pattern="${subcommand#/}"
-	    local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
-	    # §maybe extract fund
-	    # §todo: check no file are grabbed
-	    compadd -x "Available subdirs:" $(eval $cmd)
-	    return 0
-	    ;;
+            local pattern="${subcommand#/}"
+            local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
+            # §maybe extract fund
+            # §todo: dont add space: see http://stackoverflow.com/questions/8372866/how-to-remove-an-additional-space-from-zsh-auto-complete-function
+            compadd -x "Available subdirs:" $(eval $cmd)
+            return 0
+            ;;
 
-	*)	# Basic argument
-	    local -a subcommands
-	    subcommands=(
-		'ls:List files in the specified folder (alias l)'
-		'exec:Exec (through eval) the specified command (alias e - , _ )'
-		'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
-		'/:Go in some of the subfolder if provided (alias c cd)'
-		'edit:Edit the given subfile (alias ed)'
-		'browser:Launch browser on the directory (alias b)'
-		'tree:Launch tree command (alias t)'
-	    )
-	    compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
-	    # maybe extend subcommands with these value??
-	    # or extend the array here?
+        *)      # Basic argument
+            local -a subcommands
+            subcommands=(
+                'ls:List files in the specified folder (alias l)'
+                'exec:Exec (through eval) the specified command (alias e - , _ )'
+                'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
+                '/:Go in some of the subfolder if provided (alias c cd)'
+                'edit:Edit the given subfile (alias ed)'
+                'browser:Launch browser on the directory (alias b)'
+                'tree:Launch tree command (alias t)'
+            )
+            compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
+            # maybe extend subcommands with these value??
+            # or extend the array here?
 
-	    _describe -t commands "Dispatcher subcommand" subcommands
+            _describe -t commands "Dispatcher subcommand" subcommands
 
-	    return
+            return
     esac
 else # argument completion
     # completion won't be called without a 2 arg, so sure will be 4+
     case $subcommand in
-	e|"exec") # maybe files?
-	    _message "no completion, you are on your own!" && return 0 ;;
-	i|interactive|prompt|shell|help)
-	    _message "Just hit enter, and enter the interactive mode :)" && return 0;;
+        e|"exec") # maybe files?
+            _message "no completion, you are on your own!" && return 0 ;;
+        i|interactive|prompt|shell|help)
+            _message "Just hit enter, and enter the interactive mode :)" && return 0;;
 
-	# §todo: no args
+        # §todo: no args
 
-	*)
-	    local compfun="_${subcommand}"
-	    shift words; shift words    # shifting words args
-	    if functions "$compfun" > /dev/null; then
-		# §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main
-		# if so do it up
-		$compfun && return 0
-		# beware to file completion:
-		# https://github.com/robbyrussell/oh-my-zsh/issues/2394
-	    else
-		# decide what to do.
-		_message "No completion available for $subcommand"
-	    fi
-	    ;;
+        *)
+            local compfun="_${subcommand}"
+            shift words; shift words    # shifting words args
+            if functions "$compfun" > /dev/null; then
+                # §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main
+                # if so do it up
+                $compfun && return 0
+                # beware to file completion:
+                # https://github.com/robbyrussell/oh-my-zsh/issues/2394
+            else
+                # decide what to do.
+                _message "No completion available for $subcommand"
+            fi
+            ;;
     esac
 
 fi

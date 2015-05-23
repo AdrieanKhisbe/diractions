@@ -28,14 +28,14 @@ if (( CURRENT == 2 )); then
     return 0
 elif (( CURRENT == 3 )); then
     case $words[2] in
-	create) _message "Diraction Name" && return 0;;
-	destroy|disable|enable|exist) compadd -x "Existing diractions" ${(ok)DIRACTION_REGISTER} && return 0;;
-	grep*) _message "Grepping pattern" && return 0;;
-	*) _message "No args required"
+        create) _message "Diraction Name" && return 0;;
+        destroy|disable|enable|exist) compadd -x "Existing diractions" ${(ok)DIRACTION_REGISTER} && return 0;;
+        grep*) _message "Grepping pattern" && return 0;;
+        *) _message "No args required"
     esac
 
 elif (( CURRENT == 4 )); then
     case $words[2] in
-	create) _path_files -/ -x "Diraction Path"  && return 0 ;;
+        create) _path_files -/ -x "Diraction Path"  && return 0 ;;
     esac
 fi

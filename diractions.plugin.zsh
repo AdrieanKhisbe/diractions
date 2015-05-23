@@ -89,11 +89,11 @@ function diraction(){
     shift
 
     if functions "diraction-$cmd" > /dev/null; then
-	# ¤note: functions print all function or specified one
+        # ¤note: functions print all function or specified one
         "diraction-$cmd" "$@"
     else
-	 echo "No such subcommand\n${DIRACTION_USAGE}" >&2;
-	 return 1
+         echo "No such subcommand\n${DIRACTION_USAGE}" >&2;
+         return 1
     fi
 }
 
@@ -118,15 +118,15 @@ function diraction-create(){
         echo "diraction: $dir is not a real directory ($var)
 you can force creation adding --ignore-missing-dir flag" >&2
         return 2
-	# §maybe: log "dir is missing". count numb of miss
+        # §maybe: log "dir is missing". count numb of miss
     fi
 
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
-	# ¤note: déréférencement de variable: ${(P)var}
-	export $var="$(eval echo "$dir")"
-	# §see: keep export?
-	# §maybe: readonly probably better?? (maybe not: could not unset then)
+        # ¤note: déréférencement de variable: ${(P)var}
+        export $var="$(eval echo "$dir")"
+        # §see: keep export?
+        # §maybe: readonly probably better?? (maybe not: could not unset then)
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
@@ -145,8 +145,8 @@ function diraction-exist {
 function diraction-list {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
-	echo "$a\t -  $DIRACTION_REGISTER[$a]"
-	# §TODO: indent [retrieve zsh link]
+        echo "$a\t -  $DIRACTION_REGISTER[$a]"
+        # §TODO: indent [retrieve zsh link]
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
@@ -164,59 +164,59 @@ function diraction-list-dir {
 ##' Grep existing diraction to find matching aliases
 function diraction-grep {
     if [[ $# == 0 ]]; then
-	echo "Please provide something to grep it with" >&2
-	return 1
+        echo "Please provide something to grep it with" >&2
+        return 1
     else
-	echo "List of diractions: matching '$@'"
-	for a in ${(ko)DIRACTION_REGISTER}; do
-	    echo "$a\t -  $DIRACTION_REGISTER[$a]"
-	    # §TODO: indent: see padding: http://zsh.sourceforge.net/Doc/Release/Expansion.html
-	done | grep $@
+        echo "List of diractions: matching '$@'"
+        for a in ${(ko)DIRACTION_REGISTER}; do
+            echo "$a\t -  $DIRACTION_REGISTER[$a]"
+            # §TODO: indent: see padding: http://zsh.sourceforge.net/Doc/Release/Expansion.html
+        done | grep $@
     fi
 }
 
 ##' grep alias to find matching alias
 function diraction-grep-alias {
     if [[ $# == 0 ]]; then
-	echo "Please provide something to grep it with" >&2
-	return 1
+        echo "Please provide something to grep it with" >&2
+        return 1
     else
-	# §todo: refactor using reverse indexing (302)
-	echo "List of diractions alias matching '$@'"
-	diraction-list-alias | grep $@
+        # §todo: refactor using reverse indexing (302)
+        echo "List of diractions alias matching '$@'"
+        diraction-list-alias | grep $@
     fi
 }
 
 ##' disable attached alias
 function diraction-disable {
     if diraction-exist $1 ;then
-	disable -a $1
+        disable -a $1
     else
-	echo "Provided argument is not a registered diraction" >&2
-	return 1
+        echo "Provided argument is not a registered diraction" >&2
+        return 1
     fi
 }
 
 ##' reenable attached alias
 function diraction-enable {
     if diraction-exist $1 ;then
-	enable -a $1
-	# §maybe: disable variable or not?
+        enable -a $1
+        # §maybe: disable variable or not?
     else
-	echo "Provided argument is not a registered diraction" >&2
-	return 1
+        echo "Provided argument is not a registered diraction" >&2
+        return 1
     fi
 }
 
 ##' destroy alias and variable
 function diraction-destroy {
     if diraction-exist $1 ;then
-	unalias $1
-	unset "_$1"
-	unset "DIRACTION_REGISTER[$1]"
+        unalias $1
+        unset "_$1"
+        unset "DIRACTION_REGISTER[$1]"
     else
-	echo "Provided argument is not a registered diraction" >&2
-	return 1
+        echo "Provided argument is not a registered diraction" >&2
+        return 1
     fi
 }
 
@@ -225,12 +225,12 @@ function diraction-destroy {
 function diraction-destroy-all {
     if [[ "-f" == $1  ]] || [[ "--force" == $1  ]]
     then
-	for a in ${(k)DIRACTION_REGISTER}; do
-	    diraction-destroy $a
-	done
+        for a in ${(k)DIRACTION_REGISTER}; do
+            diraction-destroy $a
+        done
     else
-	echo "If you wanna really destroy all diraction add the -f/--force flag" >&2
-	return 1
+        echo "If you wanna really destroy all diraction add the -f/--force flag" >&2
+        return 1
     fi
 }
 
@@ -249,8 +249,8 @@ function diraction-reset {
 ##' print help (and banner) for diraction
 function diraction-help {
     if [[ $# != 1 ]] ; then
-	# §later: colors :D
-	cat <<"BANNER"
+        # §later: colors :D
+        cat <<"BANNER"
       ____  _                 __  _
      / __ \(_)________ ______/ /_(_)___  ____  _____
     / / / / / ___/ __ `/ ___/ __/ / __ \/ __ \/ ___/
@@ -258,19 +258,19 @@ function diraction-help {
   /_____/_/_/   \__,_/\___/\__/_/\____/_/ /_/____/
 
 BANNER
-	# ¤note: figlet -f slant Diractions
-	# ¤note: "EOF" protect from () eval
-	echo $DIRACTION_USAGE
+        # ¤note: figlet -f slant Diractions
+        # ¤note: "EOF" protect from () eval
+        echo $DIRACTION_USAGE
     else
-	if diraction-exist $1 ;then
-	    "$1 diraction is bound to ${DIRACTION_REGISTER[$1]} the directory"
-	else
-	    cat <<EOF
+        if diraction-exist $1 ;then
+            "$1 diraction is bound to ${DIRACTION_REGISTER[$1]} the directory"
+        else
+            cat <<EOF
 There is no diraction named $1
 For more help about diraction please run 'diraction help'.
 EOF
-	fi
-	# §MAYBE: rather make a doc about existing commands?
+        fi
+        # §MAYBE: rather make a doc about existing commands?
     fi
 }
 
@@ -287,15 +287,15 @@ function diraction-load-config {
     # Load personal function if existing
     # §todo: doc
     if functions "diraction-personal-config" > /dev/null; then
-	# §later: add security about function content?
-	# §maybe: set the name of the function as a custom variable
-	#  "$(functions diraction-personal-config | grep "^[[:space:]]*diraction-")"
-	diraction-personal-config
+        # §later: add security about function content?
+        # §maybe: set the name of the function as a custom variable
+        #  "$(functions diraction-personal-config | grep "^[[:space:]]*diraction-")"
+        diraction-personal-config
     fi
 
     if [[ -f "$DIRACTION_DEF_FILE" ]] && ! -diraction-parse-file "$DIRACTION_DEF_FILE" --ignore-missing-dir ; then
-	echo "Error while parsing $DIRACTION_DEF_FILE, please it has check correct syntax" >&2
-	return 1
+        echo "Error while parsing $DIRACTION_DEF_FILE, please it has check correct syntax" >&2
+        return 1
     fi
 }
 
@@ -303,11 +303,11 @@ function diraction-load-config {
 function -diraction-parse-file {
     if [[ ! -f "$1" ]]
     then
-	echo 'diraction parse file need to be given a file!' >&2
-	return 2;
+        echo 'diraction parse file need to be given a file!' >&2
+        return 2;
     else
-	cat $1 | sed 's/~/$HOME/' | diraction-batch-create $2
-	return $?
+        cat $1 | sed 's/~/$HOME/' | diraction-batch-create $2
+        return $?
     fi
 }
 
@@ -325,32 +325,32 @@ function diraction-batch-create {
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
 
-	local ko=false
+        local ko=false
 
-	local -a aline
-	set -A aline ${(@s: :)line}
+        local -a aline
+        set -A aline ${(@s: :)line}
 
-	if [[  "${#aline}" -le 1 ]]; then
-	    # next: ignore empty line
-	elif [[  ! "${#aline}" == 3 ]] ; then
-	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
-	    ko=true
-	elif [[ $1 == "--ignore-missing-dir" ]]; then
-	    diraction-create "$aline[2]" "$aline[3]" --ignore-missing-dir
-	else
-	    local dir=$(eval echo "$aline[3]")
-	    if [[ -d "$dir" ]]; then
-		diraction-create "$aline[2]" "$dir"
-	    else
-		echo "At line ${aline[1]}, directory '$dir' does not exists" >&2
-		ko=true
-	    fi
-	fi
-	if $ko ; then
-	    echo "Error occured during batch create, so stopping the process:\n$line" >&2
-	    # §todo: more specific error, check arg line
-	    return 1
-	fi
+        if [[  "${#aline}" -le 1 ]]; then
+            # next: ignore empty line
+        elif [[  ! "${#aline}" == 3 ]] ; then
+            echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
+            ko=true
+        elif [[ $1 == "--ignore-missing-dir" ]]; then
+            diraction-create "$aline[2]" "$aline[3]" --ignore-missing-dir
+        else
+            local dir=$(eval echo "$aline[3]")
+            if [[ -d "$dir" ]]; then
+                diraction-create "$aline[2]" "$dir"
+            else
+                echo "At line ${aline[1]}, directory '$dir' does not exists" >&2
+                ko=true
+            fi
+        fi
+        if $ko ; then
+            echo "Error occured during batch create, so stopping the process:\n$line" >&2
+            # §todo: more specific error, check arg line
+            return 1
+        fi
     done
 }
 
@@ -360,24 +360,24 @@ function diraction-check(){
 
     #§maybe refactor which command as a variable?
     if [[ "$1" == "config" ]]; then
-	echo ">> Checkying config [${DIRACTION_DEF_FILE}] syntax:"
-	diraction-check-config-syntax && echo "Syntax seems fine :)"
-	echo ">> Checkying config [${DIRACTION_DEF_FILE}] directory existance:"
-	diraction-check-config-dir && echo "All dir seems to exist"
+        echo ">> Checkying config [${DIRACTION_DEF_FILE}] syntax:"
+        diraction-check-config-syntax && echo "Syntax seems fine :)"
+        echo ">> Checkying config [${DIRACTION_DEF_FILE}] directory existance:"
+        diraction-check-config-dir && echo "All dir seems to exist"
 
     elif [[ "$1" == "file" ]]; then
-	if [[ -f "$2" ]]; then
-	    echo "Checkying file [$2] syntax: "
-	    -diraction-check-file-syntax $2 && echo "Syntax seems fine :)"
-	    echo "Checkying file [$2] diractories: "
-	    -diraction-check-file-dir  $2 && echo "All dir seems to exist"
-	else
-	    echo "Please provide some file to check" >&2
-	fi
+        if [[ -f "$2" ]]; then
+            echo "Checkying file [$2] syntax: "
+            -diraction-check-file-syntax $2 && echo "Syntax seems fine :)"
+            echo "Checkying file [$2] diractories: "
+            -diraction-check-file-dir  $2 && echo "All dir seems to exist"
+        else
+            echo "Please provide some file to check" >&2
+        fi
     else
-	echo "Please say what you want to check :) config/file syntax/alias" >&2
+        echo "Please say what you want to check :) config/file syntax/alias" >&2
         return 1
-	# §maybe: add a help command
+        # §maybe: add a help command
     fi
 }
 
@@ -385,24 +385,24 @@ function diraction-check(){
 ## §maybe: can acces it from outside §here
 function -diraction-check-file-syntax {
     if [[ ! -f "$1" ]];then
-	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
-	return 2
+        echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
+        return 2
     fi
 
     local ok=0
     cat -n $1 |  sed 's:#.*$::' | while read line; do
-	local -a aline;
-	set -A aline $line
-	# §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
-	# §todo: add checksum to file
-	if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
-	    echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}"
-	    ok=1
-	elif ! eval "echo ${aline[2,-1]} >/dev/null" 2>/dev/null  ; then
-	# §todo: cekc eval?
-	    echo "At line ${aline[1]}, some syntax error occured ${aline[2,-1]}"
-	    ok=1
-	fi
+        local -a aline;
+        set -A aline $line
+        # §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
+        # §todo: add checksum to file
+        if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
+            echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}"
+            ok=1
+        elif ! eval "echo ${aline[2,-1]} >/dev/null" 2>/dev/null  ; then
+        # §todo: cekc eval?
+            echo "At line ${aline[1]}, some syntax error occured ${aline[2,-1]}"
+            ok=1
+        fi
     done
     return $ok
 }
@@ -411,8 +411,8 @@ function -diraction-check-file-syntax {
 function -diraction-check-file-dir {
 
     if [[ ! -f "$1" ]];then
-	echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
-	return 2
+        echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
+        return 2
     fi
 
     local nbMiss=0
@@ -423,24 +423,24 @@ function -diraction-check-file-dir {
     # will let skip quote with # inside..
     # if add a trailing $ will refuse path with space inside.
     sed 's:#.*$::' | while read line; do
-	local -a aline; set -A aline $line #§check
+        local -a aline; set -A aline $line #§check
 
-	local var="_$aline[2]"
-	local "$var"="$(eval echo ${aline[3]/\~/\$HOME})" # eval for expansion of dir
-	local dir=${(P)$(echo $var)}
-	if [[  ! -d "$dir" ]] ; then
-	    # ¤note: double quote prevent tilde from being expanded
-	    echo "At line ${aline[1]}, directory ${aline[3]/\$HOME/~} does not exist"
-	    ((++nbMiss))
-	    # §todo: use incr to have number of failing directory?
-	fi
-	# ¤note: cut sans field c'est TAB
+        local var="_$aline[2]"
+        local "$var"="$(eval echo ${aline[3]/\~/\$HOME})" # eval for expansion of dir
+        local dir=${(P)$(echo $var)}
+        if [[  ! -d "$dir" ]] ; then
+            # ¤note: double quote prevent tilde from being expanded
+            echo "At line ${aline[1]}, directory ${aline[3]/\$HOME/~} does not exist"
+            ((++nbMiss))
+            # §todo: use incr to have number of failing directory?
+        fi
+        # ¤note: cut sans field c'est TAB
     done
     if [[ $nbMiss -ge 0 ]];then
-	echo "There is $nbMiss missing directories"
-	return 1;
+        echo "There is $nbMiss missing directories"
+        return 1;
     else
-	return 0
+        return 0
     fi
 }
 
@@ -448,19 +448,19 @@ function -diraction-check-file-dir {
 # §maybe swap name: config/syntax
 function diraction-check-config-syntax {
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
-	-diraction-check-file-syntax ${DIRACTION_DEF_FILE}
-	return $?
+        -diraction-check-file-syntax ${DIRACTION_DEF_FILE}
+        return $?
     else
-	echo "Config file does not exist" >&2
+        echo "Config file does not exist" >&2
     fi
 }
 ##' check directory existance of config file
 function diraction-check-config-dir {
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
-	-diraction-check-file-dir ${DIRACTION_DEF_FILE}
-	return $?
+        -diraction-check-file-dir ${DIRACTION_DEF_FILE}
+        return $?
     else
-	echo "Config file does not exist" >&2
+        echo "Config file does not exist" >&2
     fi
 }
 
@@ -484,113 +484,113 @@ function _diraction-dispatch () {
     #        assume that function that was correctly created with diraction-create
 
     if [[ -n "$1" ]]; then
-	# capture command and shift
-	local cmd="$1"
-	shift # ¤note: shift take no argument
+        # capture command and shift
+        local cmd="$1"
+        shift # ¤note: shift take no argument
     else
-	# just jump to the dir
-	cd $dir ; return $?
+        # just jump to the dir
+        cd $dir ; return $?
     fi
 
     ## §todo: local eval §maybe. §see
 
     case "$cmd" in
-	l|ls) ls $dir $@ ;;
-	t|tree) tree $dir $@;; # §beware: command not necessary installed
-	c|cd|/) # §maybe: extract diraction-jump subdir
-	    local sdir="$dir/$1"
-	    if [[ -d "$sdir" ]]; then
-		cd $sdir
-	    else
-		echo "$1 subdir does not exist" >&2;
-		cd $dir
-	    fi ;;
+        l|ls) ls $dir $@ ;;
+        t|tree) tree $dir $@;; # §beware: command not necessary installed
+        c|cd|/) # §maybe: extract diraction-jump subdir
+            local sdir="$dir/$1"
+            if [[ -d "$sdir" ]]; then
+                cd $sdir
+            else
+                echo "$1 subdir does not exist" >&2;
+                cd $dir
+            fi ;;
 
-	/*) local sdir="$dir$cmd"
-	    if [[ -d "$sdir" ]]; then
-		cd $sdir
-	    else
-		echo "$cmd subdir does not exist" >&2;
-		cd $dir
-	    fi ;;
+        /*) local sdir="$dir$cmd"
+            if [[ -d "$sdir" ]]; then
+                cd $sdir
+            else
+                echo "$cmd subdir does not exist" >&2;
+                cd $dir
+            fi ;;
 
-	# §maybe : o, open? (wrapping with glob?)
-	b|browser) $DIRACTION_BROWSER $dir
+        # §maybe : o, open? (wrapping with glob?)
+        b|browser) $DIRACTION_BROWSER $dir
 
-	    # §TOFIX: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
-	    # platform specific. §DIG (and fix personnal config)
-	    ;;
+            # §TOFIX: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
+            # platform specific. §DIG (and fix personnal config)
+            ;;
 
-	lc) #§other names?
-	    ls $dir && cd $dir ;;
-	# §maybe reverse cl: cd then ls
-	ed|edit)
-	    # §later: check files exists.
-	    eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )" # §check §now eval not necessary
-	    # §later: once complete and working, duplicate it to v| visual
-	    # §later: also for quick emacs and vim anyway : em vi
-	    # §so: extract a generate pattern. _diraction_edit (local functions)
-	    ;;
-	e|"exec")
-	    if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
-	    eval "(cd \"$dir\" && $@ )"
-	    # ¤note: might not be necessary to protect injection.....
-	    # §see: var about evaluation to disable it.
-	    ;;
+        lc) #§other names?
+            ls $dir && cd $dir ;;
+        # §maybe reverse cl: cd then ls
+        ed|edit)
+            # §later: check files exists.
+            eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )" # §check §now eval not necessary
+            # §later: once complete and working, duplicate it to v| visual
+            # §later: also for quick emacs and vim anyway : em vi
+            # §so: extract a generate pattern. _diraction_edit (local functions)
+            ;;
+        e|"exec")
+            if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
+            eval "(cd \"$dir\" && $@ )"
+            # ¤note: might not be necessary to protect injection.....
+            # §see: var about evaluation to disable it.
+            ;;
 
-	# §later: make ¤run with no evaluation!!!! [or witch ename with exec]
-	# just take a string command.
+        # §later: make ¤run with no evaluation!!!! [or witch ename with exec]
+        # just take a string command.
 
-	## ¤>> transfer commands
+        ## ¤>> transfer commands
 
-	# "passe plat"
-	[,_-]) eval "(cd \"$dir\" && $@)" ;;
-	# :. suppressed for other use
+        # "passe plat"
+        [,_-]) eval "(cd \"$dir\" && $@)" ;;
+        # :. suppressed for other use
 
-	# §check; quote: protection?
-	# §todoNOW: extract function for the eval.. (local function?)
-	# eval in dir?
+        # §check; quote: protection?
+        # §todoNOW: extract function for the eval.. (local function?)
+        # eval in dir?
 
-	## §todo: other (non transfert) commands?
-	## - todo? add to local todo. (fonction user?)
+        ## §todo: other (non transfert) commands?
+        ## - todo? add to local todo. (fonction user?)
         ## §todo: task and write [in todo, or other file] (via touch ou cat)
 
-	i|interactive|prompt|shell)
-	     # for a bunch of consecutive commands
-	    # §maybe: add other names
-	    echo "Entering interactive mode in $dir folder:"
-	    # §maybe: make a recap. (C-d quit)
-	    # §note: exit will just exist the loop since we are in subprocess
-	    echo -n "$DIRACTION_INTERACTIVE_PROMPT" # §maybe: prefix by alias name!
-	    local icmd # to protect if similar alias
-	    (cd "$dir" && while read icmd; do
+        i|interactive|prompt|shell)
+             # for a bunch of consecutive commands
+            # §maybe: add other names
+            echo "Entering interactive mode in $dir folder:"
+            # §maybe: make a recap. (C-d quit)
+            # §note: exit will just exist the loop since we are in subprocess
+            echo -n "$DIRACTION_INTERACTIVE_PROMPT" # §maybe: prefix by alias name!
+            local icmd # to protect if similar alias
+            (cd "$dir" && while read icmd; do
 
-		    echo -n "$reset_color"
-		    # §todo: check return code of eval: eval error (syntax), ou interpreted command error.
+                    echo -n "$reset_color"
+                    # §todo: check return code of eval: eval error (syntax), ou interpreted command error.
 
-		    if [[ "$icmd" =~ "^(h|help|\?)" ]] ; then
-			# §maybe: customize some othercommand behavior:
-			echo "You are in the interactive mode of diraction
+                    if [[ "$icmd" =~ "^(h|help|\?)" ]] ; then
+                        # §maybe: customize some othercommand behavior:
+                        echo "You are in the interactive mode of diraction
 command will be perfomed in '$dir' (content is evaluated)
 you can exit this mode by typing exit, or ^D"
-			else
-			eval "$icmd" |& sed 's/^(eval):1: //'
-		    fi
+                        else
+                        eval "$icmd" |& sed 's/^(eval):1: //'
+                    fi
 
-		    # §see how * glob subtitution work.
-		    # §maybe: see if could read multiple line?
-		    echo -n $DIRACTION_INTERACTIVE_PROMPT
-		    done)
-	    # §todo: color prompt + command
-	    # completion so over kill...
-	    echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
-	    ;;
+                    # §see how * glob subtitution work.
+                    # §maybe: see if could read multiple line?
+                    echo -n $DIRACTION_INTERACTIVE_PROMPT
+                    done)
+            # §todo: color prompt + command
+            # completion so over kill...
+            echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
+            ;;
 
         '?'|w|where)
             echo "$dir"
             ;;
 
-	help) echo "$fg[green]This is a diraction dispatch function.
+        help) echo "$fg[green]This is a diraction dispatch function.
 
 This one is attached to the $dir directory
 If you provide no argument, you will jump in the associated directory
@@ -600,20 +600,20 @@ For instance with l or ls it will list file inside.
 With e/exec you will perform a command in the context of the directory
 If you have a set of command to to, you can use the i/interactive subcommand
 "
-	    # §TODO: more DOC (editor, and so on)
-	    # §bonux: more precise about targeted command (help)
-	    ;;
+            # §TODO: more DOC (editor, and so on)
+            # §bonux: more precise about targeted command (help)
+            ;;
 
-	*) # handling the remaining
-	    # if command is whitelisted run it
-	    if [[ ${DIRACTION_DISPATCH_WHITELIST[(r)$cmd]} == $cmd ]]
-		# ¤note: r flag for reverse indexing
-	    then
-		eval "(cd \"$dir\" && $cmd $@)"
-	    else
-		echo "$fg[red]Invalid argument! <$cmd>"
-		return 1
-	    fi;;
+        *) # handling the remaining
+            # if command is whitelisted run it
+            if [[ ${DIRACTION_DISPATCH_WHITELIST[(r)$cmd]} == $cmd ]]
+                # ¤note: r flag for reverse indexing
+            then
+                eval "(cd \"$dir\" && $cmd $@)"
+            else
+                echo "$fg[red]Invalid argument! <$cmd>"
+                return 1
+            fi;;
     esac
     # §later: for performance reason put most used first!
 }
