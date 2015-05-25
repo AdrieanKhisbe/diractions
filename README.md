@@ -35,18 +35,6 @@ Then I check it has been copied to the directory with `mydir ls`, then go in one
 
 <!-- §see: inner link document -->
 
-## >> Warning <<
-
-This is still an inbuilding young plugin. So if you are using it by directly cloning the repo rather than using antigen, prefer the `master` branch.
-It's working, I use it everyday on my terminal (for a long time). However some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
-
-**If you have any remark, refactor suggestion or you are having some unexpected behavior or bug (*soooory*), just post an issue ;)**
-
-(I'm aware of the potential security issues: zsh env/function poisoinning, and evaluated code/injections,... but it's aimed to be used only in interactive mode on your shell so as insecure as a shell bash config.
-So for now, I would advise not to use it without a glance of the source)
-
-The `diraction` aliases point to a *"dispatch function"*  taking the attached directory as first argument. (then subcommand, and its eventual arguments)
-
 ## Usage
 
 Here is some more in depth description about how to use *Diractions*.
@@ -59,7 +47,7 @@ First step is to define your *diractions*, associate name to your most used dire
   - by default it will check if directory exist
   - to bypass this check use the `--ignore-missing-dir`
 + save the current directory with `diraction save <name>`
-+ you can also create many *diractions* with the `batch-create` command. it readss STDIN (so pipe a file to it, or use here docs) which can be usefull in configs.
++ you can also create many *diractions* with the `batch-create` command. it reads STDIN (so pipe a file to it, or use here docs) which can be usefull in configs.
 
    ```sh
    diraction batch-create <<DIR
@@ -67,7 +55,7 @@ First step is to define your *diractions*, associate name to your most used dire
    dir2 /long/dir/2
    DIR
    ```
-+ You can see the existing *diraction* using `list`, `list-alias`, `list-dir` and even `grep` throught them
+   + You can see the existing *diraction* using `list`, `list-alias`, `list-dir` and even `grep` throught them
 
 ### Use you diraction
 
@@ -83,11 +71,13 @@ Here are the main commands. Commands that are executed in the context of the dir
 - `-|,|_` : use the following as a command
 - `i|interactive|prompt|shell` : to run several command in the context of the diraction directory
 - `w|where|?` : to be remind what is the diraction folder
-<!-- §todo: Celle des passes plats. -->
+- all other commands contained in the `DIRACTION_DISPATCH_WHITELIST`.
 
 You can also use the diraction variable in any command. `$_mydir` will be expanded to the attached directory.
 
-### Autres Commandes Diractions
+A word about how `diraction` works: the `diraction` aliases point to a *"dispatch function"*  taking the attached directory as first argument.
+
+### Others Diraction Commands
 
 - `disable <dirname>` : disable attached alias
 - `enable <dirname>` : reenable it
@@ -95,11 +85,14 @@ You can also use the diraction variable in any command. `$_mydir` will be expand
 - `destroy-all` : destroy all the existing diractions, need a `-f`, `--force` argument
 - `reset` : destroy the diraction and reload them from the configuration
 
-and of course, the `help` subcommand
+and of course, the `help` subcommand.
+
+Besides *every* subcommands accept a `-h`, `--help` flag that will get you print help
+for the specified subcommand.
 
 ## Installation
-"Installation" is far simple, just get the file and source it.
-Other wise if you use [antigen](https://github.com/zsh-users/antigen) (*which I recommend*), just add **diractions** to your bundles as `AdrieanKhisbe/diractions`
+*Installation* is far simple, just get the file and source it.
+Other wise if you use [antigen](https://github.com/zsh-users/antigen) (*which I recommend :)*), just add **diractions** to your bundles as `AdrieanKhisbe/diractions`
 
 ## Configuration
 
@@ -135,9 +128,9 @@ Here is some Example:
 ```zsh
     diraction-personal-config (){
     # put your config here
- 	diraction-batch-create <<DIR
-	    dir1  /my/path/number1
-		yasp  /yet/another/stupid/path
+    diraction-batch-create <<DIR
+        dir1  /my/path/number1
+        yasp  /yet/another/stupid/path
     DIR
    }
 ```
@@ -171,3 +164,15 @@ and is growing ever since with new functionnalities. :)
 ### Changelog
 
 Changelog might be consulted in the dedicated [file](CHANGELOG.md)
+
+## >> Warning <<
+
+The plugin is still young and has not yet being widely tested.
+If you are using it by directly cloning the repo rather than using antigen, I recommand you to prefer the `master` branch.
+It's working, I use it everyday on my terminal (for a long long time). However some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
+
+**If you have any remark, refactor suggestion or you are having some unexpected behavior or bug (*soooory*), just post an issue ;)**
+
+### Security Note
+(I'm aware of the potential security issues: zsh env/function poisoinning, and evaluated code/injections,... but it's aimed to be used only in interactive mode on your shell so as insecure as a shell bash config.
+So for now, I would advise not to use it without a glance of the source)
