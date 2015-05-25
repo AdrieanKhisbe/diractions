@@ -135,6 +135,14 @@ you can force creation adding --ignore-missing-dir flag" >&2
 
     DIRACTION_REGISTER[$alias]="$dir"
 }
+##' Save current directory
+diraction-save(){
+    if [[ $# -lt 1 ]]; then
+        echo "Wrong Number of arguments\ndiraction-alias <alias>" >&2
+        return 1
+    fi
+    diraction-create $1 $PWD
+}
 
 # ¤>> Other utils functions
 ##' check if alias attached to diraction

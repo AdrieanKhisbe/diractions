@@ -3,6 +3,8 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- diraction `save` command
 
 ## [0.11] - 2015-05-25
 ### Added
@@ -57,7 +59,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.2...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.11...HEAD
+[0.11]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.2...v0.11
 [0.10.2]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.1...v0.10.2
 [0.10.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10...v0.10.1
 [0.10]: https://github.com/AdrieanKhisbe/diractions/compare/v0.9.1...v0.10
