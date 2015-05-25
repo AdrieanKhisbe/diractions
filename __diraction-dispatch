@@ -16,12 +16,13 @@ then # Subcomand completion
         /*) # Pattern :D
 
             local pattern="${subcommand#/}"
-            local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
-            compadd -S '/' -x "Available subdirs:" $(eval $cmd)
+            local cmd="cd $dirdir && ls -d $pattern*/ 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
+            compadd -S '' -x "Matching Subdirs:" $(eval $cmd)
             return 0
             ;;
-        # §todo: add them optionnaly also for argument -> §todo: extract function
-        # §TODO: improve completion valuessss!!!!
+        # §maybe: add them optionnaly also for argument -> §todo: extract function
+        #      improve completion valuessss!!!!
+        # alternative message if no match. or list all subdir
 
         *)      # Basic argument
             local -a subcommands
@@ -51,7 +52,12 @@ else # argument completion
             _message "Just hit enter, and enter the interactive mode :)" && return 0;;
 
         # §todo: no args
-
+        /)
+            local pattern="${words[4]}"
+            # §maybe: extract function
+            local cmd="cd $dirdir && ls -d $pattern*/ 2>/dev/null | xargs echo"
+            compadd -S '' -x "Matching Subdirs:" $(eval $cmd)
+            ;;
         *)
             local compfun="_${subcommand}"
             shift words; shift words    # shifting words args
