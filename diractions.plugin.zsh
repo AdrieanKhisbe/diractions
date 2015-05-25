@@ -51,7 +51,7 @@ declare -gA _DIRACTION_HELP
         echo "Wrong usage of help. Pb with the source" >&2
         exit 1
     fi
-    _DIRACTION_HELP[$1]="$1 $2"
+    _DIRACTION_HELP[$1]="$fg[blue]diraction $1$reset_color $2"
 }
 
 # oh yes, yell like a zsh var!! :D
@@ -88,22 +88,24 @@ DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <al
 ##' Command dispatcher
 ##' ¤note: inspired from Antigen Shrikant Sharat Kandula
 function diraction(){
-    # §maybe: if --help args, print help and do nothing (retrive from hash) maybe meta function?g
+
     if [[ $# == 0 ]]; then
         echo "Please provide a command\n${DIRACTION_USAGE}" >&2
         return 1
     fi
+
+    # §maybe: handle help of diraction itself
     local cmd=$1
     shift
 
 
     if { (( ${@[(I)--help]} )) ||  (( ${@[(I)-h]} ))} ; then
-        if [[ -z "$_DIRACTION_HELP[diraction-$cmd]" ]] ; then
+        if [[ -z "$_DIRACTION_HELP[$cmd]" ]] ; then
             echo "Command $cmd does not exist."
             echo "$DIRACTION_USAGE"
         else
             # §maybe: cut diraction- in all doc
-            echo "$_DIRACTION_HELP[diraction-$cmd]"
+            echo;echo "$_DIRACTION_HELP[$cmd]"
         fi
 
     elif functions "diraction-$cmd" > /dev/null; then
