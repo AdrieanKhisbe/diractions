@@ -34,6 +34,7 @@ then # Subcomand completion
                 'edit:Edit the given subfile (alias ed)'
                 'browser:Launch browser on the directory (alias b)'
                 'tree:Launch tree command (alias t)'
+                'where:Indicate the path of attached directory (alias ?, w, who)'
             )
             compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
             # maybe extend subcommands with these value??

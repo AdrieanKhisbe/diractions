@@ -586,7 +586,7 @@ you can exit this mode by typing exit, or ^D"
             echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
             ;;
 
-        '?'|w|where)
+        '?'|w|who|where)
             echo "$dir"
             ;;
 
