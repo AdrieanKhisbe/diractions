@@ -32,6 +32,7 @@
 
 ##' variable accumulating the defuns
 declare -gA DIRACTION_REGISTER
+declare -gA _DIRACTION_HELP
 # -g flag so it persist oustide the script
 # §NOTE: Arrays are not exported in child process :/
 # §maybe: keep the disabled defuns
@@ -43,6 +44,14 @@ declare -gA DIRACTION_REGISTER
     local arg_value="$2"
     eval "test -z \"\$$arg_name\" && export $arg_name='$arg_value'"
     # §see: make it not exportable?
+}
+#' function to easily declare hepl associated to the provided command
+-help(){
+    if [[ $# != 2 ]]; then
+        echo "Wrong usage of help. Pb with the source" >&2
+        exit 1
+    fi
+    _DIRACTION_HELP[$1]="$1 $2"
 }
 
 # oh yes, yell like a zsh var!! :D
@@ -75,19 +84,18 @@ DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <al
 
 #------------------------------------------------------------------------------#
 # ¤>> Functions
-## §FIXME: Update documentation
-# §todo: see convention for zsh fonction doc. (see OMZ)
 
 ##' Command dispatcher
 ##' ¤note: inspired from Antigen Shrikant Sharat Kandula
 function diraction(){
-
+    # §maybe: if --help args, print help and do nothing (retrive from hash) maybe meta function?g
     if [[ $# == 0 ]]; then
         echo "Please provide a command\n${DIRACTION_USAGE}" >&2
         return 1
     fi
     local cmd=$1
     shift
+
 
     if functions "diraction-$cmd" > /dev/null; then
         # ¤note: functions print all function or specified one
@@ -101,10 +109,13 @@ function diraction(){
 
 
 ##' ¤>> Alias&Variable Combo function:
-##' Diraction-create: Link a directory to create both a variable '_$1', and a "dispatch" alias '$1'
-##' ¤note: si variable déjà définie ne sera pas surchargée
-##' §bonux: option pour forcer..... --ignore-missing-dir
 ## §TODO: HERE would need to refactor to handle option if want to place if in the end
+-help diraction-create '<name> <dir> [--ignore-missing-dir]
+Create a new diraction.
+Link a directory to create both a variable "_$1", and a "dispatch" alias "$1"
+
+If variable already exist, it will not be updated!
+Add --ignore-missing-dir option if you want to bypass existence checking test'
 function diraction-create(){
     if [[ $# -lt 2 ]]; then
         echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
@@ -135,8 +146,10 @@ you can force creation adding --ignore-missing-dir flag" >&2
 
     DIRACTION_REGISTER[$alias]="$dir"
 }
-##' Save current directory
-diraction-save(){
+
+-help diraction-save "<name>
+Save current directory as diraction"
+function diraction-save(){
     if [[ $# -lt 1 ]]; then
         echo "Wrong Number of arguments\ndiraction-alias <alias>" >&2
         return 1
@@ -145,12 +158,14 @@ diraction-save(){
 }
 
 # ¤>> Other utils functions
-##' check if alias attached to diraction
+-help diraction-exist "
+check if alias attached to diraction"
 function diraction-exist {
     [[ -n "$DIRACTION_REGISTER[$1]" ]]
 }
 
-##' List existing diractions
+-help diraction-list "
+List existing diractions"
 function diraction-list {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
@@ -160,17 +175,20 @@ function diraction-list {
     # beware separation while evaluating
 }
 
-##' list existing diraction aliases
+-help diraction-list-alias "
+List existing diraction aliases"
 function diraction-list-alias {
     echo ${(ko)DIRACTION_REGISTER}
 }
 
-##' list existing diraction directories
+-help diraction-list-dir "
+List existing diraction directories"
 function diraction-list-dir {
     echo ${(ov)DIRACTION_REGISTER}
 }
 
-##' Grep existing diraction to find matching aliases
+-help diraction-grep "<pattern>
+Grep existing diraction to find matching aliases"
 function diraction-grep {
     if [[ $# == 0 ]]; then
         echo "Please provide something to grep it with" >&2
@@ -184,7 +202,8 @@ function diraction-grep {
     fi
 }
 
-##' grep alias to find matching alias
+-help diraction-grep-alias "<pattern>
+Grep alias to find matching alias"
 function diraction-grep-alias {
     if [[ $# == 0 ]]; then
         echo "Please provide something to grep it with" >&2
@@ -196,7 +215,8 @@ function diraction-grep-alias {
     fi
 }
 
-##' disable attached alias
+-help diraction-disable "<name>
+Disable attached alias"
 function diraction-disable {
     if diraction-exist $1 ;then
         disable -a $1
@@ -206,7 +226,8 @@ function diraction-disable {
     fi
 }
 
-##' reenable attached alias
+-help diraction-enable "<name>
+Re-enable attached alias"
 function diraction-enable {
     if diraction-exist $1 ;then
         enable -a $1
@@ -217,7 +238,8 @@ function diraction-enable {
     fi
 }
 
-##' destroy alias and variable
+-help diraction-destroy "<name>
+Destroy alias and variable attached to diraction name"
 function diraction-destroy {
     if diraction-exist $1 ;then
         unalias $1
@@ -229,8 +251,9 @@ function diraction-destroy {
     fi
 }
 
-##' destroy all diraction variables
-##' need -f/--force flag to perform
+-help diraction-destroy-all "[--force|-f]
+destroy all diraction variables
+Need -f/--force flag to perform"
 function diraction-destroy-all {
     if [[ "-f" == $1  ]] || [[ "--force" == $1  ]]
     then
@@ -243,7 +266,8 @@ function diraction-destroy-all {
     fi
 }
 
-##' reset direction environment by first destroying everython then reloading config
+-help diraction-reset "
+Reset direction environment by first destroying everython then reloading config"
 function diraction-reset {
     echo "Reseting diraction environment"
     diraction-destroy-all -f
@@ -255,13 +279,14 @@ function diraction-reset {
 # §maybe: reuse serialisation function that was once develop
 # ¤note: keep insertion order in this case.
 
-##' diraction-whitelist <cmds>
-## add provided commad to whitelist
+-help diraction-whitelist "<cmd*>
+Add provided commands to the whitelist"
 function diraction-whitelist {
     DIRACTION_DISPATCH_WHITELIST+=($@)
 }
-##' diraction-blacklist <cmds>
-## remove provided commad to whitelist
+
+-help diraction-blacklist "<cmd*>
+Remove provided commands from the whitelist"
 function diraction-blacklist {
     for cmd in $@ ; do
         DIRACTION_DISPATCH_WHITELIST=("${(@)DIRACTION_DISPATCH_WHITELIST:#$cmd}")
@@ -269,8 +294,9 @@ function diraction-blacklist {
 # cf http://stackoverflow.com/questions/3435355/remove-entry-from-array
 }
 
-
-##' print help (and banner) for diraction
+-help diraction-help "
+Yo Dawg, I herd you like help, so I put an help in your help
+so you can get helped while you search help"
 function diraction-help {
     if [[ $# != 1 ]] ; then
         # §later: colors :D
@@ -646,3 +672,6 @@ If you have a set of command to to, you can use the i/interactive subcommand
 if $DIRACTION_AUTO_CONFIG ;then
     diraction-load-config
 fi
+
+## ¤> Cleanup
+unset -- -help
