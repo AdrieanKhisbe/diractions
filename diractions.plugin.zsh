@@ -46,7 +46,7 @@ declare -gA _DIRACTION_HELP
     # §see: make it not exportable?
 }
 #' function to easily declare hepl associated to the provided command
--help(){
+-diraction-help(){
     if [[ $# != 2 ]]; then
         echo "Wrong usage of help. Pb with the source" >&2
         exit 1
@@ -119,7 +119,7 @@ function diraction(){
 
 ##' ¤>> Alias&Variable Combo function:
 ## §TODO: HERE would need to refactor to handle option if want to place if in the end
--help diraction-create '<name> <dir> [--ignore-missing-dir]
+-diraction-help create '<name> <dir> [--ignore-missing-dir]
 Create a new diraction.
 Link a directory to create both a variable "_$1", and a "dispatch" alias "$1"
 
@@ -156,7 +156,7 @@ you can force creation adding --ignore-missing-dir flag" >&2
     DIRACTION_REGISTER[$alias]="$dir"
 }
 
--help diraction-save "<name>
+-diraction-help save "<name>
 Save current directory as diraction"
 function diraction-save(){
     if [[ $# -lt 1 ]]; then
@@ -167,13 +167,13 @@ function diraction-save(){
 }
 
 # ¤>> Other utils functions
--help diraction-exist "
+-diraction-help exist "
 check if alias attached to diraction"
 function diraction-exist {
     [[ -n "$DIRACTION_REGISTER[$1]" ]]
 }
 
--help diraction-list "
+-diraction-help list "
 List existing diractions"
 function diraction-list {
     echo "List of diractions:"
@@ -184,19 +184,19 @@ function diraction-list {
     # beware separation while evaluating
 }
 
--help diraction-list-alias "
+-diraction-help list-alias "
 List existing diraction aliases"
 function diraction-list-alias {
     echo ${(ko)DIRACTION_REGISTER}
 }
 
--help diraction-list-dir "
+-diraction-help list-dir "
 List existing diraction directories"
 function diraction-list-dir {
     echo ${(ov)DIRACTION_REGISTER}
 }
 
--help diraction-grep "<pattern>
+-diraction-help grep "<pattern>
 Grep existing diraction to find matching aliases"
 function diraction-grep {
     if [[ $# == 0 ]]; then
@@ -211,7 +211,7 @@ function diraction-grep {
     fi
 }
 
--help diraction-grep-alias "<pattern>
+-diraction-help grep-alias "<pattern>
 Grep alias to find matching alias"
 function diraction-grep-alias {
     if [[ $# == 0 ]]; then
@@ -224,7 +224,7 @@ function diraction-grep-alias {
     fi
 }
 
--help diraction-disable "<name>
+-diraction-help disable "<name>
 Disable attached alias"
 function diraction-disable {
     if diraction-exist $1 ;then
@@ -235,7 +235,7 @@ function diraction-disable {
     fi
 }
 
--help diraction-enable "<name>
+-diraction-help enable "<name>
 Re-enable attached alias"
 function diraction-enable {
     if diraction-exist $1 ;then
@@ -247,7 +247,7 @@ function diraction-enable {
     fi
 }
 
--help diraction-destroy "<name>
+-diraction-help destroy "<name>
 Destroy alias and variable attached to diraction name"
 function diraction-destroy {
     if diraction-exist $1 ;then
@@ -260,7 +260,7 @@ function diraction-destroy {
     fi
 }
 
--help diraction-destroy-all "[--force|-f]
+-diraction-help destroy-all "[--force|-f]
 destroy all diraction variables
 Need -f/--force flag to perform"
 function diraction-destroy-all {
@@ -275,7 +275,7 @@ function diraction-destroy-all {
     fi
 }
 
--help diraction-reset "
+-diraction-help reset "
 Reset direction environment by first destroying everython then reloading config"
 function diraction-reset {
     echo "Reseting diraction environment"
@@ -288,13 +288,13 @@ function diraction-reset {
 # §maybe: reuse serialisation function that was once develop
 # ¤note: keep insertion order in this case.
 
--help diraction-whitelist "<cmd*>
+-diraction-help whitelist "<cmd*>
 Add provided commands to the whitelist"
 function diraction-whitelist {
     DIRACTION_DISPATCH_WHITELIST+=($@)
 }
 
--help diraction-blacklist "<cmd*>
+-diraction-help blacklist "<cmd*>
 Remove provided commands from the whitelist"
 function diraction-blacklist {
     for cmd in $@ ; do
@@ -303,7 +303,7 @@ function diraction-blacklist {
 # cf http://stackoverflow.com/questions/3435355/remove-entry-from-array
 }
 
--help diraction-help "
+-diraction-help help "
 Yo Dawg, I herd you like help, so I put an help in your help
 so you can get helped while you search help"
 function diraction-help {
@@ -683,4 +683,4 @@ if $DIRACTION_AUTO_CONFIG ;then
 fi
 
 ## ¤> Cleanup
-unset -- -help
+unset -- -diraction-help
