@@ -97,7 +97,16 @@ function diraction(){
     shift
 
 
-    if functions "diraction-$cmd" > /dev/null; then
+    if { (( ${@[(I)--help]} )) ||  (( ${@[(I)-h]} ))} ; then
+        if [[ -z "$_DIRACTION_HELP[diraction-$cmd]" ]] ; then
+            echo "Command $cmd does not exist."
+            echo "$DIRACTION_USAGE"
+        else
+            # §maybe: cut diraction- in all doc
+            echo "$_DIRACTION_HELP[diraction-$cmd]"
+        fi
+
+    elif functions "diraction-$cmd" > /dev/null; then
         # ¤note: functions print all function or specified one
         "diraction-$cmd" "$@"
     else
