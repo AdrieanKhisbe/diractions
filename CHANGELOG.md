@@ -3,8 +3,14 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [0.11] - 2015-05-25
 ### Added
 - introduce a `where` function aliases to `w` and `?`
+- Shpec skeleton test
+
+### Fixed
+- now completion of folder really ignore files
 
 ## [0.10.2] - 2015-03-02
 ### Added
