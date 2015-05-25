@@ -21,6 +21,9 @@ _1st_arguments=(
     'list:List the existing diraction'
     'load-config:Load the configuration'
     'reset:Reload all the diraction aliases'
+    'save: Save current directory add diraction'
+    'whitelist:Add provided commands to whitelist'
+    'blacklist:Remove provided commands from whitelist'
 )
 
 if (( CURRENT == 2 )); then

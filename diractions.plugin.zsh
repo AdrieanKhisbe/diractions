@@ -255,6 +255,21 @@ function diraction-reset {
 # §maybe: reuse serialisation function that was once develop
 # ¤note: keep insertion order in this case.
 
+##' diraction-whitelist <cmds>
+## add provided commad to whitelist
+function diraction-whitelist {
+    DIRACTION_DISPATCH_WHITELIST+=($@)
+}
+##' diraction-blacklist <cmds>
+## remove provided commad to whitelist
+function diraction-blacklist {
+    for cmd in $@ ; do
+        DIRACTION_DISPATCH_WHITELIST=("${(@)DIRACTION_DISPATCH_WHITELIST:#$cmd}")
+    done
+# cf http://stackoverflow.com/questions/3435355/remove-entry-from-array
+}
+
+
 ##' print help (and banner) for diraction
 function diraction-help {
     if [[ $# != 1 ]] ; then

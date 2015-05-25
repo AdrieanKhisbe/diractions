@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Added
 - diraction `save` command
+- diract `whitelist` and `blacklist` command
 
 ## [0.11] - 2015-05-25
 ### Added
