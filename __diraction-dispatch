@@ -17,11 +17,11 @@ then # Subcomand completion
 
             local pattern="${subcommand#/}"
             local cmd="$cd $dirdir && ls -d $pattern* 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
-            # §maybe extract fund
-            # §todo: dont add space: see http://stackoverflow.com/questions/8372866/how-to-remove-an-additional-space-from-zsh-auto-complete-function
-            compadd -x "Available subdirs:" $(eval $cmd)
+            compadd -S '/' -x "Available subdirs:" $(eval $cmd)
             return 0
             ;;
+        # §todo: add them optionnaly also for argument -> §todo: extract function
+        # §TODO: improve completion valuessss!!!!
 
         *)      # Basic argument
             local -a subcommands
