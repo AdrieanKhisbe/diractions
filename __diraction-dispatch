@@ -25,22 +25,11 @@ then # Subcomand completion
         # alternative message if no match. or list all subdir
 
         *)      # Basic argument
-            local -a subcommands
-            subcommands=(
-                'ls:List files in the specified folder (alias l)'
-                'exec:Exec (through eval) the specified command (alias e - , _ )'
-                'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
-                '/:Go in some of the subfolder if provided (alias c cd)'
-                'edit:Edit the given subfile (alias ed)'
-                'browser:Launch browser on the directory (alias b)'
-                'tree:Launch tree command (alias t)'
-                'where:Indicate the path of attached directory (alias ?, w, who)'
-            )
             compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
             # maybe extend subcommands with these value??
             # or extend the array here?
 
-            _describe -t commands "Dispatcher subcommand" subcommands
+            _describe -t commands "Dispatcher subcommand" $_DIRACTION_HELP_SUBCOMMAND
 
             return
     esac

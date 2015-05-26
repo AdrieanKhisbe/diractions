@@ -15,7 +15,7 @@
 # Author: Adriean Khisbe
 # Homepage: http://github.com/AdrieanKhisbe/diractions
 # License: MIT License<Adriean.Khisbe@live.fr>
-# Version: 0.12
+# Version: 0.12.1
 
 # §bonux: mini stupid logo. :) (paaaneaux)
 
@@ -320,7 +320,7 @@ function diraction-help {
 
 BANNER
         # ¤note: figlet -f slant Diractions
-        # ¤note: "EOF" protect from () eval
+        # ¤note: "BANNER" protect from () eval
         echo $DIRACTION_USAGE
     else
         if diraction-exist $1 ;then
@@ -332,6 +332,7 @@ For more help about diraction please run 'diraction help'.
 EOF
         fi
         # §MAYBE: rather make a doc about existing commands?
+        #
     fi
 }
 
@@ -651,19 +652,19 @@ you can exit this mode by typing exit, or ^D"
             echo "$dir"
             ;;
 
-        help) echo "$fg[green]This is a diraction dispatch function.
+        h|-h|--help|help) cat <<HELP
+$fg[green]This is a diraction dispatch function.$reset_color
 
-This one is attached to the $dir directory
-If you provide no argument, you will jump in the associated directory
-Oherwise it will perform some action in the context of the directory
+This one is attached to the $fg[blue]$dir$reset_color directory
 
-For instance with l or ls it will list file inside.
-With e/exec you will perform a command in the context of the directory
-If you have a set of command to to, you can use the i/interactive subcommand
-"
-            # §TODO: more DOC (editor, and so on)
-            # §bonux: more precise about targeted command (help)
-            ;;
+If you provide no argument, you will jump in this directory
+Otherwise it will perform some action in the context of $fg[blue]$dir$reset_color:
+$(for i in "${(@)_DIRACTION_HELP_SUBCOMMAND}"; do echo "- $fg[blue] $i"; done | sed "s/:/ : $reset_color/")
+
+It also accept the following commands you have whitelisted:
+$fg[blue]$DIRACTION_DISPATCH_WHITELIST$reset_color
+HELP
+                          ;;
 
         *) # handling the remaining
             # if command is whitelisted run it
@@ -678,6 +679,18 @@ If you have a set of command to to, you can use the i/interactive subcommand
     esac
     # §later: for performance reason put most used first!
 }
+
+_DIRACTION_HELP_SUBCOMMAND=(
+    'ls:List files in the specified folder (alias l)'
+    'exec:Exec (through eval) the specified command (alias e - , _ )'
+    'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
+    '/:Go in some of the subfolder if provided (alias c cd)'
+    'edit:Edit the given subfile (alias ed)'
+    'browser:Launch browser on the directory (alias b)'
+    'tree:Launch tree command (alias t)'
+    'where:Indicate the path of attached directory (alias ?, w, who)'
+)
+
 
 ## ¤> final configuration
 if $DIRACTION_AUTO_CONFIG ;then
