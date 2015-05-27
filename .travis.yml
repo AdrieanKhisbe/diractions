@@ -6,6 +6,7 @@ install:
   # install antigen
   - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen.zsh
   - echo "source ~/antigen.zsh; antigen bundle rylnd/shpec; antigen apply" > ~/.zshrc
+  - echo "setop sh_word_split" > ~/.zshenv
   - zsh ~/.zshrc
   - export SHELL=zsh
 script:
