@@ -29,7 +29,7 @@ then # Subcomand completion
             # maybe extend subcommands with these value??
             # or extend the array here?
 
-            _describe -t commands "Dispatcher subcommand" $_DIRACTION_HELP_SUBCOMMAND
+            _describe -t commands "Dispatcher subcommand" _DIRACTION_HELP_SUBCOMMAND
 
             return
     esac
