@@ -36,12 +36,17 @@ then # Subcomand completion
 else # argument completion
     # completion won't be called without a 2 arg, so sure will be 4+
     case $subcommand in
-        e|"exec") # maybe files?
-            _message "no completion, you are on your own!" && return 0 ;;
+        e|"exec"|[-,_])  # magic native completion
+            # Â-maybe: shift shift and replace with generic
+            if  ((CURRENT == 4 )); then
+                _command_names
+            else
+                _path_files -W $PWD
+            fi; return 0
+            ;;
         i|interactive|prompt|shell|help)
             _message "Just hit enter, and enter the interactive mode :)" && return 0;;
 
-        # §todo: no args
         /)
             _directories -W "$PWD"
             ;;
@@ -55,10 +60,7 @@ else # argument completion
                 # beware to file completion:
                 # https://github.com/robbyrussell/oh-my-zsh/issues/2394
             else
-                # decide what to do.
                 _message "No Specific completion available for $subcommand"
-                ((CURRENT > 4 )) &&  _path_files -W $PWD
-                # TODO command completion
             fi
             ;;
     esac
