@@ -3,6 +3,8 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Magic completion EVERYWHERE
 
 ## [0.12] - 2015-05-25
 ### Added

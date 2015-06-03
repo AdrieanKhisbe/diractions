@@ -34,15 +34,19 @@ then # Subcomand completion
             return
     esac
 else # argument completion
-    # completion won't be called without a 2 arg, so sure will be 4+
+
+    shift words; shift words  # shifting words args
+    ((CURRENT = CURRENT -2))
     case $subcommand in
         e|"exec"|[-,_])  # magic native completion
-            # Â-maybe: shift shift and replace with generic
-            if  ((CURRENT == 4 )); then
+            shift words; ((CURRENT--))
+            if  ((CURRENT == 1 )); then
                 _command_names
+            elif functions "_${words[1]}" > /dev/null; then
+                "_${words[1]}"
             else
-                _path_files -W $PWD
-            fi; return 0
+                _path_files -W $PWD ; _options_set
+            fi ; return 0
             ;;
         i|interactive|prompt|shell|help)
             _message "Just hit enter, and enter the interactive mode :)" && return 0;;
@@ -52,7 +56,6 @@ else # argument completion
             ;;
         *)
             local compfun="_${subcommand}"
-            shift words; shift words    # shifting words args
             if functions "$compfun" > /dev/null; then
                 # §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main
                 # if so do it up
