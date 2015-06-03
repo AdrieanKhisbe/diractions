@@ -7,6 +7,7 @@ local diract=$words[2]
 local dirdir=`eval echo $diract`
 local subcommand=$words[3]
 
+# Update Pwd to make subcompleter to consider we are in the target directory
 PWD=$dirdir
 
 if (( CURRENT == 3));
@@ -17,13 +18,12 @@ then # Subcomand completion
 
             local pattern="${subcommand#/}"
             local cmd="cd $dirdir && ls -d $pattern*/ 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
-            compadd -S '' -x "Matching Subdirs:" $(eval $cmd)
+            compadd -S '' -x "Matching Subdirs:" $(eval $cmd) || _message "No subdir matching"
+            # Ânote: _directories can't work since / is the leading char
+            # Â- maybe change behavior if no match
+            # improve completion valuessss!!!!
             return 0
             ;;
-        # §maybe: add them optionnaly also for argument -> §todo: extract function
-        #      improve completion valuessss!!!!
-        # alternative message if no match. or list all subdir
-
         *)      # Basic argument
             compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
             # maybe extend subcommands with these value??
@@ -43,10 +43,7 @@ else # argument completion
 
         # §todo: no args
         /)
-            local pattern="${words[4]}"
-            # §maybe: extract function
-            local cmd="cd $dirdir && ls -d $pattern*/ 2>/dev/null | xargs echo"
-            compadd -S '' -x "Matching Subdirs:" $(eval $cmd)
+            _directories -W "$PWD"
             ;;
         *)
             local compfun="_${subcommand}"
@@ -59,7 +56,9 @@ else # argument completion
                 # https://github.com/robbyrussell/oh-my-zsh/issues/2394
             else
                 # decide what to do.
-                _message "No completion available for $subcommand"
+                _message "No Specific completion available for $subcommand"
+                ((CURRENT > 4 )) &&  _path_files -W $PWD
+                # TODO command completion
             fi
             ;;
     esac
