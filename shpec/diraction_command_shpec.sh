@@ -29,16 +29,15 @@ describe "Diraction Commands"
   end
 
   describe "Diraction Creation"
-
     it "create working diraction"
       directory_names=('/tmp/some-name' '/tmp/some name with space' )
-      for dir in $directory_names
+      for dir in "${(@)directory_names}"
       do
-        mkdir -p $dir
-        diraction create testitest $dir
-        # §todo: assert function exists
+        mkdir -p "$dir"
+        diraction create testitest "$dir"
+        assert match "$(type testitest)" "*alias*"
         testitest # how to test alias??
-        assert equal $PWD $dir
+        assert equal $PWD "$dir"
         diraction destroy testitest
       done
     end
