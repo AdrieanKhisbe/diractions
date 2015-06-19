@@ -152,7 +152,8 @@ you can force creation adding --ignore-missing-dir flag" >&2
         # §maybe: readonly probably better?? (maybe not: could not unset then)
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
-    alias "$alias"="_diraction-dispatch $dir" # §later: option to keep var or not
+    alias "$alias"="_diraction-dispatch \"$dir\""
+
     # §see: keep var or not? if yes use $var prefixed by \$ (to enable to change target,but var consulted each time)
 
     DIRACTION_REGISTER[$alias]="$dir"
@@ -539,7 +540,7 @@ function diraction-check-config-dir {
 function _diraction-dispatch () {
     # §see: send var name or directory?
 
-    local dir=$1 cdir=$PWD  # capture first arguments
+    local dir="$1" cdir="$PWD"  # capture first arguments
     shift                   # get ride of initial args
 
     # ¤note: disabled checking for performance issue.
@@ -551,40 +552,40 @@ function _diraction-dispatch () {
         shift # ¤note: shift take no argument
     else
         # just jump to the dir
-        cd $dir ; return $?
+        cd "$dir" ; return $?
     fi
 
     ## §todo: local eval §maybe. §see
 
     case "$cmd" in
-        l|ls) ls $dir $@ ;;
-        t|tree) tree $dir $@;; # §beware: command not necessary installed
+        l|ls) ls "$dir" $@ ;;
+        t|tree) tree "$dir" $@;; # §beware: command not necessary installed
         c|cd|/) # §maybe: extract diraction-jump subdir
             local sdir="$dir/$1"
             if [[ -d "$sdir" ]]; then
-                cd $sdir
+                cd "$sdir"
             else
                 echo "$1 subdir does not exist" >&2;
-                cd $dir
+                cd "$dir"
             fi ;;
 
         /*) local sdir="$dir$cmd"
             if [[ -d "$sdir" ]]; then
-                cd $sdir
+                cd "$sdir"
             else
                 echo "$cmd subdir does not exist" >&2;
-                cd $dir
+                cd "$dir"
             fi ;;
 
         # §maybe : o, open? (wrapping with glob?)
-        b|browser) $DIRACTION_BROWSER $dir
+        b|browser) $DIRACTION_BROWSER "$dir"
 
             # §TOFIX: BROWSER NAVIGATER bien sur. trouver bonne valeur var env, ou utiliser xdg-open
             # platform specific. §DIG (and fix personnal config)
             ;;
 
         lc) #§other names?
-            ls $dir && cd $dir ;;
+            ls "$dir" && cd "$dir" ;;
         # §maybe reverse cl: cd then ls
         ed|edit)
             # §later: check files exists.

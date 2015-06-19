@@ -37,7 +37,7 @@ describe "Diraction Commands"
         diraction create testitest "$dir"
         assert match "$(type testitest)" "*alias*"
         testitest
-        assert equal $PWD "$dir"
+        assert equal "$PWD" "$dir"
         diraction destroy testitest
       end
       it "create working diraction with name in it"
@@ -46,8 +46,9 @@ describe "Diraction Commands"
         diraction create testitest "$dir"
         assert match "$(type testitest)" "*alias*"
         testitest
-        assert equal $PWD "$dir"
+        assert equal "$PWD" "$dir"
         diraction destroy testitest
+        # todo: extract cleanup function. or make in sandbox
       end
 
     it "Deny creation if non existing"
