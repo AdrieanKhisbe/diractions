@@ -1,10 +1,12 @@
 # Spec for the diraction command
 
 # PB: rely on funcion, only existing in zsh, but zsh has end...
+# §todo: steps definitions.
 
 describe "Diraction Commands"
 
   source ./diractions.plugin.zsh
+  CURRENT_DIR=$PWD
 
   describe "Dispatcher"
 
@@ -26,4 +28,25 @@ describe "Diraction Commands"
      end
   end
 
+  describe "Diraction Creation"
+
+    it "create working diraction"
+      directory_names=('/tmp/some-name' '/tmp/some name with space' )
+      for dir in $directory_names
+      do
+        mkdir -p $dir
+        diraction create testitest $dir
+        # §todo: assert function exists
+        testitest # how to test alias??
+        assert equal $PWD $dir
+        diraction destroy testitest
+      done
+    end
+
+    it "Deny creation if non existing"
+    end
+
+    it "Allow creation if non existing but force"
+    end
+  end
 end
