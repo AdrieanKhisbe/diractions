@@ -3,10 +3,12 @@
 # PB: rely on funcion, only existing in zsh, but zsh has end...
 # §todo: steps definitions.
 
+setopt aliases
+CURRENT_DIR="$PWD"
+
 describe "Diraction Commands"
 
   source ./diractions.plugin.zsh
-  CURRENT_DIR=$PWD
 
   describe "Dispatcher"
 
@@ -30,17 +32,23 @@ describe "Diraction Commands"
 
   describe "Diraction Creation"
     it "create working diraction"
-      directory_names=('/tmp/some-name' '/tmp/some name with space' )
-      for dir in "${(@)directory_names}"
-      do
+     dir='/tmp/some-name'
         mkdir -p "$dir"
         diraction create testitest "$dir"
         assert match "$(type testitest)" "*alias*"
-        testitest # how to test alias??
+        testitest
         assert equal $PWD "$dir"
         diraction destroy testitest
-      done
-    end
+      end
+      it "create working diraction with name in it"
+        dir='/tmp/some name with space'
+        mkdir -p "$dir"
+        diraction create testitest "$dir"
+        assert match "$(type testitest)" "*alias*"
+        testitest
+        assert equal $PWD "$dir"
+        diraction destroy testitest
+      end
 
     it "Deny creation if non existing"
     end
@@ -49,3 +57,5 @@ describe "Diraction Commands"
     end
   end
 end
+
+cd "$CURRENT_DIR"
