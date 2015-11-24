@@ -1,4 +1,4 @@
-#compdef _diraction-dispatch
+#compdef _diraction-dispatch # -*- mode: sh   -*-
 # completion for the dispatcher command
 
 #  words: 1:function 2:directory 3:pattern
@@ -17,7 +17,7 @@ then # Subcomand completion
         /*) # Pattern :D
 
             local pattern="${subcommand#/}"
-            local cmd="cd $dirdir && ls -d $pattern*/ 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
+            local cmd="cd $dirdir && ls -d -- $pattern*/ 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
             compadd -S '' -x "Matching Subdirs:" $(eval $cmd) || _message "No subdir matching"
             # Ânote: _directories can't work since / is the leading char
             # Â- maybe change behavior if no match

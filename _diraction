@@ -1,4 +1,4 @@
-#compdef diraction
+#compdef diraction # -*- mode: sh   -*-
 # Completion for the diraction command suite
 
 local -a _1st_arguments

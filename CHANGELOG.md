@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Magic completion EVERYWHERE
 ### Changed
 - Improved subcommand help
+- Now support leading `-` for directory in subcommand completion
 ### Fixed
 - Bug fix diractions containing whitespace are now handled correctly
 ## [0.12] - 2015-05-25
