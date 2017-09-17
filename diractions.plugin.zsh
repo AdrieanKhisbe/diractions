@@ -395,7 +395,8 @@ function diraction-batch-create {
 
         if [[  "${#aline}" -le 1 ]]; then
             # next: ignore empty line
-        elif [[  ! "${#aline}" == 3 ]] ; then
+           :
+        elif [[  "${#aline}" != 3 ]] ; then
             echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
             ko=true
         elif [[ $1 == "--ignore-missing-dir" ]]; then
