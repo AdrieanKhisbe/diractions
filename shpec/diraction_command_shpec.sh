@@ -34,7 +34,7 @@ describe "Diraction Commands"
      dir='/tmp/some-name'
         mkdir -p "$dir"
         diraction create testitest "$dir"
-        assert match "$(type testitest)" "*alias*"
+        assert glob "$(type testitest)" "*alias*"
         testitest
         assert equal "$PWD" "$dir"
         diraction destroy testitest
@@ -43,7 +43,7 @@ describe "Diraction Commands"
         dir='/tmp/some name with space'
         mkdir -p "$dir"
         diraction create testitest "$dir"
-        assert match "$(type testitest)" "*alias*"
+        assert glob "$(type testitest)" "*alias*"
         testitest
         assert equal "$PWD" "$dir"
         diraction destroy testitest

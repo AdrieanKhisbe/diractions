@@ -45,7 +45,7 @@ declare -gA _DIRACTION_HELP
     eval "test -z \"\$$arg_name\" && export $arg_name='$arg_value'"
     # §see: make it not exportable?
 }
-#' function to easily declare hepl associated to the provided command
+#' function to easily declare help associated to the provided command
 -diraction-help(){
     if [[ $# != 2 ]]; then
         echo "Wrong usage of help. Pb with the source" >&2
@@ -589,7 +589,6 @@ function _diraction-dispatch () {
             ls "$dir" && cd "$dir" ;;
         # §maybe reverse cl: cd then ls
         ed|edit)
-            # §later: check files exists.
             eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )" # §check §now eval not necessary
             # §later: once complete and working, duplicate it to v| visual
             # §later: also for quick emacs and vim anyway : em vi

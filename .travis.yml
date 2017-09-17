@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
       - build-essential
+      - tree
 
 env:
   global:
