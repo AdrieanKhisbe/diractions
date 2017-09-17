@@ -5,10 +5,9 @@
 
 setopt aliases
 CURRENT_DIR="$PWD"
+source $(dirname $0:A)/../diractions.plugin.zsh
 
 describe "Diraction Commands"
-
-  source ./diractions.plugin.zsh
 
   describe "Dispatcher"
 
