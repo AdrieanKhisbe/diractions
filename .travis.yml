@@ -1,7 +1,51 @@
 # zsh shpec build draft
 language: zsh
+
+# based from https://github.com/mafredri/zsh-async
+addons:
+  apt:
+    packages:
+      - build-essential
+
 env:
-  - SHELL=zsh
+  global:
+    - ZSH_DIST=$HOME/.zshdist
+  matrix:
+    # Use _ZSH_VERSION since if ZSH_VERSION is present, travis cacher thinks it
+    # is running in zsh and tries to use zsh specific functions.
+    - _ZSH_VERSION=5.3.1
+    - _ZSH_VERSION=5.3
+    - _ZSH_VERSION=5.2
+    - _ZSH_VERSION=5.1.1
+    - _ZSH_VERSION=5.0.8
+    - _ZSH_VERSION=5.0.2
+
+
+cache:
+  directories:
+    - $ZSH_DIST
+
+before_install:
+  ->
+    setup_zsh() {
+      dest="$ZSH_DIST/$1"
+      if [[ ! -d $dest/bin ]]; then
+        tmp="$(mktemp --directory --tmpdir="${TMPDIR:/tmp}" zshbuild.XXXXXX)"
+        (
+          cd "$tmp" &&
+          curl -L http://downloads.sourceforge.net/zsh/zsh-${1}.tar.gz | tar zx &&
+          cd zsh-$1 &&
+          ./configure --prefix="$dest" &&
+          make &&
+          mkdir -p "$dest" &&
+          make install ||
+          echo "Failed to build zsh-${1}!"
+        )
+      fi
+      export PATH="$dest/bin:$PATH"
+    }
+  - setup_zsh $_ZSH_VERSION
+
 install:
   # install antigen
   - curl -L https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen.zsh
