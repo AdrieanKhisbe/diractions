@@ -33,9 +33,9 @@ describe "Dispacher Command"
      assert equal "$output" "a\nb\nc"
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
-   it 'can ls files in it'
+   it 'can tree files in it'
      output=$(dir tree)
-     assert equal "$output" '/tmp/diraction-test\n|-- a\n|-- b\n`-- c\n\n0 directories, 3 files'
+     assert glob '/tmp/diraction-test\n*a\n*b\n*c\n\n0 directories, 3 files' "$output"
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
 
