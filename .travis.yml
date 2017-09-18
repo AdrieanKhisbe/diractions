@@ -21,31 +21,10 @@ env:
     - _ZSH_VERSION=5.0.8
     - _ZSH_VERSION=5.0.2
 
-
-cache:
-  directories:
-    - $ZSH_DIST
-
 before_install:
-  ->
-    setup_zsh() {
-      dest="$ZSH_DIST/$1"
-      if [[ ! -d $dest/bin ]]; then
-        tmp="$(mktemp --directory --tmpdir="${TMPDIR:/tmp}" zshbuild.XXXXXX)"
-        (
-          cd "$tmp" &&
-          curl -L http://downloads.sourceforge.net/zsh/zsh-${1}.tar.gz | tar zx &&
-          cd zsh-$1 &&
-          ./configure --prefix="$dest" &&
-          make &&
-          mkdir -p "$dest" &&
-          make install ||
-          echo "Failed to build zsh-${1}!"
-        )
-      fi
-      export PATH="$dest/bin:$PATH"
-    }
-  - setup_zsh $_ZSH_VERSION
+  - curl -L https://zulu.sh/install | zsh && zsh
+  - zulu install zvm
+  - zvm use $_ZSH_VERSION
 
 install:
   # install antigen
@@ -54,13 +33,11 @@ install:
   - echo "setopt sh_word_split" > ~/.zshenv
   - zsh ~/.zshrc
   - export SHELL=zsh
+
 script:
   - zsh --version
   - ./.travis-run.zsh
     # Check if shall not load diraction by hand
-before_install:
-  - sudo apt-get install zsh
-  - export SHELL=zsh
 
 notifications:
   email: false
