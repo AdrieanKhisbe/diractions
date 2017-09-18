@@ -19,9 +19,8 @@ env:
     - ZVM_VERSION=5.0.2
 
 before_install:
-  - curl -L https://zulu.sh/install | zsh && zsh
-  - zulu install revolver
-  - zulu install zvm
+  - curl -L https://zulu.sh/install | zsh
+  - zsh -c 'zulu install zvm'
   - zvm use $ZVM_VERSION
 
 install:
