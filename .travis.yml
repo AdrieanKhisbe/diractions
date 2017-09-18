@@ -20,6 +20,7 @@ env:
 
 before_install:
   - curl -L https://zulu.sh/install | zsh && zsh
+  - zulu install revolver
   - zulu install zvm
   - zvm use $ZVM_VERSION
 
