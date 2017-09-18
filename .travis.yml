@@ -7,6 +7,7 @@ addons:
     packages:
       - build-essential
       - tree
+      - zsh
 
 env:
   matrix:
@@ -18,7 +19,6 @@ env:
     - ZSH_VERSION=5.0.2
 
 before_install:
-  - apt-get install zsh
   - curl -L https://zulu.sh/install | zsh && zsh
   - zulu install zvm
   - zvm use $ZSH_VERSION
@@ -27,7 +27,7 @@ install:
   # install antigen
   - curl -L git.io/antigen  > ~/antigen.zsh
   - echo "source ~/antigen.zsh; antigen bundle rylnd/shpec; antigen apply" > ~/.zshrc
-  - echo "setopt sh_word_split" > ~/.zshenv
+  - echo "setopt sh_word_split" >> ~/.zshenv
   - zsh ~/.zshrc
   - export SHELL=zsh
 
