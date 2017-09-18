@@ -34,8 +34,9 @@ describe "Dispacher Command"
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
    it 'can tree files in it'
-     output=$(dir tree)
-     assert glob '/tmp/diraction-test\n*a\n*b\n*c\n\n0 directories, 3 files' "$output"
+     output=$(dir tree | sed 's/`/i/')
+     assert grep "$output" "/tmp/diraction-test"
+     assert grep "$output" "0 directories, 3 files"
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
 
