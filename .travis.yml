@@ -11,17 +11,17 @@ addons:
 
 env:
   matrix:
-    - ZSH_VERSION=5.3.1
-    - ZSH_VERSION=5.3
-    - ZSH_VERSION=5.2
-    - ZSH_VERSION=5.1.1
-    - ZSH_VERSION=5.0.8
-    - ZSH_VERSION=5.0.2
+    - ZVM_VERSION=5.3.1
+    - ZVM_VERSION=5.3
+    - ZVM_VERSION=5.2
+    - ZVM_VERSION=5.1.1
+    - ZVM_VERSION=5.0.8
+    - ZVM_VERSION=5.0.2
 
 before_install:
   - curl -L https://zulu.sh/install | zsh && zsh
   - zulu install zvm
-  - zvm use $ZSH_VERSION
+  - zvm use $ZVM_VERSION
 
 install:
   # install antigen
