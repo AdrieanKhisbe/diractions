@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # Spec for the diraction command
 echo $0 $SHELL
 # PB: rely on funcion, only existing in zsh, but zsh has end...
