@@ -7,6 +7,7 @@ addons:
     packages:
       - build-essential
       - tree
+      - yodl
       - zsh
 
 env:
