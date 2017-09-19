@@ -30,6 +30,7 @@ install:
   - curl -L git.io/antigen  > ~/antigen.zsh
   - cat .travis-zshrc > ~/.zshrc ; cat ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
+  - which zsh
   - zsh ~/.zshrc
 
 script:
