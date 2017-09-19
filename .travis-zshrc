@@ -1,0 +1,5 @@
+source ~/antigen.zsh
+
+type antigen
+antigen bundle rylnd/shpec
+antigen apply
