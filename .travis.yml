@@ -26,10 +26,11 @@ before_install:
 install:
   # install antigen
   - curl -L git.io/antigen  > ~/antigen.zsh
-  - echo "source ~/antigen.zsh; antigen bundle rylnd/shpec; antigen apply" > ~/.zshrc
+  - echo 'source ~/antigen.zsh\ntype antigen\nantigen bundle rylnd/shpec\nantigen apply' > ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
   - zsh ~/.zshrc
   - export SHELL=zsh
+
 
 script:
   - zsh --version
