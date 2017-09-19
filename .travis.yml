@@ -22,6 +22,7 @@ env:
 
 before_install:
   - curl -L https://zulu.sh/install | zsh
+  - export SHELL=zsh
   - zsh -c "source ~/.zshrc; zulu install zvm && zvm use $ZVM_VERSION"
 
 install:
@@ -30,8 +31,6 @@ install:
   - cat .travis-zshrc > ~/.zshrc ; cat ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
   - zsh -v ~/.zshrc
-  - export SHELL=zsh
-
 
 script:
   - zsh --version
