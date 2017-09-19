@@ -20,7 +20,7 @@ env:
 
 before_install:
   - curl -L https://zulu.sh/install | zsh
-  - zsh -c "source ~/.zshrc; zulu install zvm; zvm use $ZVM_VERSION "
+  - zsh -c "source ~/.zshrc; zulu install zvm; zvm use $ZVM_VERSION ;cat /home/travis/.zvm/log/*"
 
 install:
   # install antigen
