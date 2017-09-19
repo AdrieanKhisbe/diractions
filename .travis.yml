@@ -31,10 +31,10 @@ install:
   - cat .travis-zshrc > ~/.zshrc ; cat ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
   - which zsh
-  - zsh ~/.zshrc
+  - $HOME/.zvm/bin/zsh ~/.zshrc
 
 script:
-  - zsh --version
+  - $HOME/.zvm/bin/zsh --version
   - ./.travis-run.zsh
     # Check if shall not load diraction by hand
 
