@@ -1,11 +1,11 @@
-zsh --version; echo $0
+zsh --version;
+echo $0
+echo $ZSH_VERSION
 
 source "${ZULU_DIR:-"${ZDOTDIR:-$HOME}/.zulu"}/core/zulu"
-rm -rf ${ZULU_CONFIG_DIR:-"${ZDOTDIR:-$HOME}/.config/zulu"}/theme # §hack
 zulu init
 
 source ~/antigen.zsh
 
-type antigen
 antigen bundle rylnd/shpec
 antigen apply
