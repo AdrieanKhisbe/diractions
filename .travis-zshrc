@@ -1,7 +1,3 @@
-zsh --version;
-echo $0
-echo $ZSH_VERSION
-
 source "${ZULU_DIR:-"${ZDOTDIR:-$HOME}/.zulu"}/core/zulu"
 zulu init
 

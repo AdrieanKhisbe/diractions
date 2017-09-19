@@ -36,8 +36,9 @@ install:
 
 script:
   - $ZSH --version
-  - $ZSH .travis-run.zsh
+  - $ZSH -c "source ~/.zshrc; shpec"
     # Check if shall not load diraction by hand
+  #- $ZSH .travis-run.zsh
 
 notifications:
   email: false
