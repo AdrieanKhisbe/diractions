@@ -1,3 +1,9 @@
+
+whence -f set_prompt
+source "${ZULU_DIR:-"${ZDOTDIR:-$HOME}/.zulu"}/core/zulu"
+whence -f set_prompt
+zulu init
+
 source ~/antigen.zsh
 
 type antigen
