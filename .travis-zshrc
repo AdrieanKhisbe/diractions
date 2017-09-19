@@ -1,7 +1,6 @@
 
-whence -f set_prompt
 source "${ZULU_DIR:-"${ZDOTDIR:-$HOME}/.zulu"}/core/zulu"
-whence -f set_prompt
+rm -rf ${ZULU_CONFIG_DIR:-"${ZDOTDIR:-$HOME}/.config/zulu"}/theme # §hack
 zulu init
 
 source ~/antigen.zsh
