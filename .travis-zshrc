@@ -1,7 +1,8 @@
-
+zsh --version
 source "${ZULU_DIR:-"${ZDOTDIR:-$HOME}/.zulu"}/core/zulu"
 rm -rf ${ZULU_CONFIG_DIR:-"${ZDOTDIR:-$HOME}/.config/zulu"}/theme # §hack
 zulu init
+zsh --version
 
 source ~/antigen.zsh
 
