@@ -32,13 +32,11 @@ install:
   - echo "setopt sh_word_split" >> ~/.zshenv
   - which zsh
   - export ZSH=$HOME/.zvm/bin/zsh
-  - $ZSH ~/.zshrc
+  #- $ZSH ~/.zshrc
 
 script:
   - $ZSH --version
-  - $ZSH -c "source ~/.zshrc; shpec"
-    # Check if shall not load diraction by hand
-  #- $ZSH .travis-run.zsh
+  - $ZSH .travis-run.zsh
 
 notifications:
   email: false
