@@ -4,5 +4,6 @@ source ~/.zshrc
 
 
 echo "Launching Test"
+tree $HOME/.antigen
 alias shpec="${ZSH:-zsh} -c 'disable -r end; . $HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-rylnd-SLASH-shpec.git/bin/shpec'" # §hack §unstable
 shpec
