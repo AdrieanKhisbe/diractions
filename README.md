@@ -55,7 +55,7 @@ First step is to define your *diractions*, associate name to your most used dire
    dir2 /long/dir/2
    DIR
    ```
-   + You can see the existing *diraction* using `list`, `list-alias`, `list-dir` and even `grep` throught them
+   + You can see the existing *diraction* using `list`(`ls`), `list-alias`(`la`), `list-dir`(`ld`) and even `grep` throught them
 
 ### Use you diraction
 
