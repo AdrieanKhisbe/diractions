@@ -177,7 +177,7 @@ function diraction-exist {
 }
 
 -diraction-help list "
-List existing diractions (filter by given arg)"
+List existing diractions (eventually filtered by given arg)"
 function diraction-list {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
@@ -190,16 +190,26 @@ function diraction-list {
 diraction-ls () { diraction-list $@; }
 
 -diraction-help list-alias "
-List existing diraction aliases"
+List existing diraction aliases (eventually filtered by given arg)"
 function diraction-list-alias {
-    echo ${(ko)DIRACTION_REGISTER}
+    if [ ! -n "$1" ]; then
+        echo ${(ko)DIRACTION_REGISTER}
+    else
+        echo ${(ko)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | tr '\n' ' '
+    fi
 }
+diraction-la () { diraction-list-alias $@; }
 
 -diraction-help list-dir "
-List existing diraction directories"
+List existing diraction directories (eventually filtered by given arg)"
 function diraction-list-dir {
-    echo ${(ov)DIRACTION_REGISTER}
+    if [ ! -n "$1" ]; then
+        echo ${(ov)DIRACTION_REGISTER}
+    else
+        echo ${(ov)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | tr '\n' ' '
+    fi
 }
+diraction-ld () { diraction-list-dir $@; }
 
 -diraction-help grep "<pattern>
 Grep existing diraction to find matching aliases"
