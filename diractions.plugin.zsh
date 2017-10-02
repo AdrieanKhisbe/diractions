@@ -186,7 +186,7 @@ function diraction-list {
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
-alias diraction-ls=diraction-list
+diraction-ls () { diraction-list; }
 
 -diraction-help list-alias "
 List existing diraction aliases"
