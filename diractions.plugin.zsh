@@ -216,19 +216,6 @@ function diraction-grep {
     fi
 }
 
--diraction-help grep-alias "<pattern>
-Grep alias to find matching alias"
-function diraction-grep-alias {
-    if [[ $# == 0 ]]; then
-        echo "Please provide something to grep it with" >&2
-        return 1
-    else
-        # §todo: refactor using reverse indexing (302)
-        echo "List of diractions alias matching '$@'"
-        diraction-list-alias | grep $@
-    fi
-}
-
 -diraction-help disable "<name>
 Disable attached alias"
 function diraction-disable {
