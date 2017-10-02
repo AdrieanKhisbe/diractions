@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # Spec for the diraction command
-echo $0 $SHELL
+echo $0 $SHELL $ZSH_EVAL_CONTEXT $BASH_SOURCE
 # PB: rely on funcion, only existing in zsh, but zsh has end...
 # §todo: steps definitions.
 
