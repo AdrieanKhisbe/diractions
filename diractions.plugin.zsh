@@ -72,7 +72,7 @@ fi
 
 # §bonux: more config
 # §bonux: provide documentation too! : store in an array? (name var and doc)
-unset -- "-set-default"
+unset -f -- -set-default
 
 # ¤>> constants
 DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
@@ -700,4 +700,4 @@ if $DIRACTION_AUTO_CONFIG ;then
 fi
 
 ## ¤> Cleanup
-unset -- "-diraction-help"
+unset -f -- -diraction-help
