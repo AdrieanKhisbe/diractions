@@ -27,6 +27,7 @@ cache:
     - $HOME/.zvm
 
 before_install:
+  - if [[ $(ls "$HOME/.zvm" | wc -l) -eq 0 ]]; then rm -rf "$HOME/.zvm"; fi # hack for caching init
   - curl -L https://zulu.sh/install | zsh
   - export SHELL=zsh
   - zsh -c "source ~/.zshrc; zulu install zvm && zvm use $ZVM_VERSION"
