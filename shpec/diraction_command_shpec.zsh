@@ -6,7 +6,7 @@ echo $0 $SHELL $ZSH_EVAL_CONTEXT $BASH_SOURCE bashv $BASH_VERSION zshv $ZSH_VERS
 
 setopt aliases
 CURRENT_DIR="$PWD"
-source $(dirname $0:A)/../diractions.plugin.zsh
+. $(dirname $0:A)/../diractions.plugin.zsh
 
 describe "Diraction Commands"
 
