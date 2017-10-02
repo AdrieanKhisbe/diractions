@@ -19,7 +19,8 @@ env:
     - ZVM_VERSION=5.1.1
     - ZVM_VERSION=5.0.8
     - ZVM_VERSION=5.0.2
-
+    - ZVM_VERSION=4.3.17
+    - ZVM_VERSION=4.3.12
 language: generic
 cache:
   apt: true
