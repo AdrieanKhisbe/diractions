@@ -177,16 +177,17 @@ function diraction-exist {
 }
 
 -diraction-help list "
-List existing diractions"
+List existing diractions (filter by given arg)"
 function diraction-list {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
+        if [ -n "$1" ] && [ ! "$a" =~ $1 ] ; then continue; fi
         echo "$a\t -  $DIRACTION_REGISTER[$a]"
         # §TODO: indent [retrieve zsh link]
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
-diraction-ls () { diraction-list; }
+diraction-ls () { diraction-list $@; }
 
 -diraction-help list-alias "
 List existing diraction aliases"
