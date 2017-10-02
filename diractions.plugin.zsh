@@ -11,7 +11,6 @@
 ##                                                                            ##
 ################################################################################
 
-echo '$0:' $0  $SHELL $ZSH_EVAL_CONTEXT bashsource: $BASH_SOURCE bashv $BASH_VERSION zshv $ZSH_VERSION
 # Diractions: Doing Anything, Anywhere, from here
 # Author: Adriean Khisbe
 # Homepage: http://github.com/AdrieanKhisbe/diractions
