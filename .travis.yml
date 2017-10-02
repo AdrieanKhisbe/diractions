@@ -20,6 +20,10 @@ env:
     - ZVM_VERSION=5.0.8
     - ZVM_VERSION=5.0.2
 
+cache:
+  directories:
+    - $HOME/.zvm
+
 before_install:
   - curl -L https://zulu.sh/install | zsh
   - export SHELL=zsh
