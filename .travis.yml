@@ -1,5 +1,5 @@
 # zsh shpec build draft
-language: zsh
+language: generic
 
 # based from https://github.com/mafredri/zsh-async
 addons:
@@ -20,9 +20,11 @@ env:
     - ZVM_VERSION=5.0.8
     - ZVM_VERSION=5.0.2
 
-#cache:  #§FIXME
-#  directories:
-#    - $HOME/.zvm
+language: generic
+cache:
+  apt: true
+  directories:
+    - $HOME/.zvm
 
 before_install:
   - curl -L https://zulu.sh/install | zsh
