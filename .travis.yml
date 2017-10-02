@@ -1,4 +1,4 @@
-# zsh/zvm shpec build
+# zsh shpec build draft
 language: generic
 
 # based from https://github.com/mafredri/zsh-async
@@ -38,10 +38,12 @@ install:
   - cat .travis-zshrc > ~/.zshrc ; cat ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
   - which zsh
+  - export ZSH=$HOME/.zvm/bin/zsh
+  #- $ZSH ~/.zshrc
 
 script:
-  - zsh --version
-  - zsh .travis-run.zsh
+  - $ZSH --version
+  - $ZSH .travis-run.zsh
 
 notifications:
   email: false
