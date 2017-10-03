@@ -25,12 +25,11 @@ then # Subcomand completion
             return 0
             ;;
         *)      # Basic argument
+            _describe -t commands "Dispatcher subcommand" _DIRACTION_HELP_SUBCOMMAND
+
             compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
             # maybe extend subcommands with these value??
             # or extend the array here?
-
-            _describe -t commands "Dispatcher subcommand" _DIRACTION_HELP_SUBCOMMAND
-
             return
     esac
 else # argument completion
