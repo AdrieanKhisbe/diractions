@@ -129,7 +129,7 @@ Link a directory to create both a variable "_$1", and a "dispatch" alias "$1"
 
 If variable already exist, it will not be updated!
 Add --ignore-missing-dir option if you want to bypass existence checking test'
-function diraction-create(){
+function diraction-create() {
     if [[ $# -lt 2 ]]; then
         echo "Wrong Number of arguments\ndiraction-create <alias> <dir>" >&2
         return 1
@@ -163,7 +163,7 @@ you can force creation adding --ignore-missing-dir flag" >&2
 
 -diraction-help save "<name>
 Save current directory as diraction"
-function diraction-save(){
+function diraction-save() {
     if [[ $# -lt 1 ]]; then
         echo "Wrong Number of arguments\ndiraction-alias <alias>" >&2
         return 1
@@ -174,13 +174,13 @@ function diraction-save(){
 # ¤>> Other utils functions
 -diraction-help exist "
 check if alias attached to diraction"
-function diraction-exist {
+function diraction-exist() {
     [[ -n "$DIRACTION_REGISTER[$1]" ]]
 }
 
 -diraction-help list "
 List existing diractions (eventually filtered by given arg)"
-function diraction-list {
+function diraction-list() {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
         if [ -n "$1" ] && [ ! "$a" =~ $1 ] ; then continue; fi
@@ -189,11 +189,11 @@ function diraction-list {
     done | sed "s;$HOME;~;" # waiting for regexp
     # beware separation while evaluating
 }
-diraction-ls () { diraction-list $@; }
+diraction-ls() { diraction-list $@; }
 
 -diraction-help list-alias "
 List existing diraction aliases (eventually filtered by given arg)"
-function diraction-list-alias {
+function diraction-list-alias() {
     if [ ! -n "$1" ]; then
         echo ${(ko)DIRACTION_REGISTER}
     else
@@ -204,18 +204,18 @@ diraction-la () { diraction-list-alias $@; }
 
 -diraction-help list-dir "
 List existing diraction directories (eventually filtered by given arg)"
-function diraction-list-dir {
+function diraction-list-dir() {
     if [ ! -n "$1" ]; then
         echo ${(ov)DIRACTION_REGISTER}
     else
         echo ${(ov)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | tr '\n' ' '
     fi
 }
-diraction-ld () { diraction-list-dir $@; }
+diraction-ld() { diraction-list-dir $@; }
 
 -diraction-help grep "<pattern>
 Grep existing diraction to find matching aliases"
-function diraction-grep {
+function diraction-grep() {
     if [[ $# == 0 ]]; then
         echo "Please provide something to grep it with" >&2
         return 1
@@ -230,7 +230,7 @@ function diraction-grep {
 
 -diraction-help disable "<name>
 Disable attached alias"
-function diraction-disable {
+function diraction-disable() {
     if diraction-exist $1 ;then
         disable -a $1
     else
@@ -241,7 +241,7 @@ function diraction-disable {
 
 -diraction-help enable "<name>
 Re-enable attached alias"
-function diraction-enable {
+function diraction-enable() {
     if diraction-exist $1 ;then
         enable -a $1
         # §maybe: disable variable or not?
@@ -253,7 +253,7 @@ function diraction-enable {
 
 -diraction-help destroy "<name>
 Destroy alias and variable attached to diraction name"
-function diraction-destroy {
+function diraction-destroy() {
     if diraction-exist $1 ;then
         unalias $1
         unset "_$1"
@@ -267,7 +267,7 @@ function diraction-destroy {
 -diraction-help destroy-all "[--force|-f]
 destroy all diraction variables
 Need -f/--force flag to perform"
-function diraction-destroy-all {
+function diraction-destroy-all() {
     if [[ "-f" == $1  ]] || [[ "--force" == $1  ]]
     then
         for a in ${(k)DIRACTION_REGISTER}; do
@@ -281,7 +281,7 @@ function diraction-destroy-all {
 
 -diraction-help reset "
 Reset direction environment by first destroying everython then reloading config"
-function diraction-reset {
+function diraction-reset() {
     echo "Reseting diraction environment"
     diraction-destroy-all -f
     diraction-load-config # load config
@@ -294,13 +294,13 @@ function diraction-reset {
 
 -diraction-help whitelist "<cmd*>
 Add provided commands to the whitelist"
-function diraction-whitelist {
+function diraction-whitelist() {
     DIRACTION_DISPATCH_WHITELIST+=($@)
 }
 
 -diraction-help blacklist "<cmd*>
 Remove provided commands from the whitelist"
-function diraction-blacklist {
+function diraction-blacklist() {
     for cmd in $@ ; do
         DIRACTION_DISPATCH_WHITELIST=("${(@)DIRACTION_DISPATCH_WHITELIST:#$cmd}")
     done
@@ -310,7 +310,7 @@ function diraction-blacklist {
 -diraction-help help "
 Yo Dawg, I herd you like help, so I put an help in your help
 so you can get helped while you search help"
-function diraction-help {
+function diraction-help() {
     if [[ $# != 1 ]] ; then
         # §later: colors :D
         cat <<"BANNER"
@@ -345,7 +345,7 @@ EOF
 
 ##' Load personal config of user
 ##' first load predefined function if exist. then load config file
-function diraction-load-config {
+function diraction-load-config() {
     ## two options, function or file. load both, function taking precedence
 
     # Load personal function if existing
@@ -364,7 +364,7 @@ function diraction-load-config {
 }
 
 ##' parse file as diraction definition
-function -diraction-parse-file {
+function -diraction-parse-file() {
     if [[ ! -f "$1" ]]
     then
         echo 'diraction parse file need to be given a file!' >&2
@@ -376,7 +376,7 @@ function -diraction-parse-file {
 }
 
 ##' function to create a set of batch definition from sdin
-function diraction-batch-create {
+function diraction-batch-create() {
     local SED_OPT
     if [[ "$(uname -s)" -eq "Darwin" ]] ; then SED_OPT="-E" ; else SED_OPT="-R" ; fi
 
@@ -420,7 +420,7 @@ function diraction-batch-create {
 }
 
 ## §TODO: save test file to run test.
-function diraction-check(){
+function diraction-check() {
     # §todo: alias doctor
 
     #§maybe refactor which command as a variable?
@@ -448,7 +448,7 @@ function diraction-check(){
 
 ##' check if syntax of provided file is correct
 ## §maybe: can acces it from outside §here
-function -diraction-check-file-syntax {
+function -diraction-check-file-syntax() {
     if [[ ! -f "$1" ]];then
         echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
         return 2
@@ -473,7 +473,7 @@ function -diraction-check-file-syntax {
 }
 
 ##' check if directoryes of provided file exists
-function -diraction-check-file-dir {
+function -diraction-check-file-dir() {
 
     if [[ ! -f "$1" ]];then
         echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
@@ -511,7 +511,7 @@ function -diraction-check-file-dir {
 
 ##' check syntax of config file
 # §maybe swap name: config/syntax
-function diraction-check-config-syntax {
+function diraction-check-config-syntax() {
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
         -diraction-check-file-syntax ${DIRACTION_DEF_FILE}
         return $?
@@ -520,7 +520,7 @@ function diraction-check-config-syntax {
     fi
 }
 ##' check directory existance of config file
-function diraction-check-config-dir {
+function diraction-check-config-dir() {
     if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
         -diraction-check-file-dir ${DIRACTION_DEF_FILE}
         return $?
@@ -539,7 +539,7 @@ function diraction-check-config-dir {
 # §todo: refactor: file edit, and else and EVAL DIR!!!
 # ¤later: check function exist: otherwise :(eval):1: command not found: nautilus
 # §maybe: sed the errorto remove the eval
-function _diraction-dispatch () {
+function _diraction-dispatch() {
     # §see: send var name or directory?
 
     local dir="$1" cdir="$PWD"  # capture first arguments
