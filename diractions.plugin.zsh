@@ -74,7 +74,9 @@ fi
 unset -f -- -set-default
 
 # ¤>> constants
-DIRACTION_USAGE="usage: new/create <aliasname> <dir>\ndisable enable destroy <aliasname>"
+DIRACTION_USAGE="usage: new/create <aliasname> <dir>
+disable / enable / destroy <aliasname>
+list|ls / list-alias|la / list-dir|ld / grep <aliaspattern>"
 # ¤note: function -set-constant wasn't working
 # §later? maybe restore notion of constant?
 
