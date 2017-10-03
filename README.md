@@ -92,7 +92,12 @@ for the specified subcommand.
 
 ## Installation
 *Installation* is far simple, just get the file and source it.
-Other wise if you use [antigen](https://github.com/zsh-users/antigen) (*which I recommend :)*), just add **diractions** to your bundles as `AdrieanKhisbe/diractions`
+Other wise with a package manager, (*which I recommend :)*), add the following to your config:
+
+- for [antigen](https://github.com/zsh-users/antigen), just add **diractions** to your bundles as `AdrieanKhisbe/diractions`
+   `antigen bundle adrieankhisbe/diractions`
+- for [zplug](https://github.com/zplug/zplug), add `zplug "adrieankhisbe/diractions"`
+- for [antibody](https://github.com/getantibody/antibody), add `antibody bundle "adrieankhisbe/diractions"`
 
 ## Configuration
 

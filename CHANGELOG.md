@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [0.13] - 2017-10-04
 ### Added
 - Ls diractions command now accept pattern as input
+- Instructions to install with others package manager than antigen
 - Test infrastructure and covering of all notable zsh version from 4.3
 ## [0.12.x] - 2015-06-04
 ### Added
