@@ -3,7 +3,10 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-
+## [0.13] - 2017-10-04
+### Added
+- Ls diractions command now accept pattern as input
+- Test infrastructure and covering of all notable zsh version from 4.3
 ## [0.12.x] - 2015-06-04
 ### Added
 - Magic completion EVERYWHERE
@@ -71,8 +74,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12.3...HEAD
-[0.12.x]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12...v0.12.3
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.13...HEAD
+[0.13]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12.4...v0.13
+[0.12.x]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12...v0.12.4
 [0.12]: https://github.com/AdrieanKhisbe/diractions/compare/v0.11...v0.12
 [0.11]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.2...v0.11
 [0.10.2]: https://github.com/AdrieanKhisbe/diractions/compare/v0.10.1...v0.10.2
