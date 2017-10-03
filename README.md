@@ -34,6 +34,29 @@ Then I check it has been copied to the directory with `mydir ls`, then go in one
 *This is just a glimpse of what you can do, if you wanna see more [scroll down a bit](#Usage)*. Otherwise, go in the terminal and practice. completion is there to help you *:)*
 
 <!-- §see: inner link document -->
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
+
+- [Zsh Diractions](#zsh-diractions)
+    - [Aim](#aim)
+        - [Hello Diraction](#hello-diraction)
+    - [Usage](#usage)
+        - [Define your own diractions](#define-your-own-diractions)
+        - [Use you diraction](#use-you-diraction)
+        - [Others Diraction Commands](#others-diraction-commands)
+    - [Installation](#installation)
+    - [Configuration](#configuration)
+        - [Your Diractions](#your-diractions)
+            - [The Diraction Config file](#the-diraction-config-file)
+            - [The custom hook](#the-custom-hook)
+        - [Customs](#customs)
+    - [History](#history)
+        - [Changelog](#changelog)
+    - [>> Warning <<](#-warning-)
+        - [Security Note](#security-note)
+
+<!-- markdown-toc end -->
+
 
 ## Usage
 
