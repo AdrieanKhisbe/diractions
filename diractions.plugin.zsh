@@ -183,7 +183,7 @@ List existing diractions (eventually filtered by given arg)"
 function diraction-list() {
     echo "List of diractions:"
     for a in ${(ko)DIRACTION_REGISTER}; do
-        if [ -n "$1" ] && [ ! "$a" =~ $1 ] ; then continue; fi
+        if [ -n "$1" ] && [[ ! "$a" =~ $1 ]] ; then continue; fi
         echo "$a\t -  $DIRACTION_REGISTER[$a]"
         # §TODO: indent [retrieve zsh link]
     done | sed "s;$HOME;~;" # waiting for regexp
@@ -197,7 +197,7 @@ function diraction-list-alias() {
     if [ ! -n "$1" ]; then
         echo ${(ko)DIRACTION_REGISTER}
     else
-        echo ${(ko)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | tr '\n' ' '
+        echo ${(ko)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | xargs echo -n
     fi
 }
 diraction-la () { diraction-list-alias $@; }
@@ -208,7 +208,7 @@ function diraction-list-dir() {
     if [ ! -n "$1" ]; then
         echo ${(ov)DIRACTION_REGISTER}
     else
-        echo ${(ov)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | tr '\n' ' '
+        echo ${(ov)DIRACTION_REGISTER} | tr ' ' '\n' | egrep $1 | xargs echo -n
     fi
 }
 diraction-ld() { diraction-list-dir $@; }

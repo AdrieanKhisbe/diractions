@@ -5,6 +5,9 @@
 setopt aliases
 CURRENT_DIR="$PWD"
 source $(dirname $0:A)/../diractions.plugin.zsh
+source $(dirname $0:A)/diraction_test_utils.zsh
+
+diraction-destroy-all -f
 
 describe "Diraction Commands"
 
@@ -12,9 +15,9 @@ describe "Diraction Commands"
 
     it "Transfer existing commands"
         ok=false
-        stub_command diraction-list "ok=true"
-        diraction list
-        unstub_command diraction-list
+        stub_command diraction-save "ok=true"
+        diraction save
+        unstub_command diraction-save
         assert equal $ok true
      end
      it "Error for non existing commands"
@@ -52,6 +55,44 @@ describe "Diraction Commands"
     end
 
     it "Allow creation if non existing but force"
+    end
+  end
+  describe "Diraction listing"
+    dir1='/tmp/dir1'; dir2='/tmp/dir2'
+    diraction-fake test1 "$dir1"
+    diraction-fake test2 "$dir2"
+
+    it "ls all the dirs"
+        output="$(diraction ls)"
+        assert grep "$output" "List of diractions"
+        assert grep "$output" "test1.* -  /tmp/dir1"
+        assert grep "$output" "test2.* -  /tmp/dir2"
+    end
+
+    it "ls some dirs"
+        output="$(diraction ls 2)"
+        assert grep "$output" "List of diractions"
+        assert no_grep "$output" "test1.* -  /tmp/dir1"
+        assert grep "$output" "test2.* -  /tmp/dir2"
+    end
+    it "ls-alias"
+        output="$(diraction list-alias)"
+        assert equal "$output" "test1 test2"
+    end
+
+    it "ls-alias"
+        output="$(diraction list-alias t1)"
+        assert equal "$output" "test1"
+    end
+
+    it "ls-alias"
+        output="$(diraction list-dir)"
+        assert equal "$output" "/tmp/dir1 /tmp/dir2"
+    end
+
+    it "ls-alias"
+        output="$(diraction list-dir r2)"
+        assert equal "$output" "/tmp/dir2"
     end
   end
 end
