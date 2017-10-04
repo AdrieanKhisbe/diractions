@@ -541,9 +541,9 @@ function diraction-check-config-dir() {
 # §maybe: sed the errorto remove the eval
 function _diraction-dispatch() {
     # §see: send var name or directory?
-
-    local dir="$1" cdir="$PWD"  # capture first arguments
-    shift                   # get ride of initial args
+    local dir="$1" cdir="${cdir:-$PWD}"  # capture first arguments
+    # cdir already defined for recursive call
+    shift                                # get ride of initial args
 
     # ¤note: disabled checking for performance issue.
     #        assume that function that was correctly created with diraction-create
@@ -576,7 +576,7 @@ function _diraction-dispatch() {
                 if [[ -z "$@" ]]; then
                     cd "$sdir"
                 else
-                    _diraction-dispatch "$sdir" $@
+                    cdir=$cdir _diraction-dispatch "$sdir" $@
                 fi
             else
                 echo "$cmd subdir does not exist" >&2;
@@ -626,7 +626,7 @@ function _diraction-dispatch() {
         i|interactive|prompt|shell)
              # for a bunch of consecutive commands
             # §maybe: add other names
-            echo "Entering interactive mode in $dir folder:"
+            echo "Entering interactive mode in $fg_bold[blue]$dir$reset_color folder:"
             # §maybe: make a recap. (C-d quit)
             # §note: exit will just exist the loop since we are in subprocess
             echo -n "$DIRACTION_INTERACTIVE_PROMPT" # §maybe: prefix by alias name!
