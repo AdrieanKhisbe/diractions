@@ -75,14 +75,15 @@ First step is to define your *diractions*, associate name to your most used dire
 + you can also create many *diractions* with the `batch-create` command. it reads STDIN (so pipe a file to it, or use here docs) which can be usefull in configs.
 
    ```sh
-   diraction batch-create <<DIR
+   diraction batch-create <<DIRS
    dir1 /long/dir/one
    dir2 /long/dir/2
-   DIR
+   DIRS
    ```
-   + You can see the existing *diraction* using `list`(`ls`), `list-alias`(`la`), `list-dir`(`ld`) and even `grep` throught them
++ You can see the existing *diraction* using the following subcommands:
+  `list`(`ls`), `list-alias`(`la`), `list-dir`(`ld`) and even `grep` throught them
 
-### Use you diraction
+### Use your diraction
 
 Now that you have a *diraction* it's time to use it. *:)*
 Simpliest way is to just type it's name to go in the attached directory.
@@ -158,10 +159,10 @@ Here is some Example:
 ```zsh
     diraction-personal-config (){
     # put your config here
-    diraction-batch-create <<DIR
+    diraction-batch-create <<DIRS
         dir1  /my/path/number1
         yasp  /yet/another/stupid/path
-    DIR
+    DIRS
    }
 ```
 
