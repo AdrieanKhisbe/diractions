@@ -576,11 +576,11 @@ function _diraction-dispatch() {
                 if [[ -z "$@" ]]; then
                     cd "$sdir"
                 else
-                    echo "TODO subdiraction in $sdir"
+                    _diraction-dispatch "$sdir" $@
                 fi
             else
                 echo "$cmd subdir does not exist" >&2;
-                cd "$dir"
+                _d
             fi ;;
 
         # §maybe : o, open? (wrapping with glob?)
