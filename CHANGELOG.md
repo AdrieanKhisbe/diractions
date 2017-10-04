@@ -3,6 +3,12 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### [0.14] - 2017-10-05
+### Added
+- Can now perform action in diraction subdirs
+- Adequate completion for these actions
+### Changed
+- highlight the commands in the helps
 ## [0.13] - 2017-10-04
 ### Added
 - Ls diractions command now accept pattern as input
@@ -75,7 +81,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.13...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.14...HEAD
+[0.14]: https://github.com/AdrieanKhisbe/diractions/compare/v0.13...v0.14
 [0.13]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12.4...v0.13
 [0.12.x]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12...v0.12.4
 [0.12]: https://github.com/AdrieanKhisbe/diractions/compare/v0.11...v0.12
