@@ -636,7 +636,7 @@ function _diraction-dispatch() {
                     echo -n "$reset_color"
                     # §todo: check return code of eval: eval error (syntax), ou interpreted command error.
 
-                    if [[ "$icmd" =~ ^(h|help|\?) ]] ; then
+                    if [[ "$icmd" =~ ^(h|help|\\?) ]] ; then
                         # §maybe: customize some othercommand behavior:
                         echo "You are in the interactive mode of diraction
 command will be perfomed in '$dir' (content is evaluated)
