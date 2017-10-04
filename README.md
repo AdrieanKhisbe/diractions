@@ -7,6 +7,9 @@ Zsh Diractions
 [![Build Status](https://travis-ci.org/AdrieanKhisbe/diractions.svg)](https://travis-ci.org/AdrieanKhisbe/diractions)
 [![Join the chat https://gitter.im/AdrieanKhisbe/diractions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AdrieanKhisbe/diractions)
 
+
+[![asciicast](https://asciinema.org/a/140889.png)](https://asciinema.org/a/140889)
+
 ## Aim
 The goal of this plugin is *directory indexing*, map a short logical/mnemotechnical name to directory to quickly access them, or perform action in them.
 Thanks to **diraction** user can perform quick actions on its registered directory, `cd` into it, `ls` it, `git` it, running some command, or refering to them in any command with short variable to denote them.
