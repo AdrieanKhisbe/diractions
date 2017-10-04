@@ -88,7 +88,7 @@ list|ls / list-alias|la / list-dir|ld / grep <aliaspattern>"
 # ¤>> Functions
 
 ##' Command dispatcher
-##' ¤note: inspired from Antigen Shrikant Sharat Kandula
+#' ¤note: inspired from Antigen Shrikant Sharat Kandula
 function diraction(){
 
     if [[ $# == 0 ]]; then
@@ -323,7 +323,7 @@ function diraction-help() {
 BANNER
         # ¤note: figlet -f slant Diractions
         # ¤note: "BANNER" protect from () eval
-        echo $DIRACTION_USAGE
+        echo "$DIRACTION_USAGE"
     else
         if diraction-exist $1 ;then
             "$1 diraction is bound to ${DIRACTION_REGISTER[$1]} the directory"
