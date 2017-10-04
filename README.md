@@ -44,7 +44,7 @@ Then I check it has been copied to the directory with `mydir ls`, then go in one
         - [Hello Diraction](#hello-diraction)
     - [Usage](#usage)
         - [Define your own diractions](#define-your-own-diractions)
-        - [Use you diraction](#use-you-diraction)
+        - [Use your diraction](#use-your-diraction)
         - [Others Diraction Commands](#others-diraction-commands)
     - [Installation](#installation)
     - [Configuration](#configuration)
@@ -54,7 +54,7 @@ Then I check it has been copied to the directory with `mydir ls`, then go in one
         - [Customs](#customs)
     - [History](#history)
         - [Changelog](#changelog)
-    - [>> Warning <<](#-warning-)
+    - [Notes](#notes)
         - [Security Note](#security-note)
 
 <!-- markdown-toc end -->
@@ -196,11 +196,7 @@ and is growing ever since with new functionnalities. :)
 
 Changelog might be consulted in the dedicated [file](CHANGELOG.md)
 
-## >> Warning <<
-
-The plugin is still young and has not yet being widely tested.
-If you are using it by directly cloning the repo rather than using antigen, I recommand you to prefer the `master` branch.
-It's working, I use it everyday on my terminal (for a long long time). However some glitches are possible, mainly with latest feature introduced. I'm using it with *Zsh* 5.0.2, and unaware of minimal zsh version required. (probably 4.3 at least)
+## Notes
 
 **If you have any remark, refactor suggestion or you are having some unexpected behavior or bug (*soooory*), just post an issue ;)**
 
