@@ -51,11 +51,11 @@ declare -gA _DIRACTION_HELP
         echo "Wrong usage of help. Pb with the source" >&2
         exit 1
     fi
-    _DIRACTION_HELP[$1]="$fg[blue]diraction $1$reset_color $2"
+    _DIRACTION_HELP[$1]="$fg_bold[blue]diraction $1$reset_color $2"
 }
 
 # oh yes, yell like a zsh var!! :D
--set-default DIRACTION_INTERACTIVE_PROMPT "$fg[red]>> $fg[blue]"  # §todo: make it bold
+-set-default DIRACTION_INTERACTIVE_PROMPT "$fg_bold[red]>> $fg_bold[blue]"  # §todo: make it bold
 -set-default DIRACTION_EDITOR ${EDITOR:-vi}
 -set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §maybe rename to config file
 -set-default DIRACTION_BROWSER # §todo: update
@@ -596,7 +596,7 @@ function _diraction-dispatch() {
             # §so: extract a generate pattern. _diraction_edit (local functions)
             ;;
         e|"exec")
-            if [[ -z "$1" ]] ; then ; echo "$fg[red]Nothing to exec!" >&2 ; return 1; fi
+            if [[ -z "$1" ]] ; then ; echo "$fg_bold[red]Nothing to exec!" >&2 ; return 1; fi
             eval "(cd \"$dir\" && $@ )"
             # ¤note: might not be necessary to protect injection.....
             # §see: var about evaluation to disable it.
@@ -647,7 +647,7 @@ you can exit this mode by typing exit, or ^D"
                     done)
             # §todo: color prompt + command
             # completion so over kill...
-            echo "$fg[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
+            echo "$fg_bold[red]Stop playing :)$reset_color  (back in $cdir)" # §todo: see zsh var flag for shortening
             ;;
 
         '?'|w|who|where)
@@ -655,16 +655,16 @@ you can exit this mode by typing exit, or ^D"
             ;;
 
         h|-h|--help|help) cat <<HELP
-$fg[green]This is a diraction dispatch function.$reset_color
+$fg_bold[green]This is a diraction dispatch function.$reset_color
 
-This one is attached to the $fg[blue]$dir$reset_color directory
+This one is attached to the $fg_bold[blue]$dir$reset_color directory
 
 If you provide no argument, you will jump in this directory
-Otherwise it will perform some action in the context of $fg[blue]$dir$reset_color:
-$(for i in "${(@)_DIRACTION_HELP_SUBCOMMAND}"; do echo "- $fg[blue] $i"; done | sed "s/:/ : $reset_color/")
+Otherwise it will perform some action in the context of $fg_bold[blue]$dir$reset_color:
+$(for i in "${(@)_DIRACTION_HELP_SUBCOMMAND}"; do echo "- $fg_bold[blue] $i"; done | sed "s/:/ : $reset_color/")
 
 It also accept the following commands you have whitelisted:
-$fg[blue]$DIRACTION_DISPATCH_WHITELIST$reset_color
+$fg_bold[blue]$DIRACTION_DISPATCH_WHITELIST$reset_color
 HELP
                           ;;
 
@@ -675,7 +675,7 @@ HELP
             then
                 eval "(cd \"$dir\" && $cmd $@)"
             else
-                echo "$fg[red]Invalid argument! <$cmd>"
+                echo "$fg_bold[red]Invalid argument! <$cmd>"
                 return 1
             fi;;
     esac
