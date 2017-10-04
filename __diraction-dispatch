@@ -10,14 +10,14 @@ local subcommand=$words[3]
 # Update Pwd to make subcompleter to consider we are in the target directory
 PWD=$dirdir
 
-if (( CURRENT == 3));
+if (( CURRENT == 3 ));
 then # Subcomand completion
     case $subcommand in
 
         /*) # Pattern :D
 
             local pattern="${subcommand#/}"
-            local cmd="cd $dirdir && ls -d -- $pattern*/ 2>/dev/null  | sed -E 's:^:/:g' | xargs echo"
+            local cmd="cd $dirdir && ls -d -- $pattern*/ 2>/dev/null | sed -E 's:^:/:g' | xargs echo"
             compadd -S '' -x "Matching Subdirs:" $(eval $cmd) || _message "No subdir matching"
             # Ânote: _directories can't work since / is the leading char
             # Â- maybe change behavior if no match
@@ -32,11 +32,11 @@ then # Subcomand completion
             # or extend the array here?
             return
     esac
-elif [[ "$subcommand" =~ "^/" ]]; then
+elif [[ "$subcommand" =~ "^/." ]]; then
     dirdir="$dirdir$subcommand"
-    shift words;
+    shift words; shift words; shift words
     ((CURRENT--))
-    __diraction-dispatch $dirdir "$words[@]"
+    words=(__diraction-dispatch $dirdir "$words[@]") __diraction-dispatch
     return 0
 else # argument completion
 
