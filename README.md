@@ -3,8 +3,6 @@ Zsh Diractions
 
 *Doing Anything, Anywhere, from here*
 
-<!-- TODO: make a gh-page (and absorb most of the content?) Ou soyons fou, read the doc -->
-
 [![Tag Version](https://img.shields.io/github/tag/AdrieanKhisbe/diractions.svg)](https://github.com/AdrieanKhisbe/diractions/tags)
 [![Build Status](https://travis-ci.org/AdrieanKhisbe/diractions.svg)](https://travis-ci.org/AdrieanKhisbe/diractions)
 [![Join the chat https://gitter.im/AdrieanKhisbe/diractions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AdrieanKhisbe/diractions)
@@ -16,7 +14,7 @@ Thanks to **diraction** user can perform quick actions on its registered directo
 ### Hello Diraction
 Suppose that I have a hypothetical `favdir` and `mydir` directories that i use a alot.
 Here are a simple scenario: you go in `favdir`, see what file there is then copy one in `mydir` using the variable.
-Then I check it has been copied to the directory with `mydir ls`, then go in one of mydir subdirectory
+Then I check it has been copied to the directory with `mydir ls`, then go in one of mydir subdirectory.
 
 ```sh
 [~]           >> favdir                  # jumping in diraction folder
@@ -89,15 +87,16 @@ Now that you have a *diraction* it's time to use it. *:)*
 Simpliest way is to just type it's name to go in the attached directory.
 
 Here are the main commands. Commands that are executed in the context of the diraction:
-- `l|ls` : just some ls
-- `c|cd <subdir>` : jump in the subdirectory specified
-- `/ <subdir> | /<subdir>` : also jump in subdir
-- `ed|edit <filename>` : edit the file (being relative to the diraction folder)
-- `e|exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
-- `-|,|_` : use the following as a command
-- `i|interactive|prompt|shell` : to run several command in the context of the diraction directory
-- `w|where|?` : to be remind what is the diraction folder
+- `l`|`ls` : just some ls
+- `c`|`cd <subdir>` : jump in the subdirectory specified
+- `/ <subdir>` | `/<subdir>` : also jump in subdir
+- `ed`|`edit <filename>` : edit the file (being relative to the diraction folder)
+- `e`|`exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
+- `-`|`,`|`_` : use the following as a command
+- `i`|`interactive`|`prompt`|`shell` : to run several command in the context of the diraction directory
+- `w`|`where`|`?` : to be remind what is the diraction folder
 - all other commands contained in the `DIRACTION_DISPATCH_WHITELIST`.
+
 
 You can also use the diraction variable in any command. `$_mydir` will be expanded to the attached directory.
 
@@ -129,6 +128,7 @@ Other wise with a package manager, (*which I recommend :)*), add the following t
 
 ### Your Diractions
 *Diractions* are not meant to be defined by hand each time, of course there is ways to persist your diractions.
+
 This can be done in two way:
 
 #### The Diraction Config file
@@ -181,7 +181,7 @@ This plugins started out as some growing *tweak* in my zsh personal config.
 First it was named *alvar*. (as a compaction of alias and variable) It just created an alias to jump in some dir, and a variable to refer to the directory. Later it was extended to perform some action in these directories.
 Then it was then extracted into is own repo, hence the troubled initial history.
 With a new repo, he got a new name **Diractions** (*never explain an overobvious pun*),
-and is growing ever since with new functionnalities. :)
+and is growing ever since with new functionalities. :)
 
 <!-- Maybe list of feature introduced after 1 will go there? -->
 
