@@ -34,7 +34,7 @@ then # Subcomand completion
     esac
 elif [[ "$subcommand" =~ "^/" ]]; then
     dirdir="$dirdir$subcommand"
-    shift words; shift words;shift words
+    shift words;
     ((CURRENT--))
     __diraction-dispatch $dirdir "$words[@]"
     return 0
