@@ -312,7 +312,7 @@ Yo Dawg, I herd you like help, so I put an help in your help
 so you can get helped while you search help"
 function diraction-help() {
     if [[ $# != 1 ]] ; then
-        # §later: colors :D
+        echo -n $fg_bold[blue]
         cat <<"BANNER"
       ____  _                 __  _
      / __ \(_)________ ______/ /_(_)___  ____  _____
@@ -322,8 +322,8 @@ function diraction-help() {
 
 BANNER
         # ¤note: figlet -f slant Diractions
-        # ¤note: "BANNER" protect from () eval
-        echo "$DIRACTION_USAGE"
+        # ¤note: "BANNER" quotes protect from () eval
+        echo "$reset_color$DIRACTION_USAGE"
     else
         if diraction-exist $1 ;then
             "$1 diraction is bound to ${DIRACTION_REGISTER[$1]} the directory"
