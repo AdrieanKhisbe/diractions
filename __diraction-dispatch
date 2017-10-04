@@ -32,6 +32,12 @@ then # Subcomand completion
             # or extend the array here?
             return
     esac
+elif [[ "$subcommand" =~ "^/" ]]; then
+    dirdir="$dirdir$subcommand"
+    shift words; shift words;shift words
+    ((CURRENT--))
+    __diraction-dispatch $dirdir "$words[@]"
+    return 0
 else # argument completion
 
     shift words; shift words  # shifting words args
