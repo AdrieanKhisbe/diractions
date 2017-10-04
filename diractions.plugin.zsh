@@ -573,7 +573,11 @@ function _diraction-dispatch() {
 
         /*) local sdir="$dir$cmd"
             if [[ -d "$sdir" ]]; then
-                cd "$sdir"
+                if [[ -z "$@" ]]; then
+                    cd "$sdir"
+                else
+                    echo "TODO subdiraction in $sdir"
+                fi
             else
                 echo "$cmd subdir does not exist" >&2;
                 cd "$dir"
