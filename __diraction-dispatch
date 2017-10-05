@@ -8,8 +8,8 @@ local dirdir=`eval echo $diract`
 local subcommand=$words[3]
 
 # Update Pwd to make subcompleter to consider we are in the target directory
-OLDPWD=$PWD
-PWD=$dirdir
+local OLDPWD=$PWD
+local PWD=$dirdir
 
 if (( CURRENT == 3 ));
 then # Subcomand completion
@@ -19,11 +19,15 @@ then # Subcomand completion
             local pattern="$(echo $subcommand | sed -e 's:\(.\):\.*\1\.*:g')"
             local cmd="cd $dirdir && ls -d **/*/ | sed -E 's:^:/:g' | grep \"$pattern\" "
             local paths=("${(f)$(eval $cmd)}")
-            compadd -S '' -X "Matching Subdirs" -U -a paths || _message "No matching subdir"
-            # -U no to filter non matching values
-            return 0
+            if [[ ${#paths} -gt 1 ]]; then
+                compadd -S '' -X "Matching Subdirs" -U -a paths # -U no to filter non matching values
+                return 0
+            else
+                _message "No matching subdir"
+                return 1
+            fi
             ;;
-        *)      # Basic argument
+        *)  # Basic argument
             _describe -t commands "Dispatcher subcommand" _DIRACTION_HELP_SUBCOMMAND
 
             compadd -x "Whitelisted commands" $DIRACTION_DISPATCH_WHITELIST
