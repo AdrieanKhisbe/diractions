@@ -14,10 +14,21 @@ local PWD=$dirdir
 if (( CURRENT == 3 ));
 then # Subcomand completion
     case $subcommand in
-
-        /*) # Pattern :D
+        //*) # SubPattern :D
             local pattern="$(echo $subcommand | sed -e 's:\(.\):\.*\1\.*:g')"
             local cmd="cd $dirdir && ls -d **/*/ | sed -E 's:^:/:g' | grep \"$pattern\" "
+            local paths=("${(f)$(eval $cmd)}")
+            if [[ ${#paths} -gt 1 ]]; then
+                compadd -S '' -X "Matching Nested Subdirs" -U -a paths # -U no to filter non matching values
+                return 0
+            else
+                _message "No matching nested subdir"
+                return 1
+            fi
+            ;;
+        /*) # Pattern
+            local pattern="$(echo $subcommand | sed -e 's:\(.\):\.*\1\.*:g')"
+            local cmd="cd $dirdir && ls -d */ | sed -E 's:^:/:g' | grep \"$pattern\" "
             local paths=("${(f)$(eval $cmd)}")
             if [[ ${#paths} -gt 1 ]]; then
                 compadd -S '' -X "Matching Subdirs" -U -a paths # -U no to filter non matching values
