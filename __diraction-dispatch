@@ -17,12 +17,9 @@ then # Subcomand completion
 
         /*) # Pattern :D
 
-            local pattern="${subcommand#/}"
-            local cmd="cd $dirdir && ls -d -- $pattern*/ 2>/dev/null | sed -E 's:^:/:g' | xargs echo"
-            compadd -S '' -x "Matching Subdirs:" $(eval $cmd) || _message "No subdir matching"
-            # Ânote: _directories can't work since / is the leading char
-            # Â- maybe change behavior if no match
-            # improve completion valuessss!!!!
+            local paths=("${(f)$(cd $dirdir && ls -Rd -- **/*/| sed -E 's:^:/:g')}")
+            _multi_parts -i -X "Matching Subdirs:" / paths || _message "No matching subdir"
+
             return 0
             ;;
         *)      # Basic argument
