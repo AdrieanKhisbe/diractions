@@ -8,6 +8,7 @@ local dirdir=`eval echo $diract`
 local subcommand=$words[3]
 
 # Update Pwd to make subcompleter to consider we are in the target directory
+OLDPWD=$PWD
 PWD=$dirdir
 
 if (( CURRENT == 3 ));
@@ -62,9 +63,9 @@ else # argument completion
         *)
             local compfun="_${subcommand}"
             if functions "$compfun" > /dev/null; then
-                # §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main
+                # §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main # ¤old
                 # if so do it up
-                $compfun && return 0
+                cd $PWD; $compfun ; ret=$? ; cd $OLDPWD; [ $ret -eq 0 ] && return 0
                 # beware to file completion:
                 # https://github.com/robbyrussell/oh-my-zsh/issues/2394
             else
