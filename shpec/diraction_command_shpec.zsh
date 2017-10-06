@@ -80,17 +80,17 @@ describe "Diraction Commands"
         assert equal "$output" "test1 test2"
     end
 
-    it "ls-alias"
+    it "ls-alias with pattern"
         output="$(diraction list-alias t1)"
         assert equal "$output" "test1"
     end
 
-    it "ls-alias"
+    it "ls-dir"
         output="$(diraction list-dir)"
         assert equal "$output" "/tmp/dir1 /tmp/dir2"
     end
 
-    it "ls-alias"
+    it "ls-dir with alias"
         output="$(diraction list-dir r2)"
         assert equal "$output" "/tmp/dir2"
     end
