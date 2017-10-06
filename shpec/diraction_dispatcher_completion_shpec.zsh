@@ -14,13 +14,18 @@ mkdir $DIR_DIR
 touch ${DIR_DIR}/{a,b,c}
 diraction create dir $DIR_DIR
 
-describe "Dispacher Command"
-it "Call diraction_dispatch"
-export CURRENT=3 words=(__diraction-dispatch $DIR_DIR)
-stub_command compadd 'echo $@'
-__diraction-dispatch
+completion_commands=(compadd _message _command_names _path_files _directories _ls _describe)
+for cmd in $completion_commands; do
+    stub_command $cmd "echo $cmd "'$@ '
+done
 
-
-end
+describe "Dispacher Completion"
+  it "Call diraction_dispatch with no args"
+    export CURRENT=3 words=(__diraction-dispatch $DIR_DIR)
+    output="$(__diraction-dispatch)"
+    assert grep "$output" "compadd -x Whitelisted commands"
+    assert grep "$output" "_describe -t commands Dispatcher subcommand _DIRACTION_HELP_SUBCOMMAND"
+    assert grep "$output" "make.*git.*du"
+  end
 end
 rm -rf $DIR_DIR
