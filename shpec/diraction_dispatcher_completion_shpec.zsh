@@ -13,6 +13,7 @@ DIR_DIR=/tmp/diraction-test
 mkdir $DIR_DIR
 touch ${DIR_DIR}/{a,b,c}
 mkdir -p ${DIR_DIR}/dir{1,2,3}
+mkdir -p ${DIR_DIR}/dir1/subdir{1,2,3}
 diraction create dir $DIR_DIR
 
 export CURRENT words
@@ -49,6 +50,12 @@ describe "Dispatcher Completion"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR /dir)
     output="$(__diraction-dispatch)"
     assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Subdirs.\? -U -a paths"
+  end
+
+  it "Completion with some dir subprefix that do exist"
+    CURRENT=3 words=(__diraction-dispatch $DIR_DIR "//dir")
+    output="$(__diraction-dispatch)"
+    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Nested Subdirs.\? -U -a paths"
   end
 
   it "Completion with some whitelisted command"
