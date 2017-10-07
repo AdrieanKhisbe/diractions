@@ -136,10 +136,10 @@ Completion cover:
 - `diraction destroy-all` : destroy all the existing diractions, need a `-f`, `--force` argument
 - `diraction reset` : destroy the diraction and reload them from the configuration
 
-and of course, the `help` subcommand.
+and of course, the `help` command.
 
-Besides *every* subcommands accept a `-h`, `--help` flag that will get you print help
-for the specified subcommand.
+Besides *every* `diraction` commands accept a `-h`, `--help` flag that will get you print help
+for the specified command.
 
 ## Installation
 *Installation* is far simple, just get the file and source it.
