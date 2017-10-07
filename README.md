@@ -45,8 +45,10 @@ Then I check it has been copied to the directory with `mydir ls`, then go in one
         - [Hello Diraction](#hello-diraction)
     - [Usage](#usage)
         - [Define your own diractions](#define-your-own-diractions)
-        - [Use your diraction](#use-your-diraction)
-        - [Others Diraction Commands](#others-diraction-commands)
+        - [Use your _diraction_](#use-your-diraction)
+            - [(Sub)Commands](#subcommands)
+            - [Completion](#completion)
+        - [Others Diraction Global Commands](#others-diraction-global-commands)
     - [Installation](#installation)
     - [Configuration](#configuration)
         - [Your Diractions](#your-diractions)
@@ -84,11 +86,13 @@ First step is to define your *diractions*, associate name to your most used dire
 + You can see the existing *diraction* using the following subcommands:
   `list`(`ls`), `list-alias`(`la`), `list-dir`(`ld`) and even `grep` throught them
 
-### Use your diraction
+### Use your _diraction_
 
 Now that you have a *diraction* it's time to use it. *:)*
 Simpliest way is to just type it's name to go in the attached directory.
+A better way is to type a subcommand along with it
 
+#### (Sub)Commands
 Here are the main commands. Commands that are executed in the context of the diraction:
 - `l`|`ls` : just some ls
 - `c`|`cd <subdir>` : jump in the subdirectory specified
@@ -99,19 +103,38 @@ Here are the main commands. Commands that are executed in the context of the dir
 - `i`|`interactive`|`prompt`|`shell` : to run several command in the context of the diraction directory
 - `w`|`where`|`?` : to be remind what is the diraction folder
 - all other commands contained in the `DIRACTION_DISPATCH_WHITELIST`.
-
+  by default `make` `rake` `sbt` `gradle` `git` `cask` `bundler` `ncdu` `du` `nemo` `nautilus` `open` `xdg-open` `ls`
 
 You can also use the diraction variable in any command. `$_mydir` will be expanded to the attached directory.
 
-A word about how `diraction` works: the `diraction` aliases point to a *"dispatch function"*  taking the attached directory as first argument.
+A word about how *diraction* works: the *diraction* aliases you create point to a *"dispatch function"*  taking the attached directory as first argument.
+(For instance *diraction* `mydir` pointing to `/tmp/mydir`is an alias for `_diraction-dispatch "/tmp/mydir"` )
 
-### Others Diraction Commands
+#### Completion
 
-- `disable <dirname>` : disable attached alias
-- `enable <dirname>` : reenable it
-- `destroy <dirname>` : destroy the alias.
-- `destroy-all` : destroy all the existing diractions, need a `-f`, `--force` argument
-- `reset` : destroy the diraction and reload them from the configuration
+*diraction* aliases support completion.
+
+Completion cover:
+- the available subcommands described in previous section
+  - _ex_: `mydir l <TAB>` would complet to `ls` and all whitelisted command starting with a l.
+- the subfolder when subcommand start with a leading `/`
+  - _ex_: `mydir /ho <TAB>` would complete to dir such as `/home` `/hope` `ahola`
+  - _ex_: `mydir /home/ <TAB>` would complete to all dir in `$_mydir/home`
+  - note that fuzzy matching is performed on the last segment of the path
+- the nested subfolder when subcommand start with a `//`
+  - _ex_: `mydir //ho <TAB>` would complete subdir of `/home` `/hope` `ahola` up to 2 deep level (`$_mydir/home`, `$_mydir/home/personal` `$_mydir/home/personal/secretproject'`)
+  - _ex_: `mydir //home/ <TAB>` would complete to all subdir in `$_mydir/home` up to
+- the argument of the subcommand that was specified:
+  - _ex_: `mydir make <TAB>` would complete to `make` target
+  - _ex_: `mydir ls -<TAB>` would complete to `ls` options
+
+### Others Diraction Global Commands
+
+- `diraction disable <dirname>` : disable attached alias
+- `diraction enable <dirname>` : reenable it
+- `diraction destroy <dirname>` : destroy the alias.
+- `diraction destroy-all` : destroy all the existing diractions, need a `-f`, `--force` argument
+- `diraction reset` : destroy the diraction and reload them from the configuration
 
 and of course, the `help` subcommand.
 
