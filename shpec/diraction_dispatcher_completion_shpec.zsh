@@ -22,7 +22,8 @@ done
 
 describe "Dispatcher Completion"
   it "Completion with no args"
-    export CURRENT=3 words=(__diraction-dispatch $DIR_DIR)
+    export CURRENT=3 words
+    words=(__diraction-dispatch $DIR_DIR)
     output="$(__diraction-dispatch)"
     assert grep "$output" "compadd -x Whitelisted commands"
     assert grep "$output" "_describe -t commands Dispatcher subcommand _DIRACTION_HELP_SUBCOMMAND"
