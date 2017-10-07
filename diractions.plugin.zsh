@@ -15,7 +15,7 @@
 # Author: Adriean Khisbe
 # Homepage: http://github.com/AdrieanKhisbe/diractions
 # License: MIT License<Adriean.Khisbe@live.fr>
-# Version: 0.14.2
+# Version: 0.15
 
 # §bonux: mini stupid logo. :) (paaaneaux)
 
