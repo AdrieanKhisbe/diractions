@@ -18,7 +18,7 @@ then # Subcomand completion
             local nslash=$(echo $subcommand | grep -o / |tr -d '\n' | wc -c)
             local dirpattern=''; for n ({1..$(($nslash-1))}); do dirpattern="$dirpattern*/"; done
             local pattern=$(echo "${subcommand#//}" | sed -e "s:\\(.\\):\\.*\\1\\.*:g")
-            local cmd="setopt null_glob; cd $dirdir && ls -d $dirpattern $dirpattern*/ $dirpattern*/*/  2>/dev/null| sed -E 's:^:/:g' | grep \"$pattern\""
+            local cmd="setopt null_glob; cd $dirdir && ls -d -- $dirpattern $dirpattern*/ $dirpattern*/*/  2>>/dev/null| sed -E 's:^:/:g' | grep \"$pattern\""
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n ${paths[1]} ]]; then
@@ -33,7 +33,7 @@ then # Subcomand completion
             local nslash=$(echo $subcommand | grep -o / |tr -d '\n' | wc -c)
             local dirpattern=''; for n ({1..$nslash}); do dirpattern="$dirpattern*/"; done
             local pattern=`eval echo '${subcommand%/*}/$(echo ${subcommand##'$dirpattern'} | sed -e "s:\\(.\\):\\.*\\1\\.*:g")'`
-            local cmd="cd $dirdir && ls -d $dirpattern 2>/dev/null | sed -E 's:^:/:g' | grep \"$pattern\" "
+            local cmd="cd $dirdir && ls -d -- $dirpattern 2>>/dev/null | sed -E 's:^:/:g' | grep \"$pattern\" "
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n "${paths[1]}" ]]; then
