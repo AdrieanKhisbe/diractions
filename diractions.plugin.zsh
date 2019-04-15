@@ -595,6 +595,12 @@ function _diraction-dispatch() {
         lc) #§other names?
             ls "$dir" && cd "$dir" ;;
         # §maybe reverse cl: cd then ls
+        o|open)
+            if [[ -z "$1" ]]; then
+            open "$dir"
+            else
+            open "$dir/$1"
+            fi;;
         ed|edit)
             eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )" # §check §now eval not necessary
             # §later: once complete and working, duplicate it to v| visual

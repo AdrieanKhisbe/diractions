@@ -94,9 +94,11 @@ A better way is to type a subcommand along with it
 
 #### (Sub)Commands
 Here are the main commands. Commands that are executed in the context of the diraction:
-- `l`|`ls` : just some ls
+- `l`|`ls [args...]` : just some _ls_
+- `t`|`tree [args...]` : just some _tree_
 - `c`|`cd <subdir>` : jump in the subdirectory specified
 - `/ <subdir>` | `/<subdir>` : also jump in subdir
+- `o`|`open [filename]` : open folder (or file/subfolder being relative to the diraction folder)
 - `ed`|`edit <filename>` : edit the file (being relative to the diraction folder)
 - `e`|`exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
 - `-`|`,`|`_` : use the following as a command
