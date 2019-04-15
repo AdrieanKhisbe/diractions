@@ -560,8 +560,10 @@ function _diraction-dispatch() {
     ## §todo: local eval §maybe. §see
 
     case "$cmd" in
-        l|ls) ls "$dir" $@ ;;
-        t|tree) tree "$dir" $@;; # §beware: command not necessary installed
+        l|ls) (cd "$dir" && ls "${@[@]}") ;;
+        _l|_ls) ls "$dir" $@ ;;
+        t|tree) (tree "$dir" && ls "${@[@]}") ;; # §beware: command not necessary installed
+        _t|_tree) tree "$dir" $@;;
         c|cd|/) # §maybe: extract diraction-jump subdir
             local sdir="$dir/$1"
             if [[ -d "$sdir" ]]; then
