@@ -22,7 +22,8 @@ then # Subcomand completion
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n ${paths[1]} ]]; then
-                compadd -S '' -X "Matching Nested Subdirs" -U -a paths # -U no to filter non matching values
+
+                compadd -S '' -X "Matching Nested Subdirs" -U ${paths[@]} # -U no to filter non matching values
                 return 0
             else
                 _message "No matching nested subdir"
@@ -37,7 +38,7 @@ then # Subcomand completion
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n "${paths[1]}" ]]; then
-                compadd -S '' -X "Matching Subdirs" -U -a paths # -U no to filter non matching values
+                compadd -S '' -X "Matching Subdirs" -U ${paths[@]}# -U no to filter non matching values
                 return 0
             else
                 _message "No matching subdir"

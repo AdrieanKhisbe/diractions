@@ -13,6 +13,7 @@ DIR_DIR=/tmp/diraction-test
 mkdir $DIR_DIR
 touch ${DIR_DIR}/{a,b,c}
 mkdir -p ${DIR_DIR}/dir{1,2,3}
+mkdir -p ${DIR_DIR}/src{1,2,3}
 mkdir -p ${DIR_DIR}/dir1/subdir{1,2,3}
 diraction create dir $DIR_DIR
 
@@ -49,13 +50,25 @@ describe "Dispatcher Completion"
   it "Completion with some dir prefix that do exist"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR /dir)
     output="$(__diraction-dispatch)"
-    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Subdirs.\? -U -a paths"
+    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Subdirs.\? -U /dir1/ /dir2/ /dir3/"
+  end
+
+  it "Completion with some dir body that do exist"
+    CURRENT=3 words=(__diraction-dispatch $DIR_DIR /r)
+    output="$(__diraction-dispatch)"
+    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Subdirs.\? -U /dir1/ /dir2/ /dir3/ /src1/ /src2/ /src3/"
   end
 
   it "Completion with some dir subprefix that do exist"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR "//dir")
     output="$(__diraction-dispatch)"
-    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Nested Subdirs.\? -U -a paths"
+    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Nested Subdirs.\? -U /dir1/ /dir1/subdir1/ /dir1/subdir2/ /dir1/subdir3/ /dir2/ /dir3/"
+  end
+
+  it "Completion with some dir subprefix that do exist (not leading)"
+    CURRENT=3 words=(__diraction-dispatch $DIR_DIR "//ir2")
+    output="$(__diraction-dispatch)"
+    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Nested Subdirs.\? -U /dir1/subdir2/ /dir2/"
   end
 
   it "Completion with some whitelisted command"
