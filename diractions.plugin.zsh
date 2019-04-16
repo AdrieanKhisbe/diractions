@@ -582,7 +582,18 @@ function _diraction-dispatch() {
                 fi
             else
                 echo "$cmd subdir does not exist" >&2;
-                _d
+                cd "$dir"
+            fi ;;
+        ^*|:*) local sdir="$dir/${cmd#?}"
+            if [[ -d "$sdir" ]]; then
+                if [[ -z "$@" ]]; then
+                    cd "$sdir"
+                else
+                    cdir=$cdir _diraction-dispatch "$sdir" $@
+                fi
+            else
+                echo "$cmd subdir does not exist" >&2;
+                cd "$dir"
             fi ;;
 
         # §maybe : o, open? (wrapping with glob?)

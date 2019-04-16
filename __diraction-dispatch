@@ -44,6 +44,22 @@ then # Subcomand completion
                 return 1
             fi
             ;;
+        :*) # Leading Pattern
+            local subpath=${subcommand#:}
+            local nslash=$(echo $subpath | grep -o / |tr -d '\n' | wc -c)
+            local dirpattern=''; for n ({0..$nslash}); do dirpattern="$dirpattern*/"; done
+            local cmd="cd $dirdir && ls -d -- $dirpattern 2>>/dev/null | sed -E 's@^@:@g' | grep -E \"^:$subpath\" "
+            local matches="$(eval $cmd 2>/dev/null)"
+            local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
+            if [[ ${#paths} -gt 0 ]]; then
+                compadd -x "Matching Subdirs" -U ${paths[@]}
+                # _values dont works : having a special meaning
+                return 0
+            else
+                _message "No matching subdir"
+                return 1
+            fi
+            ;;
         *)  # Basic argument
             _describe -t commands "Dispatcher subcommand" _DIRACTION_HELP_SUBCOMMAND
 
