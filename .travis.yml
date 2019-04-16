@@ -1,4 +1,3 @@
-# zsh shpec build draft
 language: generic
 
 # based from https://github.com/mafredri/zsh-async
@@ -21,7 +20,6 @@ env:
     - ZVM_VERSION=5.0.2
     - ZVM_VERSION=4.3.17
     - ZVM_VERSION=4.3.12
-language: generic
 cache:
   apt: true
   directories:
