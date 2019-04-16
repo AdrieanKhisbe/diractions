@@ -19,7 +19,7 @@ diraction create dir $DIR_DIR
 
 export CURRENT words
 
-completion_commands=(compadd _message _command_names _path_files _directories _ls _describe _options_set)
+completion_commands=(compadd _message _command_names _path_files _directories _ls _describe _options_set _values)
 for cmd in $completion_commands; do
     stub_command $cmd "echo $cmd "'$@ '
 done
@@ -50,25 +50,25 @@ describe "Dispatcher Completion"
   it "Completion with some dir prefix that do exist"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR /dir)
     output="$(__diraction-dispatch)"
-    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Subdirs.\? -U /dir1/ /dir2/ /dir3/"
+    assert grep "$output" "_values .\?Matching Subdirs.\? /dir1/ /dir2/ /dir3/"
   end
 
   it "Completion with some dir body that do exist"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR /r)
     output="$(__diraction-dispatch)"
-    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Subdirs.\? -U /dir1/ /dir2/ /dir3/ /src1/ /src2/ /src3/"
+    assert grep "$output" "_values.\?Matching Subdirs.\? /dir1/ /dir2/ /dir3/ /src1/ /src2/ /src3/"
   end
 
   it "Completion with some dir subprefix that do exist"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR "//dir")
     output="$(__diraction-dispatch)"
-    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Nested Subdirs.\? -U /dir1/ /dir1/subdir1/ /dir1/subdir2/ /dir1/subdir3/ /dir2/ /dir3/"
+    assert grep "$output" "_values .\?Matching Nested Subdirs.\? /dir1/ /dir1/subdir1/ /dir1/subdir2/ /dir1/subdir3/ /dir2/ /dir3/"
   end
 
   it "Completion with some dir subprefix that do exist (not leading)"
     CURRENT=3 words=(__diraction-dispatch $DIR_DIR "//ir2")
     output="$(__diraction-dispatch)"
-    assert grep "$output" "compadd -S .\?.\? \?-X .\?Matching Nested Subdirs.\? -U /dir1/subdir2/ /dir2/"
+    assert grep "$output" "_values .\?Matching Nested Subdirs.\? /dir1/subdir2/ /dir2/"
   end
 
   it "Completion with some whitelisted command"
