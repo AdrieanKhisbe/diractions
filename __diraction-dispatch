@@ -22,8 +22,7 @@ then # Subcomand completion
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n ${paths[1]} ]]; then
-
-                compadd -S '' -X "Matching Nested Subdirs" -U ${paths[@]} # -U no to filter non matching values
+                _values "Matching Nested Subdirs" ${paths[@]}
                 return 0
             else
                 _message "No matching nested subdir"
@@ -33,12 +32,12 @@ then # Subcomand completion
         /*) # Pattern
             local nslash=$(echo $subcommand | grep -o / |tr -d '\n' | wc -c)
             local dirpattern=''; for n ({1..$nslash}); do dirpattern="$dirpattern*/"; done
-            local pattern=`eval echo '${subcommand%/*}/$(echo ${subcommand##'$dirpattern'} | sed -e "s:\\(.\\):\\.*\\1\\.*:g")'`
+            local pattern=`eval echo - '${subcommand%/*}/$(echo - ${subcommand##'$dirpattern'} | sed -e "s:\\(.\\):\\.*\\1\\.*:g")'`
             local cmd="cd $dirdir && ls -d -- $dirpattern 2>>/dev/null | sed -E 's:^:/:g' | grep \"$pattern\" "
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n "${paths[1]}" ]]; then
-                compadd -S '' -X "Matching Subdirs" -U ${paths[@]}# -U no to filter non matching values
+                _values 'Matching Subdirs' ${paths[@]}
                 return 0
             else
                 _message "No matching subdir"
