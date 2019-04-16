@@ -4,6 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+### [0.16] - 2019-04-16
+### Added
+- prefix matching with `:` and `^`
+
+### Changed
+- Improved ls/tree completion (`_ls`/`_tree` keeping old behavior)
+
+### Fixed
+- Completion of path with leading `-`
+
 ### [0.15] - 2017-10-07
 ### Added
 - better completion for commands in a diraction
@@ -88,7 +98,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.15...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16...HEAD
+[0.16]: https://github.com/AdrieanKhisbe/diractions/compare/v0.15...v0.16
 [0.15]: https://github.com/AdrieanKhisbe/diractions/compare/v0.14...v0.15
 [0.14]: https://github.com/AdrieanKhisbe/diractions/compare/v0.13...v0.14
 [0.13]: https://github.com/AdrieanKhisbe/diractions/compare/v0.12.4...v0.13

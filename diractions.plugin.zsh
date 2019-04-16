@@ -15,7 +15,7 @@
 # Author: Adriean Khisbe
 # Homepage: http://github.com/AdrieanKhisbe/diractions
 # License: MIT License<Adriean.Khisbe@live.fr>
-# Version: 0.15
+# Version: 0.16
 
 # §bonux: mini stupid logo. :) (paaaneaux)
 
@@ -33,7 +33,7 @@
 ##' variable accumulating the defuns
 declare -gA DIRACTION_REGISTER
 declare -gA _DIRACTION_HELP
-# -g flag so it persist oustide the script
+# -g flag so it persist outside the script
 # §NOTE: Arrays are not exported in child process :/
 # §maybe: keep the disabled defuns
 
@@ -118,7 +118,6 @@ function diraction(){
          return 1
     fi
 }
-
 
 
 ##' ¤>> Alias&Variable Combo function:
