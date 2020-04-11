@@ -28,16 +28,16 @@ cache:
     - $ZSH_DIST
 
 before_install:
-  - scripts/travis-setup-zsh $_ZSH_VERSION
+  - source scripts/ci-setup-zsh.zsh $_ZSH_VERSION
   - zsh --version
 
 install:
   - curl -L git.io/antigen  > ~/antigen.zsh # install antigen
-  - cat scripts/travis-zshrc > ~/.zshrc ; cat ~/.zshrc
+  - cat scripts/ci.zshrc > ~/.zshrc ; cat ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
 
 script:
-  - zsh scripts/travis-run.zsh
+  - zsh scripts/ci-run.zsh
 
 allow_failures:
   - env: _ZSH_VERSION=5.0.2

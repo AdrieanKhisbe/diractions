@@ -1,0 +1,27 @@
+
+name: Diractions CI
+on: [push]
+
+jobs:
+  tests:
+    name: Run tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Set up git repository
+        uses: actions/checkout@v2
+      - name: Install zsh & tree [linux]
+        if: runner.os == 'Linux'
+        run: sudo apt-get update; sudo apt-get install zsh tree
+      - name: Install zsh & tree [mac]
+        if: runner.os != 'Linux'
+        run: brew install tree
+      - name: Install antigen
+        run: curl -L git.io/antigen  > ~/antigen.zsh # install antigen
+      - name: Set up env
+        run: cat scripts/ci.zshrc > ~/.zshrc ; cat ~/.zshrc; echo "setopt sh_word_split" >> ~/.zshenv
+      - name: Tests
+        run: zsh scripts/ci-run.zsh

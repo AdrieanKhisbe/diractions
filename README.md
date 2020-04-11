@@ -4,7 +4,8 @@ Zsh Diractions
 *Doing Anything, Anywhere, from here*
 
 [![Tag Version](https://img.shields.io/github/tag/AdrieanKhisbe/diractions.svg)](https://github.com/AdrieanKhisbe/diractions/tags)
-[![Build Status](https://travis-ci.com/AdrieanKhisbe/diractions.svg)](https://travis-ci.com/AdrieanKhisbe/diractions)
+[![Build Status](https://img.shields.io/travis/AdrieanKhisbe/diractions?label=travis%20build&logo=travis)](https://travis-ci.org/AdrieanKhisbe/diractions)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AdrieanKhisbe/diractions/Diractions%20CI/package-refresh?label=action%20build&logo=github)](https://github.com/AdrieanKhisbe/diractions/actions)
 [![Join the chat https://gitter.im/AdrieanKhisbe/diractions](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/AdrieanKhisbe/diractions)
 
 
