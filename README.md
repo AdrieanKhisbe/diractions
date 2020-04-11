@@ -145,13 +145,16 @@ Besides *every* `diraction` commands accept a `-h`, `--help` flag that will get 
 for the specified command.
 
 ## Installation
-*Installation* is far simple, just get the file and source it.
-Other wise with a package manager, (*which I recommend :)*), add the following to your config:
 
-- for [antigen](https://github.com/zsh-users/antigen), just add **diractions** to your bundles as `AdrieanKhisbe/diractions`
-   `antigen bundle adrieankhisbe/diractions`
-- for [zplug](https://github.com/zplug/zplug), add `zplug "adrieankhisbe/diractions"`
+If you use package manager, (*which I recommend :)*),
+just add the plugin with `adrieankhisbe/diractions` identifier:
+
 - for [antibody](https://github.com/getantibody/antibody), add `antibody bundle "adrieankhisbe/diractions"`
+- for [antigen](https://github.com/zsh-users/antigen), add `antigen bundle adrieankhisbe/diractions`
+- for [zplug](https://github.com/zplug/zplug), add `zplug "adrieankhisbe/diractions"`
+
+If you want to use the source directly you need to source [`diractions.plugin.zsh`](./diractions.plugin.zsh),
+to support completion you need to add the directory to `fpath` so that `__diraction-dispatch` `_diraction` are in it.
 
 ## Configuration
 
@@ -214,16 +217,18 @@ and is growing ever since with new functionalities. :)
 
 <!-- Maybe list of feature introduced after 1 will go there? -->
 
-<!-- §TODO: contribution note -->
+<!-- §TODO contribution note -->
 
-<!-- TODO : licence mention? -->
 <!-- Maybe: add version? -->
 
-<!-- §maybe: analytics? -->
+<!-- §maybe analytics? -->
 
 ### Changelog
 
 Changelog might be consulted in the dedicated [file](CHANGELOG.md)
+
+## License
+Licensed under [MIT](./LICENSE).
 
 ## Notes
 
