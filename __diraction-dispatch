@@ -30,7 +30,7 @@ then # Subcomand completion
             fi
             ;;
         /*) # Pattern
-            local nslash=$(echo $subcommand | grep -o / |tr -d '\n' | wc -c)
+            local nslash=$(($(echo $subcommand | grep -o / | sed 's/^[[:space:]]*//g' | wc -c) - 1))
             local dirpattern=''; for n ({1..$nslash}); do dirpattern="$dirpattern*/"; done
             local pattern=`eval echo - '${subcommand%/*}/$(echo - ${subcommand##'$dirpattern'} | sed -e "s:\\(.\\):\\.*\\1\\.*:g")'`
             local cmd="cd $dirdir && ls -d -- $dirpattern 2>>/dev/null | sed -E 's:^:/:g' | grep \"$pattern\" "
