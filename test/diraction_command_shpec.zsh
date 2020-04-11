@@ -32,24 +32,40 @@ describe "Diraction Commands"
 
   describe "Diraction Creation"
     it "create working diraction"
-     dir='/tmp/some-name'
-        mkdir -p "$dir"
-        diraction create testitest "$dir"
-        assert glob "$(type testitest)" "*alias*"
-        testitest
-        assert equal "$PWD" "$dir"
-        diraction destroy testitest
-      end
-      it "create working diraction with name in it"
-        dir='/tmp/some name with space'
-        mkdir -p "$dir"
-        diraction create testitest "$dir"
-        assert glob "$(type testitest)" "*alias*"
-        testitest
-        assert equal "$PWD" "$dir"
-        diraction destroy testitest
-        # todo: extract cleanup function. or make in sandbox
-      end
+      dir='/tmp/some-name'
+      mkdir -p "$dir"
+      diraction create testitest "$dir"
+      assert glob "$(type testitest)" "*alias*"
+      testitest
+      assert equal "$PWD" "$dir"
+      diraction destroy testitest
+    end
+
+    it "create working diractions using batch"
+      mkdir -p "/tmp/some-dir1" "/tmp/some-dir2"
+      diraction batch-create << "DIRS"
+        test1 /tmp/some-dir1
+        test2 /tmp/some-dir2
+DIRS
+      assert glob "$(type test1)" "*alias*"
+      assert glob "$(type test2)" "*alias*"
+      test1
+      assert equal "$PWD" "/tmp/some-dir1"
+      test2
+      assert equal "$PWD" "/tmp/some-dir2"
+      diraction destroy-all
+    end
+
+    it "create working diraction with name in it"
+      dir='/tmp/some name with space'
+      mkdir -p "$dir"
+      diraction create testitest "$dir"
+      assert glob "$(type testitest)" "*alias*"
+      testitest
+      assert equal "$PWD" "$dir"
+      diraction destroy testitest
+      # todo: extract cleanup function. or make in sandbox
+    end
 
     it "Deny creation if non existing"
     end
