@@ -1,48 +1,44 @@
-language: generic
+language: sh
+# adapted from https://github.com/mafredri/zsh-async
 
-# based from https://github.com/mafredri/zsh-async
 addons:
   apt:
     packages:
       - build-essential
       - tree
-      - yodl
-      - zsh
 
 env:
+  global:
+    - ZSH_DIST=$HOME/.zsh-dist
   matrix:
-    - ZVM_VERSION=5.4.2
-    - ZVM_VERSION=5.3.1
-    - ZVM_VERSION=5.3
-    - ZVM_VERSION=5.2
-    - ZVM_VERSION=5.1.1
-    - ZVM_VERSION=5.0.8
-    - ZVM_VERSION=5.0.2
-    - ZVM_VERSION=4.3.17
-    - ZVM_VERSION=4.3.12
+    # Use _ZSH_VERSION since if ZSH_VERSION is present, travis cacher thinks it
+    # is running in zsh and tries to use zsh specific functions.
+    - _ZSH_VERSION=5.6.2
+    - _ZSH_VERSION=5.5.1
+    - _ZSH_VERSION=5.4.2
+    - _ZSH_VERSION=5.3.1
+    - _ZSH_VERSION=5.3
+    - _ZSH_VERSION=5.2
+    - _ZSH_VERSION=5.1.1
+    - _ZSH_VERSION=5.0.8
+    - _ZSH_VERSION=5.0.2
+
 cache:
-  apt: true
   directories:
-    - $HOME/.zvm
+    - $ZSH_DIST
 
 before_install:
-  - if [[ $(ls "$HOME/.zvm" | wc -l) -eq 0 ]]; then rm -rf "$HOME/.zvm"; fi # hack for caching init
-  - curl -L https://zulu.molovo.co/install | zsh
-  - export SHELL=zsh
-  - zsh -c "source ~/.zshrc; zulu install zvm && zvm use $ZVM_VERSION"
+  - scripts/travis-setup-zsh $_ZSH_VERSION
+  - zsh --version
 
 install:
-  # install antigen
-  - curl -L git.io/antigen  > ~/antigen.zsh
-  - cat .travis-zshrc > ~/.zshrc ; cat ~/.zshrc
+  - curl -L git.io/antigen  > ~/antigen.zsh # install antigen
+  - cat scripts/travis-zshrc > ~/.zshrc ; cat ~/.zshrc
   - echo "setopt sh_word_split" >> ~/.zshenv
-  - which zsh
-  - export ZSH=$HOME/.zvm/bin/zsh
-  #- $ZSH ~/.zshrc
 
 script:
-  - $ZSH --version
-  - $ZSH .travis-run.zsh
+  - zsh scripts/travis-run.zsh
 
-notifications:
-  email: false
+allow_failures:
+  - env: _ZSH_VERSION=5.0.2
+  - env: _ZSH_VERSION=5.0.8

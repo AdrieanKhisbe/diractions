@@ -3,6 +3,7 @@
 
 setopt aliases
 ORIGINAL_DIR="$PWD"
+source $(dirname $0:A)/../diractions.plugin.zsh
 _DISPATCHER=$(dirname $0:A)/../__diraction-dispatch
 function __diraction-dispatch() {
     . $_DISPATCHER
