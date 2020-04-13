@@ -13,15 +13,16 @@ env:
   matrix:
     # Use _ZSH_VERSION since if ZSH_VERSION is present, travis cacher thinks it
     # is running in zsh and tries to use zsh specific functions.
+    - _ZSH_VERSION=5.7.1
     - _ZSH_VERSION=5.6.2
     - _ZSH_VERSION=5.5.1
     - _ZSH_VERSION=5.4.2
     - _ZSH_VERSION=5.3.1
     - _ZSH_VERSION=5.3
-    - _ZSH_VERSION=5.2
-    - _ZSH_VERSION=5.1.1
-    - _ZSH_VERSION=5.0.8
-    - _ZSH_VERSION=5.0.2
+    - _ZSH_VERSION=5.2 NO_QUOTED_EXEC=true
+    - _ZSH_VERSION=5.1.1 NO_QUOTED_EXEC=true
+    - _ZSH_VERSION=5.0.8 NO_QUOTED_EXEC=true
+    - _ZSH_VERSION=5.0.2 NO_QUOTED_EXEC=true
 
 cache:
   directories:
@@ -38,7 +39,3 @@ install:
 
 script:
   - zsh scripts/ci-run.zsh
-
-allow_failures:
-  - env: _ZSH_VERSION=5.0.2
-  - env: _ZSH_VERSION=5.0.8
