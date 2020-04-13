@@ -622,23 +622,19 @@ function _diraction-dispatch() {
             # §later: also for quick emacs and vim anyway : em vi
             # §so: extract a generate pattern. _diraction_edit (local functions)
             ;;
-        e|"exec")
+        e|"exec"|[,_-]) # ¤>> transfer commands
+            # "passe plat" -> command to be executed in folder
+            # originaly ':' had this behavior before being repurposed for subirectory prefix
             if [[ -z "$1" ]] ; then ; echo "$fg_bold[red]Nothing to exec!" >&2 ; return 1; fi
-            eval "(cd \"$dir\" && $@ )"
-            # ¤note: might not be necessary to protect injection.....
+
+            eval "(cd \"$dir\" && $@)"
+            # ¤note: might not be necessary to protect (self?) injection...
             # §see: var about evaluation to disable it.
-            ;;
+            # §later: make ¤run with no evaluation!!!! [or witch ename with exec]
+            # just take a string command.
+        ;;
 
-        # §later: make ¤run with no evaluation!!!! [or witch ename with exec]
-        # just take a string command.
-
-        ## ¤>> transfer commands
-
-        #  "passe plat" -> command to be executed in folder
-        [,_-]) eval "(cd \"$dir\" && $@)" ;;
-           # originaly ':' had this behavior before being repurposed for subirectory prefix
-
-        ,,|--) # Quoted eval, preserve quotes passed to eval.
+        quoted-exec|,,|--) # Quoted eval, preserve quotes passed to eval.
             eval "(cd \"$dir\" && $(print -r -- "${(q+@)@}"))"
             # -r : Ignore the escape conventions of echo.
         ;;
@@ -714,6 +710,7 @@ HELP
 _DIRACTION_HELP_SUBCOMMAND=(
     'ls:List files in the specified folder (alias l)'
     'exec:Exec (through eval) the specified command (alias e - , _ )'
+    'quoted-exec:Exec (through quotes eval) the specified command (alias -- ,, )'
     'interactive:Go in interactive mode, to perform several commands (alias i,prompt,shell)'
     '/:Go in some of the subfolder if provided (alias c cd)'
     'edit:Edit the given subfile (alias ed)'

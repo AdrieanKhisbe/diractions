@@ -59,15 +59,19 @@ describe "Dispacher Command"
    end
 
    it "Can perform command in context (eval)"
-     output=$(dir - echo '$PWD')
-     assert equal "$output" "/tmp/diraction-test"
-     assert equal "$(pwd)" $ORIGINAL_DIR
+     for exec_aliases in - , _ e exec; do
+       output=$(dir $exec_aliases echo '$PWD')
+       assert equal "$output" "/tmp/diraction-test"
+       assert equal "$(pwd)" $ORIGINAL_DIR
+     done
    end
 
    it "Can perform command in context (eval quoted)"
-     output=$(dir ,, echo '$PWD')
-     assert equal "$output" '$PWD'
-     assert equal "$(pwd)" $ORIGINAL_DIR
+     for quoted_exec_aliases in quoted-exec '--' ',,'; do
+       output=$(dir $quoted_exec_aliases echo '$PWD')
+       assert equal "$output" '$PWD'
+       assert equal "$(pwd)" $ORIGINAL_DIR
+     done
    end
 
    it "Can try perform command in context, fail, and still be in correct directory "
