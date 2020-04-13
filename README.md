@@ -104,6 +104,7 @@ Here are the main commands. Commands that are executed in the context of the dir
 - `ed`|`edit <filename>` : edit the file (being relative to the diraction folder)
 - `e`|`exec <your quoted command>` : exec the command (use single quote for the variabe to be evaluated)
 - `-`|`,`|`_` : use the following as a command
+- `--`|`,,` : use the following as a command, preserving quotes
 - `i`|`interactive`|`prompt`|`shell` : to run several command in the context of the diraction directory
 - `w`|`where`|`?` : to be remind what is the diraction folder
 - all other commands contained in the `DIRACTION_DISPATCH_WHITELIST`.

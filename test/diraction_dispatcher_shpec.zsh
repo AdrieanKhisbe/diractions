@@ -45,16 +45,37 @@ describe "Dispacher Command"
      assert equal "$output" "a\nb\nc"
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
+
    it "Can execute whitelisted command"
      output=$(dir make 2>&1)
      assert equal "$output" "make: *** No targets specified and no makefile found.  Stop."
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
+
    it "Can report invalid argument"
      output=$(dir yolo 2>&1)
      assert equal "$output" "Invalid argument! <yolo>"
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
+
+   it "Can perform command in context (eval)"
+     output=$(dir - echo '$PWD')
+     assert equal "$output" "/tmp/diraction-test"
+     assert equal "$(pwd)" $ORIGINAL_DIR
+   end
+
+   it "Can perform command in context (eval quoted)"
+     output=$(dir ,, echo '$PWD')
+     assert equal "$output" '$PWD'
+     assert equal "$(pwd)" $ORIGINAL_DIR
+   end
+
+   it "Can try perform command in context, fail, and still be in correct directory "
+     output=$(dir , oooohh-nooooo 2>&1)
+     assert equal "$output" "(eval):1: command not found: oooohh-nooooo"
+     assert equal "$(pwd)" $ORIGINAL_DIR
+   end
+
 end
 
 rm -rf $DIR_DIR

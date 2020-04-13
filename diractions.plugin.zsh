@@ -634,20 +634,22 @@ function _diraction-dispatch() {
 
         ## ¤>> transfer commands
 
-        # "passe plat"
+        #  "passe plat" -> command to be executed in folder
         [,_-]) eval "(cd \"$dir\" && $@)" ;;
-        # :. suppressed for other use
+           # originaly ':' had this behavior before being repurposed for subirectory prefix
 
-        # §check; quote: protection?
-        # §todoNOW: extract function for the eval.. (local function?)
-        # eval in dir?
+        ,,|--) # Quoted eval, preserve quotes passed to eval.
+            eval "(cd \"$dir\" && $(print -r -- "${(q+@)@}"))"
+            # -r : Ignore the escape conventions of echo.
+        ;;
+
+        # §todo:maybe extract function for the eval.. (local function, named "eval in dir"?)
 
         ## §todo: other (non transfert) commands?
         ## - todo? add to local todo. (fonction user?)
         ## §todo: task and write [in todo, or other file] (via touch ou cat)
 
-        i|interactive|prompt|shell)
-             # for a bunch of consecutive commands
+        i|interactive|prompt|shell) # for a bunch of consecutive commands
             # §maybe: add other names
             echo "Entering interactive mode in $fg_bold[blue]$dir$reset_color folder:"
             # §maybe: make a recap. (C-d quit)
