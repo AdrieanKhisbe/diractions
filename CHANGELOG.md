@@ -4,6 +4,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+### [0.17.0] - 2020-04-14
+### Added
+- 🧭 Working non prefix dir completion ([#18])
+- 📂 Create missing folder if requested ([#19])
+- 💬 Quoted exec ([#20])
+- 🥗 Support kebab case names ([#22])
+
+### Changed
+- give up on original `scope:` leading commits old convention. (had forgot one more time about them :man_facepalming:)
+
+### [0.16.1] - 2020-04-12
+### Changed
+- Refreshed CI and set up github actions
+
 ### [0.16] - 2019-04-16
 ### Added
 - prefix matching with `:` and `^`
@@ -98,7 +112,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## More history digging would be done one day
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16...HEAD
+[#18]: https://github.com/AdrieanKhisbe/diractions/issues/18
+[#19]: https://github.com/AdrieanKhisbe/diractions/issues/19
+[#20]: https://github.com/AdrieanKhisbe/diractions/issues/20
+[#22]: https://github.com/AdrieanKhisbe/diractions/issues/22
+
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16.1...v0.17.0
+[0.16.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16...v0.16.1
 [0.16]: https://github.com/AdrieanKhisbe/diractions/compare/v0.15...v0.16
 [0.15]: https://github.com/AdrieanKhisbe/diractions/compare/v0.14...v0.15
 [0.14]: https://github.com/AdrieanKhisbe/diractions/compare/v0.13...v0.14

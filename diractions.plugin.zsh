@@ -12,10 +12,11 @@
 ################################################################################
 
 # Diractions: Doing Anything, Anywhere, from here
-# Author: Adriean Khisbe
+# Author: Adrien Becchis (@AdrieanKhisbe on github&twitter)
 # Homepage: http://github.com/AdrieanKhisbe/diractions
 # License: MIT License<Adriean.Khisbe@live.fr>
-# Version: v0.16.1
+# Version: v0.17.0
+# Released on: 2020-04-14
 
 # §bonux: mini stupid logo. :) (paaaneaux)
 
