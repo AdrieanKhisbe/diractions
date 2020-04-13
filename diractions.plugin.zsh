@@ -122,7 +122,7 @@ function diraction(){
 
 ##' ¤>> Alias&Variable Combo function:
 ## §TODO: HERE would need to refactor to handle option if want to place if in the end
--diraction-help create '<name> <dir> [--ignore-missing-dir]
+-diraction-help create '<name> <dir> [--ignore-missing-dir/--create-missing-dir]
 Create a new diraction.
 Link a directory to create both a variable "_$1", and a "dispatch" alias "$1"
 
@@ -138,11 +138,14 @@ function diraction-create() {
     local var="_$alias"
     local dir="$2"
 
-    if [[ "--ignore-missing-dir" != "$3" ]] && [[ ! -d "$dir" ]]; then
-        echo "diraction: $dir is not a real directory ($var)
-you can force creation adding --ignore-missing-dir flag" >&2
-        return 2
-        # §maybe: log "dir is missing". count numb of miss
+    if [[ ! -d "$dir" ]]; then
+        if [[ "--create-missing-dir" = "$3" ]]; then
+            mkdir -p $dir
+        elif [[ "--ignore-missing-dir" != "$3" ]]; then
+            echo "diraction: $dir is not a real directory ($alias)\nyou can force creation adding --ignore-missing-dir flag or use --create-missing-dir" >&2
+            return 2
+            # §maybe: log "dir is missing". count numb of miss
+        fi
     fi
 
     # create variable if not already bound

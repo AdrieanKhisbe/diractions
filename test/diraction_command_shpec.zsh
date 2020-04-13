@@ -53,7 +53,7 @@ DIRS
       assert equal "$PWD" "/tmp/some-dir1"
       test2
       assert equal "$PWD" "/tmp/some-dir2"
-      diraction destroy-all
+      diraction destroy-all -f
     end
 
     it "create working diraction with name in it"
@@ -68,10 +68,25 @@ DIRS
     end
 
     it "Deny creation if non existing"
+      output="$(diraction create ghost /tmp/oh-no/I/don/t/exists  2>&1)"
+      assert equal $? 2
+      assert equal $output "diraction: /tmp/oh-no/I/don/t/exists is not a real directory (ghost)\nyou can force creation adding --ignore-missing-dir flag or use --create-missing-dir"
+    end
+
+    it "Allow creation of diraction if missing folder but force"
+      diraction create ghost /tmp/oh-no/I/don/t/exists --ignore-missing-dir
+      assert equal $? 0
+      assert grep "$(which ghost)" "aliased to _diraction-dispatch"
     end
 
     it "Allow creation if non existing but force"
+      diraction create alive_ghost /tmp/oh-no/I/don/t/exists --create-missing-dir
+      assert equal $? 0
+      assert grep "$(which alive_ghost)" "aliased to _diraction-dispatch"
     end
+
+    rm -rf /tmp/oh-no/I/don/t/exists
+    diraction-destroy-all -f
   end
   describe "Diraction listing"
     dir1='/tmp/dir1'; dir2='/tmp/dir2'
