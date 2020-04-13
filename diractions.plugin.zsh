@@ -396,14 +396,16 @@ function diraction-batch-create() {
         local -a aline
         set -A aline ${(@s: :)line}
 
+        local option="$1"
+
         if [[  "${#aline}" -le 1 ]]; then
             # next: ignore empty line
             :
         elif [[  "${#aline}" != 3 ]] ; then
             echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
             ko=true
-        elif [[ $1 == "--ignore-missing-dir" ]]; then
-            diraction-create "$aline[2]" "$aline[3]" --ignore-missing-dir
+        elif [[ $option =~ "-missing-dir" ]]; then
+            diraction-create "$aline[2]" "$aline[3]" $option
         else
             local dir=$(eval echo "$aline[3]")
             if [[ -d "$dir" ]]; then

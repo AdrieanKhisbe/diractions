@@ -56,6 +56,24 @@ DIRS
       diraction destroy-all -f
     end
 
+    it "create working diractions using batch and option"
+      mkdir -p "/tmp/some-dir1" "/tmp/some-dir2"
+      diraction batch-create --create-missing-dir << "DIRS"
+        test1 /tmp/some/dir1
+        test2 /tmp/some/dir2
+DIRS
+      assert glob "$(type test1)" "*alias*"
+      assert glob "$(type test2)" "*alias*"
+      test1
+      assert equal "$PWD" "/tmp/some/dir1"
+      assert file_present  "/tmp/some/dir1"
+      test2
+      assert equal "$PWD" "/tmp/some/dir2"
+      assert file_present  "/tmp/some/dir2"
+      rm -rf /tmp/some
+      diraction destroy-all -f
+    end
+
     it "create working diraction with name in it"
       dir='/tmp/some name with space'
       mkdir -p "$dir"
@@ -82,6 +100,7 @@ DIRS
     it "Allow creation if non existing but force"
       diraction create alive_ghost /tmp/oh-no/I/don/t/exists --create-missing-dir
       assert equal $? 0
+      assert file_present "/tmp/oh-no/I/don/t/exists"
       assert grep "$(which alive_ghost)" "aliased to _diraction-dispatch"
     end
 

@@ -75,6 +75,7 @@ First step is to define your *diractions*, associate name to your most used dire
 + you simply create a new diraction with `diraction create <name> <directory>`
   - by default it will check if directory exist
   - to bypass this check use the `--ignore-missing-dir`
+  - to create the missing directories, use `--create-missing-dir`
 + save the current directory with `diraction save <name>`
 + you can also create many *diractions* with the `batch-create` command. it reads STDIN (so pipe a file to it, or use here docs) which can be usefull in configs.
 
