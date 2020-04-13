@@ -135,7 +135,7 @@ function diraction-create() {
     fi
 
     local alias=$1
-    local var="_$alias"
+    local var="_$(echo $alias | tr '-' '_')"
     local dir="$2"
 
     if [[ ! -d "$dir" ]]; then
@@ -258,7 +258,7 @@ Destroy alias and variable attached to diraction name"
 function diraction-destroy() {
     if diraction-exist $1 ;then
         unalias $1
-        unset "_$1"
+        unset "_$(echo $alias | tr '-' '_')"
         unset "DIRACTION_REGISTER[$1]"
     else
         echo "Provided argument is not a registered diraction" >&2

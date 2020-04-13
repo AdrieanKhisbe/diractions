@@ -41,6 +41,17 @@ describe "Diraction Commands"
       diraction destroy testitest
     end
 
+    it "support diraction name in kebab case"
+      dir='/tmp/some-name-dash'
+      mkdir -p "$dir"
+      diraction create dash-in-it "$dir"
+      assert glob "$(type dash-in-it)" "*alias*"
+      assert equal "$_dash_in_it" "$dir"
+      dash-in-it
+      assert equal "$PWD" "$dir"
+      diraction destroy dash-in-it
+    end
+
     it "create working diractions using batch"
       mkdir -p "/tmp/some-dir1" "/tmp/some-dir2"
       diraction batch-create << "DIRS"
@@ -88,7 +99,7 @@ DIRS
     it "Deny creation if non existing"
       output="$(diraction create ghost /tmp/oh-no/I/don/t/exists  2>&1)"
       assert equal $? 2
-      assert equal $output "diraction: /tmp/oh-no/I/don/t/exists is not a real directory (ghost)\nyou can force creation adding --ignore-missing-dir flag or use --create-missing-dir"
+      assert equal "$output" "diraction: /tmp/oh-no/I/don/t/exists is not a real directory (ghost)\nyou can force creation adding --ignore-missing-dir flag or use --create-missing-dir"
     end
 
     it "Allow creation of diraction if missing folder but force"
