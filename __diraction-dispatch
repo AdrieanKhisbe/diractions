@@ -18,11 +18,11 @@ then # Subcomand completion
             local nslash=$(echo $subcommand | grep -o / |tr -d '\n' | wc -c)
             local dirpattern=''; for n ({1..$(($nslash-1))}); do dirpattern="$dirpattern*/"; done
             local pattern=$(echo "${subcommand#//}" | sed -e "s:\\(.\\):\\.*\\1\\.*:g")
-            local cmd="setopt null_glob; cd $dirdir && ls -d -- $dirpattern $dirpattern*/ $dirpattern*/*/  2>>/dev/null| sed -E 's:^:/:g' | grep \"$pattern\""
+            local cmd="setopt null_glob; builtin cd $dirdir > /dev/null && ls -d -- $dirpattern $dirpattern*/ $dirpattern*/*/  2>>/dev/null| sed -E 's:^:/:g' | grep \"$pattern\""
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n ${paths[1]} ]]; then
-                _values "Matching Nested Subdirs" ${paths[@]}
+                PREFIX="/" _values "Matching $dirdir Nested Subdirs" ${paths[@]}
                 return 0
             else
                 _message "No matching nested subdir"
@@ -33,14 +33,14 @@ then # Subcomand completion
             local nslash=$(($(echo $subcommand | grep -o / | sed 's/^[[:space:]]*//g' | wc -c) - 1))
             local dirpattern=''; for n ({1..$nslash}); do dirpattern="$dirpattern*/"; done
             local pattern=`eval echo - '${subcommand%/*}/$(echo - ${subcommand##'$dirpattern'} | sed -e "s:\\(.\\):\\.*\\1\\.*:g")'`
-            local cmd="cd $dirdir && ls -d -- $dirpattern 2>>/dev/null | sed -E 's:^:/:g' | grep \"$pattern\" "
+            local cmd="builtin cd $dirdir > /dev/null && ls -d -- $dirpattern 2>>/dev/null | sed -E 's:^:/:g' | grep \"$pattern\" "
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]] && [[ -n "${paths[1]}" ]]; then
-                _values 'Matching Subdirs' ${paths[@]}
+                 PREFIX="/" _values "Matching $dirdir Subdirs" ${paths[@]}
                 return 0
             else
-                _message "No matching subdir"
+                _message "No matching $dirdir subdir"
                 return 1
             fi
             ;;
@@ -48,15 +48,15 @@ then # Subcomand completion
             local subpath=${subcommand#:}
             local nslash=$(echo $subpath | grep -o / |tr -d '\n' | wc -c)
             local dirpattern=''; for n ({0..$nslash}); do dirpattern="$dirpattern*/"; done
-            local cmd="cd $dirdir && ls -d -- $dirpattern 2>>/dev/null | sed -E 's@^@:@g' | grep -E \"^:$subpath\" "
+            local cmd="builtin cd $dirdir > /dev/null && ls -d -- $dirpattern 2>>/dev/null | sed -E 's@^@:@g' | grep -E \"^:$subpath\" "
             local matches="$(eval $cmd 2>/dev/null)"
             local paths; if [[ -n "$matches" ]]; then paths=("${(f)matches}"); else paths=(); fi
             if [[ ${#paths} -gt 0 ]]; then
-                compadd -x "Matching Subdirs" -U ${paths[@]}
+                compadd -x "Matching $dirdir Subdirs starting with '$subpath'" -U ${paths[@]}
                 # _values dont works : having a special meaning
                 return 0
             else
-                _message "No matching subdir"
+                _message "No matching $dirdir subdir"
                 return 1
             fi
             ;;
