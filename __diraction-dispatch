@@ -103,7 +103,7 @@ else # argument completion
             if functions "$compfun" > /dev/null; then
                 # §tofix: git error: zsh:12: command not found: ___diraction-dispatch_main # ¤old
                 # if so do it up
-                cd $PWD; $compfun ; ret=$? ; cd $OLDPWD; [ $ret -eq 0 ] && return 0
+                cd $PWD; service="$subcommand" $compfun ; ret=$? ; cd $OLDPWD; [ $ret -eq 0 ] && return 0
                 # beware to file completion:
                 # https://github.com/robbyrussell/oh-my-zsh/issues/2394
             else
