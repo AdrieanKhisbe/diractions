@@ -79,12 +79,21 @@ else # argument completion
     shift words; shift words  # shifting words args
     ((CURRENT = CURRENT -2))
     case $subcommand in
+        # note: In order for forwarded sub command completion (_some_subcmd) to work correctly "service" should be set to the $subcmd
+        #
+        # see http://zsh.sourceforge.net/Doc/Release/Completion-System.html  20.2.2 Autoloaded files (#compdef section):
+        # > Each name may also be of the form 'cmd=service'. When completing the command cmd, the function typically behaves as
+        # if the command (or special context) service was being completed instead. This provides a way of altering the behaviour
+        # of functions that can perform many different completions. It is implemented by setting the parameter $service when
+        # calling the function; the function may choose to interpret this how it wishes, and simpler functions will probably ignore it.
+
         e|"exec"|[-,_])  # magic native completion
             shift words; ((CURRENT--))
             if  ((CURRENT == 1 )); then
                 _command_names
             elif functions "_${words[1]}" > /dev/null; then
-                cd $PWD && "_${words[1]}" ; cd $OLDPWD
+                # note: ${words[1]} is the real subcommand, `-` only forward
+                cd $PWD && service="${words[1]}" "_${words[1]}" ; cd $OLDPWD
             else
                 _path_files -W $PWD ; _options_set
             fi ; return 0
