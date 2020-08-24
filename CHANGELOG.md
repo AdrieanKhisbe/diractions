@@ -4,7 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
-### [0.17.0] - 2020-04-14
+## [0.17.1] - 2020-08-24
+### Changed
+- ✍️ Improved completion of subcommands ([#25])
+## [0.17.0] - 2020-04-14
 ### Added
 - 🧭 Working non prefix dir completion ([#18])
 - 📂 Create missing folder if requested ([#19])
@@ -14,11 +17,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - give up on original `scope:` leading commits old convention. (had forgot one more time about them :man_facepalming:)
 
-### [0.16.1] - 2020-04-12
+## [0.16.1] - 2020-04-12
 ### Changed
 - Refreshed CI and set up github actions
 
-### [0.16] - 2019-04-16
+## [0.16] - 2019-04-16
 ### Added
 - prefix matching with `:` and `^`
 
@@ -28,13 +31,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Completion of path with leading `-`
 
-### [0.15] - 2017-10-07
+## [0.15] - 2017-10-07
 ### Added
 - better completion for commands in a diraction
 - fuzzy matching for folder completion `/`
 - nested directory completion for folder completion `//`
 
-### [0.14] - 2017-10-05
+## [0.14] - 2017-10-05
 ### Added
 - Can now perform action in diraction subdirs
 - Adequate completion for these actions
@@ -116,8 +119,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [#19]: https://github.com/AdrieanKhisbe/diractions/issues/19
 [#20]: https://github.com/AdrieanKhisbe/diractions/issues/20
 [#22]: https://github.com/AdrieanKhisbe/diractions/issues/22
+[#25]: https://github.com/AdrieanKhisbe/diractions/issues/25
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.0...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.1...HEAD
+[0.17.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16.1...v0.17.0
 [0.16.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16...v0.16.1
 [0.16]: https://github.com/AdrieanKhisbe/diractions/compare/v0.15...v0.16
