@@ -26,6 +26,7 @@ completion_commands=(compadd _message _command_names _path_files _directories _l
 for cmd in $completion_commands; do
     stub_command $cmd "echo $cmd "'$@ '
 done
+stub_command _git "echo _git "'service=$service $@ '
 
 describe "Dispatcher Completion"
   it "Completion with no args"
@@ -115,6 +116,18 @@ describe "Dispatcher Completion"
       CURRENT=5 words=(__diraction-dispatch $QUOTED_DIR_DIR - ls alo)
       output="$(__diraction-dispatch)"
       assert grep "$output" "_ls"
+    end
+
+    it "argument of whitelisted command (checking service injection)"
+      CURRENT=5 words=(__diraction-dispatch $QUOTED_DIR_DIR git stat)
+      output="$(__diraction-dispatch)"
+      assert grep "$output" "_git service=git"
+    end
+
+    it "argument of command with completion command available (checking service injection)"
+      CURRENT=5 words=(__diraction-dispatch $QUOTED_DIR_DIR - git stat)
+      output="$(__diraction-dispatch)"
+      assert grep "$output" "_git service=git"
     end
 
     it "argument of command with no completion command available"
