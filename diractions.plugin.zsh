@@ -42,8 +42,10 @@ declare -gA _DIRACTION_HELP
 -set-default () {
     # ¤note: from antigen
     local arg_name="$1"
-    local arg_value="$2"
-    eval "test -z \"\$$arg_name\" && export $arg_name='$arg_value'"
+    local default_arg_value="$2"
+    if [ -z "$(eval echo \$$arg_name)" ];then
+        eval $arg_name='${(q)default_arg_value}'
+    fi
     # §see: make it not exportable?
 }
 #' function to easily declare help associated to the provided command
