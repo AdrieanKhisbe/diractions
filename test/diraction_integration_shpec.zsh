@@ -56,4 +56,25 @@ BASIC_SCRIPT
 
     assert equal "$output" "/tmp\n/tmp\n/tmp\ndir-tmp:/tmp:"
   end
+
+  it "basic script with readonly"
+    output="$(zsh 2>&1 << BASIC_SCRIPT
+      set -e
+      DIRACTION_AUTO_CONFIG=false
+      DIRACTION_READONLY_VARIABLES=true
+      source $plugin
+
+      diraction-batch-create << "DIR"
+        ro-dir-tmp /tmp
+DIR
+      echo \$_ro_dir_tmp
+      readonly _ro_dir_tmp
+      _ro_dir_tmp="sorry you can't"
+BASIC_SCRIPT
+)"
+    _status=$?
+    assert equal $_status 1
+
+    assert equal "$output" "/tmp\nzsh: read-only variable: _ro_dir_tmp"
+  end
 end

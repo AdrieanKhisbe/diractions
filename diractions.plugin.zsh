@@ -64,6 +64,7 @@ declare -gA _DIRACTION_HELP
 -set-default DIRACTION_BROWSER # §todo: update
 -set-default DIRACTION_AUTO_CONFIG true
 -set-default DIRACTION_EXPORT_VARIABLES false
+-set-default DIRACTION_READONLY_VARIABLES false # §todo: experiment, and maybe make it default (or maybe not: could not unset then)
 
 # --
 if [[ -z $DIRACTION_DISPATCH_WHITELIST ]]; then
@@ -161,7 +162,9 @@ function diraction-create() {
         else
             eval "$var=${(q)value}"
         fi
-        # §maybe: readonly probably better?? (maybe not: could not unset then)
+        if [[ "$DIRACTION_READONLY_VARIABLES" =~ ^(true|yes|y)$ ]] ; then
+            readonly $var
+        fi
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
     alias "$alias"="_diraction-dispatch \"$dir\""
