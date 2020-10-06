@@ -63,6 +63,7 @@ declare -gA _DIRACTION_HELP
 -set-default DIRACTION_DEF_FILE "$HOME/.diractions" # §maybe rename to config file
 -set-default DIRACTION_BROWSER # §todo: update
 -set-default DIRACTION_AUTO_CONFIG true
+-set-default DIRACTION_EXPORT_VARIABLES false
 
 # --
 if [[ -z $DIRACTION_DISPATCH_WHITELIST ]]; then
@@ -154,8 +155,12 @@ function diraction-create() {
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
         # ¤note: déréférencement de variable: ${(P)var}
-        export $var="$(eval echo "$dir")"
-        # §see: keep export?
+        local value="$(eval echo "$dir")"
+        if [[ "$DIRACTION_EXPORT_VARIABLES" =~ ^(true|yes|y)$ ]] ; then
+            export $var="$value"
+        else
+            eval "$var=${(q)value}"
+        fi
         # §maybe: readonly probably better?? (maybe not: could not unset then)
     fi
     # create an alias: call to the _diraction-dispach function with directory as argument
