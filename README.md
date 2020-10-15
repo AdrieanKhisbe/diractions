@@ -208,6 +208,11 @@ Here are the main ones:
 - `DIRACTION_DEF_FILE` : the name of the file containing your diraction definition
 - `DIRACTION_EDITOR` : which editor command is used for the edit command
 - `DIRACTION_INTERACTIVE_PROMPT` : the "prompt" for the "interactive" command
+- `DIRACTION_EXPORT_VARIABLES` :
+  - whether the `_dir` variables should be exported to the child processes.
+  - Off by default, can be activated setting variable to `true`
+  - note: this was the original _(only)_ behavior for versions prior to `v0.18.0`
+- `DIRACTION_READONLY_VARIABLES` : whether the `_dir` variables should be made read only. Deactivated by default, activate with `true`
 
 ## History
 
