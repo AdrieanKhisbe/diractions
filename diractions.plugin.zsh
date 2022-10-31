@@ -420,7 +420,7 @@ function diraction-batch-create() {
         elif [[ $option =~ "-missing-dir" ]]; then
             diraction-create "$aline[2]" "$aline[3]" $option
         else
-            local dir="$(eval echo ${(@q)aline[3]})"
+            local dir="$(eval echo "${(@q)aline[3]}")"
             if [[ -d "$dir" ]]; then
                 diraction-create "$aline[2]" "$dir"
             else
