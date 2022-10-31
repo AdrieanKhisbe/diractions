@@ -393,7 +393,7 @@ function diraction-batch-create() {
     local SED_OPT
     if [[ "$(uname -s)" -eq "Darwin" ]] ; then SED_OPT="-E" ; else SED_OPT="-R" ; fi
 
-    cat -n | sed $SED_OPT 's:[[:space:]]#.*$::' \
+    cat -n | sed $SED_OPT 's:(^|[[:space:]])#.*$:\1:' \
            | sed $SED_OPT 's:^[[:space:]]*([^[:space:]]+)[[:space:]]+([^[:space:]]+)[[:space:]]+(.*):\1;\2;\3:g' |
     # kill comment for the eval after the first # with a space before, then ensure only one space
 
