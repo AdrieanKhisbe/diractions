@@ -84,6 +84,8 @@ First step is to define your *diractions*, associate name to your most used dire
    diraction batch-create <<DIRS
    dir1 /long/dir/one
    dir2 /long/dir/2
+   dir3 /long/dir with space
+   dir4 /some/dir # with a comment
    DIRS
    ```
 + You can see the existing *diraction* using the following subcommands:

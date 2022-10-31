@@ -181,7 +181,7 @@ function diraction-save() {
         echo "Wrong Number of arguments\ndiraction-alias <alias>" >&2
         return 1
     fi
-    diraction-create $1 $PWD
+    diraction-create $1 "$PWD"
 }
 
 # ¤>> Other utils functions
@@ -383,7 +383,7 @@ function -diraction-parse-file() {
         echo 'diraction parse file need to be given a file!' >&2
         return 2;
     else
-        cat $1 | sed 's/~/$HOME/' | diraction-batch-create $2
+        cat $1 | sed 's/\([ \t]\)~/\1$HOME/' | diraction-batch-create $2
         return $?
     fi
 }
@@ -393,9 +393,11 @@ function diraction-batch-create() {
     local SED_OPT
     if [[ "$(uname -s)" -eq "Darwin" ]] ; then SED_OPT="-E" ; else SED_OPT="-R" ; fi
 
-    cat -n |  sed 's:#.*$::' | sed $SED_OPT 's/[[:space:]]+/ /g' |
-    # kill comment for the eval
-    # §maybe: extract to function when fill do check-syntax, check file exist.
+    cat -n | sed $SED_OPT 's:[[:space:]]#.*$::' \
+           | sed $SED_OPT 's:^[[:space:]]*([^[:space:]]+)[[:space:]]+([^[:space:]]+)[[:space:]]+(.*):\1;\2;\3:g' |
+    # kill comment for the eval after the first # with a space before, then ensure only one space
+
+    # TODO: extract to function when fill do check-syntax, check file exist.
     # should rafine to have a read keeping memory in count?. (maybe cat -n)
     # Must take a function. # should be private ?. or defined
     while read line ; do
@@ -405,20 +407,20 @@ function diraction-batch-create() {
         local ko=false
 
         local -a aline
-        set -A aline ${(@s: :)line}
+        set -A aline ${(@s:;:)line}
 
-        local option="$1"
+        local option="$1" # TODO: move option up
 
         if [[  "${#aline}" -le 1 ]]; then
             # next: ignore empty line
             :
         elif [[  "${#aline}" != 3 ]] ; then
-            echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}" >&2
+            echo "At line ${aline[1]}, invalid number of argument(${#aline}): '${(@)aline}" >&2
             ko=true
         elif [[ $option =~ "-missing-dir" ]]; then
             diraction-create "$aline[2]" "$aline[3]" $option
         else
-            local dir=$(eval echo "$aline[3]")
+            local dir="$(eval echo ${(@q)aline[3]})"
             if [[ -d "$dir" ]]; then
                 diraction-create "$aline[2]" "$dir"
             else
@@ -470,16 +472,16 @@ function -diraction-check-file-syntax() {
     fi
 
     local ok=0
-    cat -n $1 |  sed 's:#.*$::' | while read line; do
+    cat -n $1 | sed 's:[[:space:]]#.*$::' | while read line; do
         local -a aline;
         set -A aline $line
         # §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
         # §todo: add checksum to file
-        if [[  ! ("${#aline}" == 3 ||  "${#aline}" == 1 ) ]] ; then
-            echo "At line ${aline[1]}, invalid number of argument: ${aline[2,-1]}"
+        if [[  ("${#aline}" == 0 ||  "${#aline}" == 2 ) ]] ; then
+            echo "At line ${aline[1]}, invalid number of argument(${#aline}): '${(@)aline}'}"
             ok=1
         elif ! eval "echo ${aline[2,-1]} >/dev/null" 2>/dev/null  ; then
-        # §todo: cekc eval?
+        # §todo: check eval?
             echo "At line ${aline[1]}, some syntax error occured ${aline[2,-1]}"
             ok=1
         fi

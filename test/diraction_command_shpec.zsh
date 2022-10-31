@@ -67,6 +67,34 @@ DIRS
       diraction destroy-all -f
     end
 
+    it "create working diractions using batch with space and comments"
+      mkdir -p "/tmp/some-dir" "/tmp/  some  space  dir" "/tmp/some-dir-with-#hastag"
+      diraction batch-create << "DIRS"
+        test1-com /tmp/some-dir # comment
+        test2-space   /tmp/  some  space  dir
+        test2-space-protected /tmp/\ \ some\ \ space\ \ dir
+        test3-hash /tmp/some-dir-with-#hastag
+        # just a comment
+DIRS
+
+      assert glob "$(type test1-com)" "*alias*"
+      test1-com
+      assert equal "$PWD" "/tmp/some-dir"
+
+      assert glob "$(type test2-space)" "*alias*"
+      test2-space
+      assert equal "$PWD" "/tmp/  some  space  dir"
+
+      assert glob "$(type test2-space-protected)" "*alias*"
+      test2-space-protected
+      assert equal "$PWD" "/tmp/  some  space  dir"
+
+      assert glob "$(type test3-hash)" "*alias*"
+      test3-hash
+      assert equal "$PWD" "/tmp/some-dir-with-#hastag"
+      diraction destroy-all -f
+    end
+
     it "create working diractions using batch and option"
       mkdir -p "/tmp/some-dir1" "/tmp/some-dir2"
       diraction batch-create --create-missing-dir << "DIRS"
