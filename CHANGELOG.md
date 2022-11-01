@@ -4,6 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.19.0] - 2022-11-01
+- Better support of folder with space in them ([#28])
+
+## [0.18.0] - 2020-10-18
+- See ([#26])
+  - reaonly option
+  - export configurabililty
+
 ## [0.17.1] - 2020-08-24
 ### Changed
 - ✍️ Improved completion of subcommands ([#25])
@@ -120,8 +128,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [#20]: https://github.com/AdrieanKhisbe/diractions/issues/20
 [#22]: https://github.com/AdrieanKhisbe/diractions/issues/22
 [#25]: https://github.com/AdrieanKhisbe/diractions/issues/25
+[#26]: https://github.com/AdrieanKhisbe/diractions/issues/26
+[#28]: https://github.com/AdrieanKhisbe/diractions/issues/28
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.1...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.1...HEAD
+[0.19.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.18.0...v0.19.0
+[0.18.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.1...v0.18.0
 [0.17.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16.1...v0.17.0
 [0.16.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.16...v0.16.1

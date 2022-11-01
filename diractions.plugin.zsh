@@ -15,8 +15,8 @@
 # Author: Adrien Becchis (@AdrieanKhisbe on github&twitter)
 # Homepage: http://github.com/AdrieanKhisbe/diractions
 # License: MIT License<Adriean.Khisbe@live.fr>
-# Version: v0.18.0
-# Released on: 2020-10-18
+# Version: v0.19.0
+# Released on: 2022-11-01
 
 # §bonux: mini stupid logo. :) (paaaneaux)
 
