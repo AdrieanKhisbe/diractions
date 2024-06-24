@@ -32,7 +32,7 @@ describe "Diraction Commands"
 
   describe "Diraction Creation"
     it "create working diraction"
-      dir='/tmp/some-name'
+      dir="/tmp/some-name"
       mkdir -p "$dir"
       diraction create testitest "$dir"
       assert glob "$(type testitest)" "*alias*"
@@ -42,7 +42,7 @@ describe "Diraction Commands"
     end
 
     it "support diraction name in kebab case"
-      dir='/tmp/some-name-dash'
+      dir="/tmp/some-name-dash"
       mkdir -p "$dir"
       diraction create dash-in-it "$dir"
       assert glob "$(type dash-in-it)" "*alias*"
@@ -95,6 +95,33 @@ DIRS
       diraction destroy-all -f
     end
 
+    it "create working diractions using batch with tildes and quotes"
+      mkdir -p "~/.test/d1" "~/.test/d2" "~/.test/d3" "~/.test/with space"
+      diraction batch-create << "DIRS"
+        test1-home ~/.test/d1
+        test2-home-quote '~/.test/d2'
+        test3-home-double-quote "~/.test/d3"
+        test4-home-double-quote-comment "~/.test/with space" # comment
+DIRS
+
+      assert glob "$(type test1-home)" "*alias*"
+      test1-home
+      assert equal "$PWD" "~/.test/d1"
+
+      assert glob "$(type test2-home-quote)" "*alias*"
+      test2-home-quote
+      assert equal "$PWD" "~/.test/d2"
+
+      assert glob "$(type test3-home-double-quote-comment)" "*alias*"
+      test3-home-double-quote-comment
+      assert equal "$PWD" "~/.test/d3"
+
+      assert glob "$(type test4-home-double-quote-comment)" "*alias*"
+      test4-home-double-quote-comment
+      assert equal "$PWD" "~/.test/with space"
+      diraction destroy-all -f
+    end
+
     it "create working diractions using batch and option"
       mkdir -p "/tmp/some-dir1" "/tmp/some-dir2"
       diraction batch-create --create-missing-dir << "DIRS"
@@ -114,7 +141,7 @@ DIRS
     end
 
     it "create working diraction with name in it"
-      dir='/tmp/some name with space'
+      dir="/tmp/some name with space"
       mkdir -p "$dir"
       diraction create testitest "$dir"
       assert glob "$(type testitest)" "*alias*"
@@ -147,7 +174,7 @@ DIRS
     diraction-destroy-all -f
   end
   describe "Diraction listing"
-    dir1='/tmp/dir1'; dir2='/tmp/dir2'
+    dir1="/tmp/dir1"; dir2="/tmp/dir2"
     diraction-fake test1 "$dir1"
     diraction-fake test2 "$dir2"
 
