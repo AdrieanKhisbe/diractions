@@ -383,7 +383,7 @@ function -diraction-parse-file() {
         echo 'diraction parse file need to be given a file!' >&2
         return 2;
     else
-        cat $1 | sed 's/\([ \t]\)~/\1$HOME/' | diraction-batch-create $2
+        cat $1 | sed 's/\([''" \t]\)~/\1$HOME/' | diraction-batch-create $2
         return $?
     fi
 }
