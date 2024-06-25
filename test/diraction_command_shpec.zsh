@@ -96,7 +96,9 @@ DIRS
     end
 
     it "create working diractions using batch with tildes and quotes"
-      mkdir -p "~/.test/d1" "~/.test/d2" "~/.test/d3" "~/.test/with space"
+      OLD_HOME="$HOME"
+      HOME="/tmp"
+      mkdir -p "$HOME/.test/d1" "$HOME/.test/d2" "$HOME/.test/d3" "$HOME/.test/with space"
       diraction batch-create << "DIRS"
         test1-home ~/.test/d1
         test2-home-quote '~/.test/d2'
@@ -120,6 +122,7 @@ DIRS
       test4-home-double-quote-comment
       assert equal "$PWD" "~/.test/with space"
       diraction destroy-all -f
+      HOME="$OLD_HOME"
     end
 
     it "create working diractions using batch and option"
