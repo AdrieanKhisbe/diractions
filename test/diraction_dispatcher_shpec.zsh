@@ -36,7 +36,7 @@ describe "Dispacher Command"
    it 'can tree files in it'
      output=$(dir tree | sed 's/`/i/')
      assert grep "$output" "/tmp/diraction-test"
-     assert grep "$output" "0 directories, 3 files"
+     assert grep "$output" "[01] director.*, 3 files" # pattern to support both macos/linus
      assert equal "$(pwd)" $ORIGINAL_DIR
    end
 

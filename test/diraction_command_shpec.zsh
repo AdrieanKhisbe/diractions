@@ -96,10 +96,7 @@ DIRS
     end
 
     it "create working diractions using batch with tildes and quotes"
-      OLD_HOME="$HOME"
-      HOME="/tmp"
-      mkdir -p "$HOME/.test/d1" "$HOME/.test/d2" "$HOME/.test/d3" "$HOME/.test/with space"
-      diraction batch-create << "DIRS"
+      diraction batch-create --ignore-missing-dir option << "DIRS"
         test1-home ~/.test/d1
         test2-home-quote '~/.test/d2'
         test3-home-double-quote "~/.test/d3"
@@ -107,22 +104,18 @@ DIRS
 DIRS
 
       assert glob "$(type test1-home)" "*alias*"
-      test1-home
-      assert equal "$PWD" "~/.test/d1"
+      assert equal "$(whence -f test1-home)" '_diraction-dispatch "~/.test/d1"'
 
       assert glob "$(type test2-home-quote)" "*alias*"
-      test2-home-quote
-      assert equal "$PWD" "~/.test/d2"
+      assert equal "$(whence -f test2-home-quote)" '_diraction-dispatch "'"'"'~/.test/d2'"'"'"' # "'path'" in quotes
 
-      assert glob "$(type test3-home-double-quote-comment)" "*alias*"
-      test3-home-double-quote-comment
-      assert equal "$PWD" "~/.test/d3"
+      assert glob "$(type test3-home-double-quote)" "*alias*"
+      assert equal "$(whence -f test3-home-double-quote)" '_diraction-dispatch ""~/.test/d3""'
 
       assert glob "$(type test4-home-double-quote-comment)" "*alias*"
-      test4-home-double-quote-comment
-      assert equal "$PWD" "~/.test/with space"
+      assert equal "$(whence -f test4-home-double-quote-comment)" '_diraction-dispatch ""~/.test/with space""'
+
       diraction destroy-all -f
-      HOME="$OLD_HOME"
     end
 
     it "create working diractions using batch and option"
