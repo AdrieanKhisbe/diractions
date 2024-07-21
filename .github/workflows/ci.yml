@@ -77,16 +77,14 @@ jobs:
           script -qec './configure --prefix=/opt/zsh'
           make
           sudo make install.bin install.modules install.fns
-      - name: Install antidote
-        if: steps.cache-zsh.outputs.cache-hit != 'true'
-        run: |
-          git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
 
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up env
-        run: cat scripts/ci.zshrc > ~/.zshrc ; cat ~/.zshrc; echo "setopt sh_word_split" >> ~/.zshenv
+      - name: Set up env & Install antidote
+        run: |
+          cat scripts/ci.zshrc > ~/.zshrc ; cat ~/.zshrc; echo "setopt sh_word_split" >> ~/.zshenv
+          git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
 
       - name: Tests
         timeout-minutes: 2
