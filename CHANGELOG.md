@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [0.19.1] - 2024-07-22
+- Fix support of tilde/home behavior post introducing support folder with space in them ([#29])
+- Updated CI, github actions improved, travis dropped
+
 ## [0.19.0] - 2022-11-01
 - Better support of folder with space in them ([#28])
 
@@ -132,6 +136,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [#28]: https://github.com/AdrieanKhisbe/diractions/issues/28
 
 [unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.1...HEAD
+[0.19.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.0...v0.19.1
 [0.19.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.1...v0.18.0
 [0.17.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.0...v0.17.1
