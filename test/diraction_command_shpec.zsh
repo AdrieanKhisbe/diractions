@@ -9,6 +9,10 @@ source $(dirname $0:A)/diraction_test_utils.zsh
 
 diraction-destroy-all -f
 
+function prune-ansi(){
+  perl -pe 's/\e\[[0-9;]*[a-zA-Z]//g; s/\e\([0-9;]*[a-zA-Z]//g'
+}
+
 describe "Diraction Commands"
 
   describe "Dispatcher"
@@ -175,31 +179,31 @@ DIRS
     diraction-fake test2 "$dir2"
 
     it "ls all the dirs"
-        output="$(diraction ls | sed $'s/\033\\[[0-9;]*m//g')"
+        output="$(diraction ls | prune-ansi)"
         assert grep "$output" "List of diractions"
-        assert grep "$output" "test1.* - /tmp/dir1"
-        assert grep "$output" "test2.* - /tmp/dir2"
+        assert grep "$output" ". test1.* : /tmp/dir1 (/tmp/dir1)"
+        assert grep "$output" ". test2.* : /tmp/dir2 (/tmp/dir2)"
     end
 
     it "ls all the dirs --csv"
         output="$(diraction ls --csv)"
         assert no_grep "$output" "List of diractions"
-        assert grep "$output" "test1,/tmp/dir1"
-        assert grep "$output" "test2,/tmp/dir2"
+        assert grep "$output" "test1;/tmp/dir1;/tmp/dir1;present"
+        assert grep "$output" "test2;/tmp/dir2;/tmp/dir2;present"
     end
 
     it "ls all the dirs --tsv"
       output="$(diraction ls --tsv)"
       assert no_grep "$output" "List of diractions"
-      assert grep "$output" "test1\t/tmp/dir1"
-      assert grep "$output" "test2\t/tmp/dir2"
+      assert grep "$output" "test1\t/tmp/dir1\t/tmp/dir1\tpresent"
+      assert grep "$output" "test2\t/tmp/dir2\t/tmp/dir2\tpresent"
     end
 
     it "ls some dirs"
-        output="$(diraction ls 2)"
+        output="$(diraction ls 2  | prune-ansi)"
         assert grep "$output" "List of diractions"
-        assert no_grep "$output" "test1.* -  /tmp/dir1"
-        assert grep "$output" "test2.* -  /tmp/dir2"
+        assert no_egrep "$output" ". test1.* : /tmp/dir1 \(/tmp/dir1\)"
+        assert egrep "$output" ". test2.* : /tmp/dir2 \(/tmp/dir2\)"
     end
     it "ls-alias"
         output="$(diraction list-alias)"

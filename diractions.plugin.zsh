@@ -202,16 +202,28 @@ function diraction-list() {
         -pprint=format || return 1
 
     local selected_format=${format[1]:---pprint}
-    local -A formats=(--tsv "\1\t\2" --csv "\1,\2" --raw "\1 \2" --pprint "$(tput setaf 4;tput bold)\1$(tput sgr0) - \2")
+    local -A separators=( --tsv "\t" --csv ";" --raw " " --pprint " ")
 
-    if [[ "$format" == "--pprint" ]]; then echo "List of diractions:"; fi
-    # TODO resolve with "eval echo" / [ -d to test folder]
-    # TODO maybe add status
+    if [[ "$selected_format" == "--pprint" ]]; then echo "$(tput setaf 4;tput bold)List of diractions:$(tput sgr0)"; fi
+    # TODO: variabilise colors
+
     for a in ${(ko)DIRACTION_REGISTER}; do
         if [ -n "$1" ] && [[ ! "$a" =~ $1 ]] ; then continue; fi
-        echo "$a\t$DIRACTION_REGISTER[$a]"
-    done | sed "s;$HOME;~;" | gsed -E "s;^([^\t]+)\t(.*);${formats[$selected_format]};"
-    # beware separation while evaluating
+        local spec_path="${(Q)DIRACTION_REGISTER[$a]}"
+        local realpath="$(eval echo "$spec_path")"
+        printf "$a;$spec_path;$realpath;"
+        if [[ "$selected_format" == "--pprint" ]]; then
+            if [ ! -d "$realpath" ]; then  echo -n "❌"; fi
+        else
+            if [ ! -d "$realpath" ]; then echo -n "missing"; else echo -n "present"; fi
+        fi
+        printf "\n"
+    done \
+      | sed "s;$HOME;~;" \
+      | if [[ "$selected_format" == "--pprint" ]]; then
+      # note can't rely on the \t, they get affected by the pipe.
+        sed -E "s@^([^;]+);([^;]+);([^;]+);?(.?)@- $(tput setaf 4;tput bold)\1$(tput sgr0) : \2 ($(tput setaf 5; tput dim)\3$(tput sgr0)) \4@";
+      else tr ';' "$separators[$selected_format]"; fi
 }
 diraction-ls() { diraction-list $@; }
 
