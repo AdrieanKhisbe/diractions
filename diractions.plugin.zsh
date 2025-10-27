@@ -194,12 +194,23 @@ function diraction-exist() {
 -diraction-help list "
 List existing diractions (eventually filtered by given arg)"
 function diraction-list() {
-    echo "List of diractions:"
+    local format
+    zparseopts -D -E -- \
+        -tsv=format \
+        -csv=format \
+        -raw=format \
+        -pprint=format || return 1
+
+    local selected_format=${format[1]:---pprint}
+    local -A formats=(--tsv "\1\t\2" --csv "\1,\2" --raw "\1 \2" --pprint "$(tput setaf 4;tput bold)\1$(tput sgr0) - \2")
+
+    if [[ "$format" == "--pprint" ]]; then echo "List of diractions:"; fi
+    # TODO resolve with "eval echo" / [ -d to test folder]
+    # TODO maybe add status
     for a in ${(ko)DIRACTION_REGISTER}; do
         if [ -n "$1" ] && [[ ! "$a" =~ $1 ]] ; then continue; fi
-        echo "$a\t -  $DIRACTION_REGISTER[$a]"
-        # §TODO: indent [retrieve zsh link]
-    done | sed "s;$HOME;~;" # waiting for regexp
+        echo "$a\t$DIRACTION_REGISTER[$a]"
+    done | sed "s;$HOME;~;" | gsed -E "s;^([^\t]+)\t(.*);${formats[$selected_format]};"
     # beware separation while evaluating
 }
 diraction-ls() { diraction-list $@; }

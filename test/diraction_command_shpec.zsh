@@ -175,10 +175,24 @@ DIRS
     diraction-fake test2 "$dir2"
 
     it "ls all the dirs"
-        output="$(diraction ls)"
+        output="$(diraction ls | sed $'s/\033\\[[0-9;]*m//g')"
         assert grep "$output" "List of diractions"
-        assert grep "$output" "test1.* -  /tmp/dir1"
-        assert grep "$output" "test2.* -  /tmp/dir2"
+        assert grep "$output" "test1.* - /tmp/dir1"
+        assert grep "$output" "test2.* - /tmp/dir2"
+    end
+
+    it "ls all the dirs --csv"
+        output="$(diraction ls --csv)"
+        assert no_grep "$output" "List of diractions"
+        assert grep "$output" "test1,/tmp/dir1"
+        assert grep "$output" "test2,/tmp/dir2"
+    end
+
+    it "ls all the dirs --tsv"
+      output="$(diraction ls --tsv)"
+      assert no_grep "$output" "List of diractions"
+      assert grep "$output" "test1\t/tmp/dir1"
+      assert grep "$output" "test2\t/tmp/dir2"
     end
 
     it "ls some dirs"
