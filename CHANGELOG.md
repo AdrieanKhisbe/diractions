@@ -3,6 +3,11 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+## [0.20.0] - 2025-10-28
+From Improved list with path & status (and refreshed CI) ([#30])
+### Changed
+- improved list behavior (folder, status and format)
+- Updated CI
 
 ## [0.19.1] - 2024-07-22
 - Fix support of tilde/home behavior post introducing support folder with space in them ([#29])
@@ -134,8 +139,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 [#25]: https://github.com/AdrieanKhisbe/diractions/issues/25
 [#26]: https://github.com/AdrieanKhisbe/diractions/issues/26
 [#28]: https://github.com/AdrieanKhisbe/diractions/issues/28
+[#29]: https://github.com/AdrieanKhisbe/diractions/issues/29
+[#30]: https://github.com/AdrieanKhisbe/diractions/issues/30
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.1...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.1...v0.20.0
 [0.19.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.0...v0.19.1
 [0.19.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.17.1...v0.18.0
