@@ -43,7 +43,7 @@ declare -gA _DIRACTION_HELP
     # ¤note: from antigen
     local arg_name="$1"
     local default_arg_value="$2"
-    if [ -z "$(eval echo \$$arg_name)" ];then
+    if [ -z "$(print -P -- \$$arg_name)" ];then
         eval $arg_name='${(q)default_arg_value}'
     fi
     # §see: make it not exportable?
@@ -156,7 +156,7 @@ function diraction-create() {
     # create variable if not already bound
     if [ -z "${(P)var}" ] ; then
         # ¤note: déréférencement de variable: ${(P)var}
-        local value="$(eval echo "$dir")"
+        local value="$(print -P -- "$dir")"
         if [[ "$DIRACTION_EXPORT_VARIABLES" =~ ^(true|yes|y)$ ]] ; then
             export $var="$value"
         else
@@ -210,7 +210,7 @@ function diraction-list() {
     for a in ${(ko)DIRACTION_REGISTER}; do
         if [ -n "$1" ] && [[ ! "$a" =~ $1 ]] ; then continue; fi
         local spec_path="${(Q)DIRACTION_REGISTER[$a]}"
-        local realpath="$(eval echo "$spec_path")"
+        local realpath="$(print -P -- "$spec_path")"
         printf "$a;$spec_path;$realpath;"
         if [[ "$selected_format" == "--pprint" ]]; then
             if [ ! -d "$realpath" ]; then  echo -n "❌"; fi
@@ -443,7 +443,7 @@ function diraction-batch-create() {
         elif [[ $option =~ "-missing-dir" ]]; then
             diraction-create "$aline[2]" "$aline[3]" $option
         else
-            local dir="$(eval echo "${(@q)aline[3]}")"
+            local dir="$(print -P -- "${(@q)aline[3]}")"
             if [[ -d "$dir" ]]; then
                 diraction-create "$aline[2]" "$dir"
             else
@@ -512,7 +512,7 @@ function -diraction-check-file-syntax() {
     return $ok
 }
 
-##' check if directoryes of provided file exists
+##' check if directories of provided file exists
 function -diraction-check-file-dir() {
 
     if [[ ! -f "$1" ]];then
@@ -531,11 +531,11 @@ function -diraction-check-file-dir() {
         local -a aline; set -A aline $line #§check
 
         local var="_$aline[2]"
-        local "$var"="$(eval echo ${aline[3]/\~/\$HOME})" # eval for expansion of dir
+        local "$var"="$(print -P -- ${aline[3]})" # resolve directory (and tilde)
         local dir=${(P)$(echo $var)}
         if [[  ! -d "$dir" ]] ; then
             # ¤note: double quote prevent tilde from being expanded
-            echo "At line ${aline[1]}, directory ${aline[3]/\$HOME/~} does not exist"
+            echo "At line ${aline[1]}, directory ${aline[3]} does not exist"
             ((++nbMiss))
             # §todo: use incr to have number of failing directory?
         fi
@@ -653,6 +653,7 @@ function _diraction-dispatch() {
             open "$dir/$1"
             fi;;
         ed|edit)
+            # ! FIXME: check if cover by test and remove eval (some below 🚩)
             eval "(cd \"$dir\"  && $DIRACTION_EDITOR $@ )" # §check §now eval not necessary
             # §later: once complete and working, duplicate it to v| visual
             # §later: also for quick emacs and vim anyway : em vi
@@ -663,7 +664,7 @@ function _diraction-dispatch() {
             # originaly ':' had this behavior before being repurposed for subirectory prefix
             if [[ -z "$1" ]] ; then ; echo "$fg_bold[red]Nothing to exec!" >&2 ; return 1; fi
 
-            eval "(cd \"$dir\" && $@)"
+            eval "(cd \"$dir\" && $@)" # 🚩 # note: ${=@} would probably do
             # ¤note: might not be necessary to protect (self?) injection...
             # §see: var about evaluation to disable it.
             # §later: make ¤run with no evaluation!!!! [or witch ename with exec]
@@ -671,7 +672,7 @@ function _diraction-dispatch() {
         ;;
 
         quoted-exec|,,|--) # Quoted eval, preserve quotes passed to eval.
-            eval "(cd \"$dir\" && $(print -r -- "${(q+@)@}"))"
+            eval "(cd \"$dir\" && $(print -r -- "${(q+@)@}"))" # 🚩
             # -r : Ignore the escape conventions of echo.
         ;;
 
@@ -699,7 +700,7 @@ function _diraction-dispatch() {
 command will be perfomed in '$dir' (content is evaluated)
 you can exit this mode by typing exit, or ^D"
                         else
-                        eval "$icmd" |& sed 's/^(eval):1: //'
+                        eval "$icmd" |& sed 's/^(eval):1: //' # 🚩
                     fi
 
                     # §see how * glob subtitution work.
