@@ -202,7 +202,7 @@ function diraction-list() {
         -pprint=format || return 1
 
     local selected_format=${format[1]:---pprint}
-    local -A separators=( --tsv "\t" --csv ";" --raw " " --pprint " ")
+    local -A separators=( --tsv "\t" --csv ";" --raw " ")
 
     if [[ "$selected_format" == "--pprint" ]]; then echo "$(tput setaf 4;tput bold)List of diractions:$(tput sgr0)"; fi
     # TODO: variabilise colors
@@ -211,7 +211,7 @@ function diraction-list() {
         if [ -n "$1" ] && [[ ! "$a" =~ $1 ]] ; then continue; fi
         local spec_path="${(Q)DIRACTION_REGISTER[$a]}"
         local realpath="$(print -P -- "$spec_path")"
-        printf "$a;$spec_path;$realpath;"
+        printf '%s;%s;%s;' "$a" "$spec_path" "$realpath"
         if [[ "$selected_format" == "--pprint" ]]; then
             if [ ! -d "$realpath" ]; then  echo -n "❌"; fi
         else
