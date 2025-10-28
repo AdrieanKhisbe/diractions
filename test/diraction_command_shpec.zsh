@@ -193,10 +193,10 @@ DIRS
     end
 
     it "ls all the dirs --tsv"
-      output="$(diraction ls --tsv)"
+      output="$(diraction ls --tsv | tr '\t' ';')" # tweak to bypass CI issue on ubuntu actions
       assert no_grep "$output" "List of diractions"
-      assert grep "$output" "test1\t/tmp/dir1\t/tmp/dir1\tpresent"
-      assert grep "$output" "test2\t/tmp/dir2\t/tmp/dir2\tpresent"
+      assert grep "$output" "test1;/tmp/dir1;/tmp/dir1;present"
+      assert grep "$output" "test2;/tmp/dir2;/tmp/dir2;present"
     end
 
     it "ls some dirs"
