@@ -7,7 +7,7 @@ jobs:
     name: macOS
     strategy:
       matrix:
-        os: [macos-12, macos-13, macos-14, macos-15, macos-latest]
+        os: [macos-13, macos-14, macos-15, macos-latest]
     runs-on: ${{matrix.os}}
     steps:
       - name: Install deps
