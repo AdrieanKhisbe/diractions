@@ -440,11 +440,11 @@ function diraction-batch-create() {
         elif [[  "${#aline}" != 3 ]] ; then
             echo "At line ${aline[1]}, invalid number of argument(${#aline}): '${(@)aline}" >&2
             ko=true
-        elif [[ $option =~ "-missing-dir" ]]; then
-            diraction-create "$aline[2]" "$aline[3]" $option
         else
-            local dir="$(print -P -- "${(@q)aline[3]}")"
-            if [[ -d "$dir" ]]; then
+            local dir="${(Qe)aline[3]}"
+            if [[ $option =~ "-missing-dir" ]]; then
+                diraction-create "$aline[2]" "$dir" $option
+            elif [[ -d "$dir" ]]; then
                 diraction-create "$aline[2]" "$dir"
             else
                 echo "At line ${aline[1]}, directory '$dir' does not exists" >&2
