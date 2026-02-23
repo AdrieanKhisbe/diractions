@@ -111,14 +111,32 @@ DIRS
       assert equal "$(whence -f test1-home)" '_diraction-dispatch "~/.test/d1"'
 
       assert glob "$(type test2-home-quote)" "*alias*"
-      assert equal "$(whence -f test2-home-quote)" '_diraction-dispatch "'"'"'~/.test/d2'"'"'"' # "'path'" in quotes
+      assert equal "$(whence -f test2-home-quote)" '_diraction-dispatch "~/.test/d2"'
 
       assert glob "$(type test3-home-double-quote)" "*alias*"
-      assert equal "$(whence -f test3-home-double-quote)" '_diraction-dispatch ""~/.test/d3""'
+      assert equal "$(whence -f test3-home-double-quote)" '_diraction-dispatch "~/.test/d3"'
 
       assert glob "$(type test4-home-double-quote-comment)" "*alias*"
-      assert equal "$(whence -f test4-home-double-quote-comment)" '_diraction-dispatch ""~/.test/with space""'
+      assert equal "$(whence -f test4-home-double-quote-comment)" '_diraction-dispatch "~/.test/with space"'
 
+      diraction destroy-all -f
+    end
+
+    it "handles quotes in batch-create file properly"
+      mkdir -p "/tmp/some-quoted-dir"
+      diraction batch-create << "DIRS"
+        test-dq "/tmp/some-quoted-dir"
+        test-sq '/tmp/some-quoted-dir'
+DIRS
+      assert equal "$_test_dq" "/tmp/some-quoted-dir"
+      assert equal "$_test_sq" "/tmp/some-quoted-dir"
+      diraction destroy-all -f
+    end
+
+    it "handles \$HOME in batch-create file properly"
+      mkdir -p ~/.tmp/diraction-dollar-home-test
+      echo "test-home \$HOME/.tmp/diraction-dollar-home-test" | diraction batch-create
+      assert equal "$_test_home" "$HOME/.tmp/diraction-dollar-home-test"
       diraction destroy-all -f
     end
 
