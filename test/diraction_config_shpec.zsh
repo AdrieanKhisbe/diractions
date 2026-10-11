@@ -45,6 +45,58 @@ EOF
     assert equal "$output" "$config_fixture_dir/path with spaces\n$HOME\n$HOME"
   end
 
+  describe "Home path expansion and quoting"
+    home_fixture_dir=$(mktemp -d "$HOME/.diractions-config-check.XXXXXX")
+    home_fixture_name=${home_fixture_dir:t}
+    mkdir -p "$home_fixture_dir/plain" "$home_fixture_dir/path with spaces"
+
+    for home_root in '$HOME' '~'; do
+      for home_quoting in unquoted escaped single double; do
+        for home_case in root plain spaces missing; do
+          it "checks $home_quoting $home_root paths ($home_case) like the loader"
+            expected_status=0
+            case "$home_case" in
+              root) home_suffix="" ;;
+              plain) home_suffix="/$home_fixture_name/plain" ;;
+              spaces) home_suffix="/$home_fixture_name/path with spaces" ;;
+              missing)
+                home_suffix="/$home_fixture_name/missing with spaces"
+                expected_status=1
+                ;;
+            esac
+            home_spec="$home_root$home_suffix"
+            case "$home_quoting" in
+              escaped) home_spec=${home_spec// /\\ } ;;
+              single) home_spec="'$home_spec'" ;;
+              double) home_spec="\"$home_spec\"" ;;
+            esac
+            print -r -- "home-case $home_spec # trailing comment" > "$config_fixture"
+
+            -diraction-check-file-syntax "$config_fixture" >/dev/null
+            assert equal $? 0
+            output=$(-diraction-check-file-dir "$config_fixture")
+            assert equal $? "$expected_status"
+            if [[ "$home_case" == "missing" ]]; then
+              assert grep "$output" "There is 1 missing directories"
+            fi
+            diraction check file "$config_fixture" >/dev/null
+            assert equal $? "$expected_status"
+
+            output=$(
+              diraction destroy-all -f
+              -diraction-parse-file "$config_fixture" --ignore-missing-dir >/dev/null || exit $?
+              print -r -- "$_home_case"
+            )
+            assert equal $? 0
+            assert equal "$output" "$HOME$home_suffix"
+          end
+        done
+      done
+    done
+
+    rm -rf "$home_fixture_dir"
+  end
+
   it "counts missing directories and returns failure"
     print -rl -- "existing /tmp" "missing $config_fixture_dir/missing" "other $config_fixture_dir/other" > "$config_fixture"
     output=$(-diraction-check-file-dir "$config_fixture")
