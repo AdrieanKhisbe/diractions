@@ -3,6 +3,13 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+## [0.20.1] - 2026-10-11
+From Quote support fix fix ⛑️ ([#31])
+### Fixed
+- Fix quoted paths and $HOME expansion in batch-create definitions, including missing-directory options.
+### Changed
+- Remove deprecated macOS 13 from the CI matrix.
+
 ## [0.20.0] - 2025-10-28
 From Improved list with path & status (and refreshed CI) ([#30])
 ### Changed
@@ -141,8 +148,10 @@ From Improved list with path & status (and refreshed CI) ([#30])
 [#28]: https://github.com/AdrieanKhisbe/diractions/issues/28
 [#29]: https://github.com/AdrieanKhisbe/diractions/issues/29
 [#30]: https://github.com/AdrieanKhisbe/diractions/issues/30
+[#31]: https://github.com/AdrieanKhisbe/diractions/issues/31
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.0...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.1...HEAD
+[0.20.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.0...v0.20.1
 [0.20.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.1...v0.20.0
 [0.19.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.0...v0.19.1
 [0.19.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.18.0...v0.19.0
