@@ -406,23 +406,25 @@ function -diraction-parse-file() {
         echo 'diraction parse file need to be given a file!' >&2
         return 2;
     else
-        cat $1 | sed 's/\([''" \t]\)~/\1$HOME/' | diraction-batch-create $2
+        -diraction-read-file "$1" | diraction-batch-create "$2"
         return $?
     fi
 }
 
+##' Expand home shorthand before parsing a definition file.
+function -diraction-read-file() {
+    sed -E "s/(['\"[:space:]])~/\\1\$HOME/" "$1"
+}
+
+##' Normalize definitions for both creation and config checking.
+function -diraction-normalize-definitions() {
+    cat -n | sed -E 's:(^|[[:space:]])#.*$:\1:' \
+           | sed -E 's:^[[:space:]]*([^[:space:]]+)[[:space:]]+([^[:space:]]+)[[:space:]]+(.*):\1;\2;\3:g'
+}
+
 ##' function to create a set of batch definition from sdin
 function diraction-batch-create() {
-    local SED_OPT
-    if [[ "$(uname -s)" -eq "Darwin" ]] ; then SED_OPT="-E" ; else SED_OPT="-R" ; fi
-
-    cat -n | sed $SED_OPT 's:(^|[[:space:]])#.*$:\1:' \
-           | sed $SED_OPT 's:^[[:space:]]*([^[:space:]]+)[[:space:]]+([^[:space:]]+)[[:space:]]+(.*):\1;\2;\3:g' |
-    # kill comment for the eval after the first # with a space before, then ensure only one space
-
-    # TODO: extract to function when fill do check-syntax, check file exist.
-    # should rafine to have a read keeping memory in count?. (maybe cat -n)
-    # Must take a function. # should be private ?. or defined
+    -diraction-normalize-definitions |
     while read line ; do
         # Using `eval` so that we can use the shell-style quoting in each line
         # piped to `antigen-bundles`.   ¤note: inspired form antigen
@@ -459,114 +461,88 @@ function diraction-batch-create() {
     done
 }
 
-## §TODO: save test file to run test.
 function diraction-check() {
-    # §todo: alias doctor
+    local file
+    case "$1" in
+        config) file="$DIRACTION_DEF_FILE" ;;
+        file) file="$2" ;;
+        *)
+            echo "Please say what you want to check :) config/file syntax/alias" >&2
+            return 1
+            ;;
+    esac
 
-    #§maybe refactor which command as a variable?
-    if [[ "$1" == "config" ]]; then
-        echo ">> Checkying config [${DIRACTION_DEF_FILE}] syntax:"
-        diraction-check-config-syntax && echo "Syntax seems fine :)"
-        echo ">> Checkying config [${DIRACTION_DEF_FILE}] directory existance:"
-        diraction-check-config-dir && echo "All dir seems to exist"
+    if [[ ! -f "$file" ]]; then
+        echo "Please provide some file to check: $file" >&2
+        return 2
+    fi
 
-    elif [[ "$1" == "file" ]]; then
-        if [[ -f "$2" ]]; then
-            echo "Checkying file [$2] syntax: "
-            -diraction-check-file-syntax $2 && echo "Syntax seems fine :)"
-            echo "Checkying file [$2] diractories: "
-            -diraction-check-file-dir  $2 && echo "All dir seems to exist"
-        else
-            echo "Please provide some file to check" >&2
-        fi
+    local result=0
+    echo ">> Checking file [$file] syntax:"
+    if -diraction-check-file-syntax "$file"; then
+        echo "Syntax seems fine :)"
     else
-        echo "Please say what you want to check :) config/file syntax/alias" >&2
-        return 1
-        # §maybe: add a help command
+        result=1
     fi
+    echo ">> Checking file [$file] directory existence:"
+    if -diraction-check-file-dir "$file"; then
+        echo "All dir seems to exist"
+    else
+        result=1
+    fi
+    return $result
 }
 
-##' check if syntax of provided file is correct
-## §maybe: can acces it from outside §here
-function -diraction-check-file-syntax() {
-    if [[ ! -f "$1" ]];then
-        echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
+##' Check definition syntax and optionally directory existence.
+function -diraction-check-file() {
+    if [[ ! -f "$1" ]]; then
+        echo "File-check: need a file as argument : ${1:-no argument}" >&2
         return 2
     fi
 
-    local ok=0
-    cat -n $1 | sed 's:[[:space:]]#.*$::' | while read line; do
-        local -a aline;
-        set -A aline $line
-        # §TODO: security, check injection pattern? : rm? \Wrm\W and issue warning (not running eval)
-        # §todo: add checksum to file
-        if [[  ("${#aline}" == 0 ||  "${#aline}" == 2 ) ]] ; then
-            echo "At line ${aline[1]}, invalid number of argument(${#aline}): '${(@)aline}'}"
-            ok=1
-        elif ! eval "echo ${aline[2,-1]} >/dev/null" 2>/dev/null  ; then
-        # §todo: check eval?
-            echo "At line ${aline[1]}, some syntax error occured ${aline[2,-1]}"
-            ok=1
+    local mode="$2" line dir
+    local result=0 nbMiss=0
+    local -a aline
+    while read line; do
+        set -A aline ${(@s:;:)line}
+        if [[ "$line" =~ '^[[:space:]]*[[:digit:]]+[[:space:]]*$' ]]; then
+            continue
+        elif [[ "${#aline}" != 3 ]]; then
+            echo "At line ${aline[1]}, invalid number of arguments: '$line'"
+            result=1
+        elif ! zsh -n -c "print -r -- ${aline[3]}" 2>/dev/null; then
+            echo "At line ${aline[1]}, some syntax error occurred ${aline[3]}"
+            result=1
+        elif [[ "$mode" == "dir" ]]; then
+            dir="${(Qe)aline[3]}"
+            if [[ ! -d "$dir" ]]; then
+                echo "At line ${aline[1]}, directory $dir does not exist"
+                ((++nbMiss))
+                result=1
+            fi
         fi
-    done
-    return $ok
-}
+    done < <(-diraction-read-file "$1" | -diraction-normalize-definitions)
 
-##' check if directories of provided file exists
-function -diraction-check-file-dir() {
-
-    if [[ ! -f "$1" ]];then
-        echo "File-check-dir: need a file as argument : ${1:-no argument}" >&2
-        return 2
-    fi
-
-    local nbMiss=0
-
-     cat -n $1 | grep '^[[:space:]]\+[[:digit:]]\+[[:space:]]\+[^#[:space:]]\+[[:space:]]\+[^#[:space:]]\+' |
-    # §maybe: extract function, or just constant pattern!
-    # §maybe: use a real regexp
-    # will let skip quote with # inside..
-    # if add a trailing $ will refuse path with space inside.
-    sed 's:#.*$::' | while read line; do
-        local -a aline; set -A aline $line #§check
-
-        local var="_$aline[2]"
-        local "$var"="$(print -P -- ${aline[3]})" # resolve directory (and tilde)
-        local dir=${(P)$(echo $var)}
-        if [[  ! -d "$dir" ]] ; then
-            # ¤note: double quote prevent tilde from being expanded
-            echo "At line ${aline[1]}, directory ${aline[3]} does not exist"
-            ((++nbMiss))
-            # §todo: use incr to have number of failing directory?
-        fi
-        # ¤note: cut sans field c'est TAB
-    done
-    if [[ $nbMiss -ge 0 ]];then
+    if [[ "$mode" == "dir" && $nbMiss -gt 0 ]]; then
         echo "There is $nbMiss missing directories"
-        return 1;
-    else
-        return 0
     fi
+    return $result
 }
 
-##' check syntax of config file
-# §maybe swap name: config/syntax
-function diraction-check-config-syntax() {
-    if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
-        -diraction-check-file-syntax ${DIRACTION_DEF_FILE}
-        return $?
-    else
-        echo "Config file does not exist" >&2
-    fi
+function -diraction-check-file-syntax() {
+    -diraction-check-file "$1" syntax
 }
-##' check directory existance of config file
+
+function -diraction-check-file-dir() {
+    -diraction-check-file "$1" dir
+}
+
+function diraction-check-config-syntax() {
+    -diraction-check-file-syntax "$DIRACTION_DEF_FILE"
+}
+
 function diraction-check-config-dir() {
-    if [[ -f ${DIRACTION_DEF_FILE} ]] ; then
-        -diraction-check-file-dir ${DIRACTION_DEF_FILE}
-        return $?
-    else
-        echo "Config file does not exist" >&2
-    fi
+    -diraction-check-file-dir "$DIRACTION_DEF_FILE"
 }
 
 ################################################################################
