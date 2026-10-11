@@ -8,6 +8,13 @@ describe "Diraction config checking"
   config_fixture="$config_fixture_dir/definitions with spaces"
   mkdir -p "$config_fixture_dir/path with spaces" "$config_fixture_dir/path#hash"
 
+  it "returns success when zero directories are missing"
+    valid_config_fixture="$config_fixture_dir/valid-config"
+    print -r -- 'existing /tmp' > "$valid_config_fixture"
+    -diraction-check-file-dir "$valid_config_fixture" >/dev/null
+    assert equal $? 0
+  end
+
   it "accepts an existing directory through the public file command"
     print -r -- "existing /tmp" > "$config_fixture"
     diraction check file "$config_fixture" >/dev/null
