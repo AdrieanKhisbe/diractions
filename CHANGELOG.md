@@ -3,6 +3,13 @@ All notable changes to *diraction* will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+## [0.20.2] - 2026-10-28
+From Fix config checking for v0.20.2 ([#32])
+### Fixed
+- Return success from config checking when all directories exist, and preserve syntax or missing-directory failures.
+- Resolve quoted paths, spaces, `~`, and `$HOME` consistently when checking and loading definitions.
+- Check syntax without executing definitions, and support definition filenames containing spaces.
+
 ## [0.20.1] - 2026-10-11
 From Quote support fix fix ⛑️ ([#31])
 ### Fixed
@@ -149,8 +156,10 @@ From Improved list with path & status (and refreshed CI) ([#30])
 [#29]: https://github.com/AdrieanKhisbe/diractions/issues/29
 [#30]: https://github.com/AdrieanKhisbe/diractions/issues/30
 [#31]: https://github.com/AdrieanKhisbe/diractions/issues/31
+[#32]: https://github.com/AdrieanKhisbe/diractions/issues/32
 
-[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.1...HEAD
+[unreleased]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.2...HEAD
+[0.20.2]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.1...v0.20.2
 [0.20.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.20.0...v0.20.1
 [0.20.0]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.1...v0.20.0
 [0.19.1]: https://github.com/AdrieanKhisbe/diractions/compare/v0.19.0...v0.19.1
